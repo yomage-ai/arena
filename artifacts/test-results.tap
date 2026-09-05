@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: planting charges sun, validates bounds and occupancy, enforces cooldown
+ok 1 - planting charges sun, validates bounds and occupancy, enforces cooldown
+  ---
+  duration_ms: 1.69025
+  type: 'test'
+  ...
+# Subtest: sunflower creates collectible sun; collecting is atomic and paused-safe
+ok 2 - sunflower creates collectible sun; collecting is atomic and paused-safe
+  ---
+  duration_ms: 0.719291
+  type: 'test'
+  ...
+# Subtest: pea shots hit same lane and kill a normal zombie
+ok 3 - pea shots hit same lane and kill a normal zombie
+  ---
+  duration_ms: 1.320334
+  type: 'test'
+  ...
+# Subtest: ice projectiles slow their targets
+ok 4 - ice projectiles slow their targets
+  ---
+  duration_ms: 0.344458
+  type: 'test'
+  ...
+# Subtest: repeater fires a two-shot burst
+ok 5 - repeater fires a two-shot burst
+  ---
+  duration_ms: 0.217042
+  type: 'test'
+  ...
+# Subtest: cherry blast hits a 3x3 area but excludes distant lanes and columns
+ok 6 - cherry blast hits a 3x3 area but excludes distant lanes and columns
+  ---
+  duration_ms: 0.214708
+  type: 'test'
+  ...
+# Subtest: potato requires arming, then detonates on contact
+ok 7 - potato requires arming, then detonates on contact
+  ---
+  duration_ms: 1.261083
+  type: 'test'
+  ...
+# Subtest: chomper digests one zombie at a time
+ok 8 - chomper digests one zombie at a time
+  ---
+  duration_ms: 0.148625
+  type: 'test'
+  ...
+# Subtest: wall blocks movement and takes damage, shovel removes it
+ok 9 - wall blocks movement and takes damage, shovel removes it
+  ---
+  duration_ms: 0.389417
+  type: 'test'
+  ...
+# Subtest: mower clears a lane once and a second breach loses
+ok 10 - mower clears a lane once and a second breach loses
+  ---
+  duration_ms: 0.373625
+  type: 'test'
+  ...
+# Subtest: paused simulation does not advance time, sun, enemies or cooldowns
+ok 11 - paused simulation does not advance time, sun, enemies or cooldowns
+  ---
+  duration_ms: 0.158209
+  type: 'test'
+  ...
+# Subtest: save and restore round trip preserves the complete battle
+ok 12 - save and restore round trip preserves the complete battle
+  ---
+  duration_ms: 0.671042
+  type: 'test'
+  ...
+# Subtest: adventure contains six waves and wins only after last zombie
+ok 13 - adventure contains six waves and wins only after last zombie
+  ---
+  duration_ms: 18.309792
+  type: 'test'
+  ...
+# Subtest: endless keeps spawning after wave six with increased health
+ok 14 - endless keeps spawning after wave six with increased health
+  ---
+  duration_ms: 22.2235
+  type: 'test'
+  ...
+# Subtest: reasonable automated economy and defense can complete adventure
+ok 15 - reasonable automated economy and defense can complete adventure
+  ---
+  duration_ms: 83.94575
+  type: 'test'
+  ...
+# Subtest: deliverable has exactly one inline script and stylesheet, with no build placeholders
+ok 16 - deliverable has exactly one inline script and stylesheet, with no build placeholders
+  ---
+  duration_ms: 0.669
+  type: 'test'
+  ...
+# Subtest: compiled JavaScript parses as a single classic script
+ok 17 - compiled JavaScript parses as a single classic script
+  ---
+  duration_ms: 0.82425
+  type: 'test'
+  ...
+# Subtest: game has no fetch, module import, CDN, WebSocket, or remote font dependency
+ok 18 - game has no fetch, module import, CDN, WebSocket, or remote font dependency
+  ---
+  duration_ms: 0.222708
+  type: 'test'
+  ...
+# Subtest: every source file remains and build output includes each source
+ok 19 - every source file remains and build output includes each source
+  ---
+  duration_ms: 0.538167
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 173.9275

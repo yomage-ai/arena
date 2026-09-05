@@ -1,0 +1,1995 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#f6f2e9">
+  <meta name="description" content="一群纸鸟沿着程序化生成的无尽航线飞行。移动光标，让风改变它们的方向。">
+  <title>候鸟 · MIGRATION</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f2e9;
+      --ink: 58, 54, 44;
+      --ui-scale: 1;
+      --safe: max(22px, env(safe-area-inset-left));
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--paper);
+      color: rgb(var(--ink));
+      font-family: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+
+    button { font: inherit; }
+
+    #stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      isolation: isolate;
+      background: var(--paper);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #world {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+    #paper-glass {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: .22;
+      mix-blend-mode: multiply;
+      background-image:
+        repeating-linear-gradient(8deg, rgba(70, 62, 46, .025) 0 1px, transparent 1px 8px),
+        repeating-linear-gradient(96deg, rgba(255, 255, 255, .07) 0 1px, transparent 1px 11px);
+    }
+
+    #ui {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      color: rgb(var(--ink));
+      transition: color 1.6s ease;
+      pointer-events: none;
+      text-shadow: 0 1px 16px rgba(246, 242, 233, .38);
+    }
+
+    .hud {
+      position: absolute;
+      left: var(--safe);
+      top: max(20px, env(safe-area-inset-top));
+      letter-spacing: .14em;
+      font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+      text-transform: uppercase;
+    }
+
+    .hud__brand {
+      margin-bottom: calc(18px * var(--ui-scale));
+      font: 600 calc(10px * var(--ui-scale))/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .31em;
+      opacity: .72;
+    }
+
+    #camera-name {
+      max-width: 34vw;
+      font: 600 calc(12px * var(--ui-scale))/1.45 ui-monospace, "SFMono-Regular", Menlo, monospace;
+    }
+
+    .hud__meta {
+      display: flex;
+      align-items: center;
+      gap: calc(9px * var(--ui-scale));
+      margin-top: calc(6px * var(--ui-scale));
+      font: 600 calc(10px * var(--ui-scale))/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      opacity: .62;
+    }
+
+    .hud__dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    #controls {
+      position: absolute;
+      right: max(20px, env(safe-area-inset-right));
+      top: max(18px, env(safe-area-inset-top));
+      display: flex;
+      align-items: center;
+      gap: calc(7px * var(--ui-scale));
+      pointer-events: auto;
+    }
+
+    .control {
+      min-height: calc(35px * var(--ui-scale));
+      padding: 0 calc(13px * var(--ui-scale));
+      border: 1px solid rgba(var(--ink), .28);
+      border-radius: 999px;
+      color: inherit;
+      background: rgba(246, 242, 233, .14);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      font: 650 calc(10px * var(--ui-scale))/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .12em;
+      cursor: pointer;
+      transition: background .25s, border-color .25s, transform .25s, opacity .25s;
+    }
+
+    .control:hover, .control:focus-visible {
+      outline: none;
+      transform: translateY(-1px);
+      border-color: rgba(var(--ink), .56);
+      background: rgba(246, 242, 233, .28);
+    }
+
+    .control[aria-pressed="false"] { opacity: .48; }
+    #fullscreen { width: calc(35px * var(--ui-scale)); padding: 0; font-size: calc(15px * var(--ui-scale)); }
+
+    #scene-readout {
+      position: absolute;
+      left: var(--safe);
+      bottom: max(21px, env(safe-area-inset-bottom));
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font: 600 calc(10px * var(--ui-scale))/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .18em;
+      opacity: .74;
+    }
+
+    #scene-swatch {
+      width: calc(24px * var(--ui-scale));
+      height: 1px;
+      background: currentColor;
+      transition: width .8s ease;
+    }
+
+    #hint {
+      position: absolute;
+      right: max(22px, env(safe-area-inset-right));
+      bottom: max(21px, env(safe-area-inset-bottom));
+      font: 500 calc(10px * var(--ui-scale))/1.4 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .12em;
+      opacity: .58;
+      transition: opacity 1s;
+    }
+
+    #poem {
+      position: absolute;
+      left: 50%;
+      bottom: 10.5%;
+      width: min(76vw, 760px);
+      transform: translateX(-50%);
+      text-align: center;
+      color: inherit;
+      opacity: 0;
+      transition: opacity 1.5s ease, color 1.5s ease;
+      pointer-events: none;
+    }
+
+    #poem.shown { opacity: .92; }
+    #poem.resting { opacity: 0; }
+    #poem.disabled { display: none; }
+
+    .poem__line {
+      min-height: 1.55em;
+      font-size: calc(clamp(16px, 1.55vw, 24px) * var(--ui-scale));
+      font-weight: 400;
+      line-height: 1.58;
+      letter-spacing: .14em;
+    }
+
+    .poem__line span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(6px);
+      filter: blur(3px);
+      animation: letter-in 1.4s cubic-bezier(.2,.68,.2,1) forwards;
+      animation-delay: calc(var(--i) * 72ms);
+    }
+
+    .poem__rule {
+      width: min(260px, 38vw);
+      height: 1px;
+      margin: 13px auto 0;
+      background: currentColor;
+      opacity: .45;
+      transform: scaleX(0);
+    }
+
+    #poem.shown .poem__rule { animation: rule-open 2.1s 1.1s cubic-bezier(.2,.74,.2,1) forwards; }
+
+    @keyframes letter-in {
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @keyframes rule-open { to { transform: scaleX(1); } }
+
+    #veil {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(246, 242, 233, .58);
+      -webkit-backdrop-filter: blur(12px) saturate(.82);
+      backdrop-filter: blur(12px) saturate(.82);
+      transition: opacity 1.35s cubic-bezier(.2,.7,.2,1), visibility 1.35s;
+    }
+
+    #veil.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .intro {
+      width: min(820px, 94vw);
+      text-align: center;
+      color: #3a362c;
+      text-shadow: none;
+    }
+
+    .intro__kicker {
+      margin-bottom: 16px;
+      font: 650 10px/1.4 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .34em;
+      opacity: .58;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 8.2vw, 108px);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: .16em;
+      text-indent: .16em;
+    }
+
+    .intro__en {
+      margin: 13px 0 35px;
+      font: 600 clamp(10px, 1.1vw, 14px)/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .48em;
+      text-indent: .48em;
+      opacity: .72;
+    }
+
+    .intro__label {
+      margin-bottom: 12px;
+      font-size: 13px;
+      letter-spacing: .14em;
+      opacity: .62;
+    }
+
+    #scene-picker {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 31px;
+    }
+
+    .scene-choice {
+      position: relative;
+      min-width: 82px;
+      padding: 10px 13px 9px;
+      border: 1px solid rgba(58, 54, 44, .22);
+      border-radius: 999px;
+      color: #3a362c;
+      background: rgba(246, 242, 233, .22);
+      font: 650 10px/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .12em;
+      cursor: pointer;
+      transition: border-color .25s, background .25s, transform .25s;
+    }
+
+    .scene-choice::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: var(--chip);
+      box-shadow: 0 0 0 2px rgba(58,54,44,.08);
+      vertical-align: -1px;
+    }
+
+    .scene-choice:hover { transform: translateY(-1px); }
+    .scene-choice.selected { border-color: rgba(58,54,44,.7); background: rgba(255,255,255,.35); }
+
+    #start {
+      min-width: 154px;
+      padding: 14px 24px 13px;
+      border: 1px solid #3a362c;
+      border-radius: 999px;
+      color: #3a362c;
+      background: rgba(246, 242, 233, .34);
+      font-size: 15px;
+      letter-spacing: .09em;
+      cursor: pointer;
+      transition: color .25s, background .25s, transform .25s;
+    }
+
+    #start:hover, #start:focus-visible {
+      outline: none;
+      color: #f6f2e9;
+      background: #3a362c;
+      transform: translateY(-2px);
+    }
+
+    .intro__note {
+      margin-top: 17px;
+      font: 500 10px/1.7 ui-monospace, "SFMono-Regular", Menlo, monospace;
+      letter-spacing: .08em;
+      opacity: .46;
+    }
+
+    #rotate-note {
+      position: absolute;
+      left: 50%;
+      bottom: 9px;
+      display: none;
+      transform: translateX(-50%);
+      font: 600 9px/1 ui-monospace, monospace;
+      letter-spacing: .12em;
+      opacity: .55;
+    }
+
+    @media (min-width: 2200px) { :root { --ui-scale: 1.5; } }
+    @media (min-width: 3200px) { :root { --ui-scale: 2; } }
+
+    @media (max-width: 760px), (max-height: 500px) {
+      .control { min-height: 31px; padding: 0 10px; }
+      .control .wide { display: none; }
+      #fullscreen { width: 31px; }
+      .hud__brand { margin-bottom: 12px; }
+      #hint { display: none; }
+      #poem { bottom: 7.5%; }
+      .poem__line { font-size: 14px; }
+      .intro__note { display: none; }
+      h1 { font-size: clamp(36px, 12vh, 66px); }
+      .intro__en { margin-bottom: 22px; }
+      #scene-picker { margin-bottom: 22px; }
+    }
+
+    @media (orientation: portrait) and (max-width: 900px) {
+      #stage {
+        width: 100vh;
+        height: 100vw;
+        right: auto;
+        bottom: auto;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+      #rotate-note { display: block; }
+      .intro { width: min(88vh, 720px); }
+      #poem { width: 70vh; }
+    }
+  </style>
+</head>
+<body>
+  <main id="stage" aria-label="候鸟迁徙互动作品">
+    <canvas id="world" aria-label="程序化生成的候鸟迁徙世界"></canvas>
+    <div id="paper-glass" aria-hidden="true"></div>
+
+    <div id="ui">
+      <header class="hud" aria-live="polite">
+        <div class="hud__brand">候鸟 · MIGRATION</div>
+        <div id="camera-name">正俯视 · ZENITH</div>
+        <div class="hud__meta">
+          <span id="variation">VAR 01</span><i class="hud__dot"></i><span id="camera-mode">AUTO</span>
+        </div>
+      </header>
+
+      <nav id="controls" aria-label="体验控制">
+        <button class="control" id="camera-toggle" type="button" aria-pressed="true" title="切换自动或自主镜头">镜头 <span class="wide">AUTO</span></button>
+        <button class="control" id="sound-toggle" type="button" aria-pressed="true" title="开关声音">声 <span class="wide">ON</span></button>
+        <button class="control" id="poem-toggle" type="button" aria-pressed="true" title="开关诗句">诗 <span class="wide">ON</span></button>
+        <button class="control" id="fullscreen" type="button" title="全屏" aria-label="全屏">⛶</button>
+      </nav>
+
+      <div id="scene-readout"><span id="scene-swatch"></span><span id="scene-name">暖纸 · WARM</span></div>
+      <div id="hint">移动 · 风　/　滚轮 · 观察　/　点击镜头 · 自主</div>
+
+      <section id="poem" aria-live="polite">
+        <div class="poem__line" id="poem-a"></div>
+        <div class="poem__line" id="poem-b"></div>
+        <div class="poem__rule"></div>
+      </section>
+    </div>
+
+    <section id="veil">
+      <div class="intro">
+        <div class="intro__kicker">一次没有尽头的飞行</div>
+        <h1>候鸟</h1>
+        <div class="intro__en">MIGRATION</div>
+        <div class="intro__label">选择起飞地点</div>
+        <div id="scene-picker" role="radiogroup" aria-label="起飞地点">
+          <button class="scene-choice selected" style="--chip:#c9ae78" data-scene="0" role="radio" aria-checked="true">暖纸</button>
+          <button class="scene-choice" style="--chip:#c58e91" data-scene="2" role="radio" aria-checked="false">暮粉</button>
+          <button class="scene-choice" style="--chip:#34435a" data-scene="4" role="radio" aria-checked="false">夜航</button>
+          <button class="scene-choice" style="--chip:#aeb9b6" data-scene="1" role="radio" aria-checked="false">雾</button>
+          <button class="scene-choice" style="--chip:#d7e0e2" data-scene="3" role="radio" aria-checked="false">雪</button>
+        </div>
+        <button id="start" type="button">开始迁徙&nbsp; →</button>
+        <div class="intro__note">移动光标唤风 · 全屏与声音将在开始后启用</div>
+      </div>
+      <div id="rotate-note">已为竖屏旋转为横向视野</div>
+    </section>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+
+    const TAU = Math.PI * 2;
+    const DEG = Math.PI / 180;
+    const SEGMENT = 8600;
+    const SHOT_TIME = 16;
+    const CYCLE_TIME = 96;
+    const WORLD_SPEED = 62;
+    const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const fract = v => v - Math.floor(v);
+    const smooth = t => (t = clamp(t, 0, 1)) * t * (3 - 2 * t);
+    const mod = (v, m) => ((v % m) + m) % m;
+    const mix3 = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+    const rgba = (c, a = 1) => "rgba(" + c.map(v => Math.round(v)).join(",") + "," + a + ")";
+    const shade = (c, d) => c.map(v => clamp(v + d, 0, 255));
+    const v3 = (x = 0, y = 0, z = 0) => ({ x, y, z });
+    const add = (a, b) => v3(a.x + b.x, a.y + b.y, a.z + b.z);
+    const sub = (a, b) => v3(a.x - b.x, a.y - b.y, a.z - b.z);
+    const mul = (a, s) => v3(a.x * s, a.y * s, a.z * s);
+    const dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
+    const cross = (a, b) => v3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+    const len = a => Math.hypot(a.x, a.y, a.z);
+    const norm = a => {
+      const l = len(a) || 1;
+      return mul(a, 1 / l);
+    };
+
+    function hash(n, seed = 0) {
+      return fract(Math.sin(n * 127.1 + seed * 311.7 + 19.19) * 43758.5453123);
+    }
+
+    function hash2(x, z, seed = 0) {
+      return fract(Math.sin(x * 127.1 + z * 311.7 + seed * 74.7) * 43758.5453123);
+    }
+
+    function noise1(x, seed = 0) {
+      const i = Math.floor(x);
+      const f = smooth(x - i);
+      return lerp(hash(i, seed), hash(i + 1, seed), f);
+    }
+
+    function angleDelta(a, b) {
+      return Math.abs(mod(a - b + Math.PI, TAU) - Math.PI);
+    }
+
+    function lerpAngle(a, b, t) {
+      return a + (mod(b - a + Math.PI, TAU) - Math.PI) * t;
+    }
+
+    function seeded(seed) {
+      let s = seed >>> 0;
+      return () => {
+        s = (s * 1664525 + 1013904223) >>> 0;
+        return s / 4294967296;
+      };
+    }
+
+    const PALETTES = [
+      {
+        id: "WARM", zh: "暖纸", skyTop: [189, 205, 202], skyHorizon: [239, 225, 194],
+        ground: [205, 188, 143], fieldA: [194, 174, 122], fieldB: [218, 199, 151],
+        river: [111, 146, 151], riverEdge: [170, 180, 158], roof: [148, 100, 76],
+        wall: [221, 198, 160], tree: [104, 126, 88], fog: [238, 231, 213],
+        birdLight: [242, 235, 220], birdMid: [211, 199, 178], birdDark: [105, 97, 83], ui: [58, 54, 44]
+      },
+      {
+        id: "MIST", zh: "雾境", skyTop: [177, 190, 189], skyHorizon: [218, 220, 211],
+        ground: [178, 183, 166], fieldA: [162, 173, 153], fieldB: [191, 191, 169],
+        river: [119, 145, 149], riverEdge: [172, 185, 181], roof: [125, 111, 101],
+        wall: [201, 197, 181], tree: [92, 113, 96], fog: [220, 224, 219],
+        birdLight: [228, 229, 220], birdMid: [190, 198, 192], birdDark: [91, 103, 100], ui: [52, 59, 57]
+      },
+      {
+        id: "DUSK", zh: "暮粉", skyTop: [147, 145, 165], skyHorizon: [232, 178, 166],
+        ground: [183, 151, 142], fieldA: [166, 132, 126], fieldB: [203, 167, 151],
+        river: [105, 122, 139], riverEdge: [184, 153, 157], roof: [124, 79, 83],
+        wall: [211, 172, 157], tree: [93, 102, 82], fog: [216, 188, 185],
+        birdLight: [235, 218, 210], birdMid: [202, 177, 173], birdDark: [100, 79, 85], ui: [62, 47, 49]
+      },
+      {
+        id: "SNOW", zh: "雪境", skyTop: [169, 188, 199], skyHorizon: [224, 229, 228],
+        ground: [215, 222, 219], fieldA: [202, 211, 210], fieldB: [231, 232, 225],
+        river: [105, 137, 153], riverEdge: [197, 213, 218], roof: [109, 118, 123],
+        wall: [208, 211, 207], tree: [66, 93, 89], fog: [229, 233, 231],
+        birdLight: [239, 241, 237], birdMid: [198, 210, 214], birdDark: [82, 98, 105], ui: [46, 59, 64]
+      },
+      {
+        id: "NIGHT", zh: "夜航", skyTop: [21, 30, 48], skyHorizon: [54, 67, 82],
+        ground: [52, 65, 66], fieldA: [43, 57, 57], fieldB: [61, 73, 70],
+        river: [34, 51, 65], riverEdge: [54, 71, 77], roof: [52, 47, 53],
+        wall: [73, 73, 72], tree: [34, 52, 50], fog: [74, 84, 92],
+        birdLight: [190, 202, 213], birdMid: [139, 155, 170], birdDark: [50, 65, 82], ui: [235, 237, 232]
+      }
+    ];
+
+    const CAMERA_LIBRARY = [
+      { id: "ZENITH", zh: "正俯视", yaw: 8, elev: 78, dist: 1740, fov: 48, targetY: 34, lead: 50, river: .12 },
+      { id: "DIVE", zh: "俯冲", yaw: -42, elev: 43, dist: 1180, fov: 51, targetY: 82, lead: 150, river: .16 },
+      { id: "RIVER_SKIM", zh: "贴河掠水", yaw: -8, elev: 3, dist: 720, fov: 60, targetY: 42, lead: 190, river: .75 },
+      { id: "RIVER_PUSH", zh: "沿河前推", yaw: 28, elev: 10, dist: 980, fov: 55, targetY: 70, lead: 280, river: .72 },
+      { id: "LATERAL", zh: "侧向轨道", yaw: 92, elev: 18, dist: 1050, fov: 52, targetY: 105, lead: 60, river: .2 },
+      { id: "LOW_WIDE", zh: "低空宽景", yaw: -118, elev: 8, dist: 1680, fov: 63, targetY: 86, lead: 90, river: .25 },
+      { id: "ORBIT", zh: "环绕", yaw: 142, elev: 27, dist: 980, fov: 50, targetY: 112, lead: 40, river: .12 },
+      { id: "REVEAL", zh: "拉远揭示", yaw: -67, elev: 36, dist: 2380, fov: 56, targetY: 70, lead: 130, river: .3 },
+      { id: "TAIL", zh: "正背面", yaw: 0, elev: 12, dist: 710, fov: 47, targetY: 130, lead: 180, river: .08 },
+      { id: "HEAD_ON", zh: "迎面", yaw: 180, elev: 11, dist: 760, fov: 48, targetY: 130, lead: -30, river: .08 },
+      { id: "HIGH_DRIFT", zh: "高空漂移", yaw: 54, elev: 59, dist: 2100, fov: 54, targetY: 42, lead: 100, river: .34 },
+      { id: "PORTSIDE", zh: "左舷伴飞", yaw: -88, elev: 14, dist: 810, fov: 46, targetY: 125, lead: 90, river: .1 },
+      { id: "STARBOARD", zh: "右舷伴飞", yaw: 86, elev: 15, dist: 830, fov: 47, targetY: 125, lead: 80, river: .1 },
+      { id: "MIST_RISE", zh: "穿雾上升", yaw: 126, elev: 48, dist: 1450, fov: 55, targetY: 72, lead: 150, river: .25 },
+      { id: "CHASE", zh: "斜后追随", yaw: -34, elev: 17, dist: 920, fov: 49, targetY: 122, lead: 170, river: .12 },
+      { id: "CLOUD_HOVER", zh: "云下悬停", yaw: -152, elev: 62, dist: 1960, fov: 52, targetY: 52, lead: 20, river: .38 }
+    ].map(v => ({ ...v, yaw: v.yaw * DEG, elev: v.elev * DEG }));
+
+    const POEMS = [
+      ["我们把北方折进翅膀", "把南方写成远处的岸"],
+      ["风没有地址", "却认得每一片归途"],
+      ["河流在下面练习转弯", "我们在上面练习告别"],
+      ["云层很低的时候", "一声鸟鸣比天空更高"],
+      ["旧屋沿水醒来", "烟囱替清晨写下逗点"],
+      ["没有一只鸟携带地图", "群山仍把路交到它们手中"],
+      ["雪落在屋脊", "也落在尚未抵达的名字上"],
+      ["夜色合拢大地", "星光替翅膀留下针脚"],
+      ["远方不是一个地方", "是风反复打开的方向"],
+      ["我们经过无数扇亮着的窗", "没有惊动任何一场梦"],
+      ["翅尖掠过河面", "时间便有了细小的波纹"],
+      ["离开使天空变宽", "相逢使队形重新完整"],
+      ["当天际再次变暖", "所有漫长都轻得像纸"]
+    ];
+
+    const canvas = document.querySelector("#world");
+    const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
+    const stage = document.querySelector("#stage");
+    const veil = document.querySelector("#veil");
+    const cameraName = document.querySelector("#camera-name");
+    const variationEl = document.querySelector("#variation");
+    const cameraModeEl = document.querySelector("#camera-mode");
+    const sceneName = document.querySelector("#scene-name");
+    const poemEl = document.querySelector("#poem");
+    const poemA = document.querySelector("#poem-a");
+    const poemB = document.querySelector("#poem-b");
+    const cameraToggle = document.querySelector("#camera-toggle");
+    const soundToggle = document.querySelector("#sound-toggle");
+    const poemToggle = document.querySelector("#poem-toggle");
+    const fullscreenButton = document.querySelector("#fullscreen");
+    const coarse = matchMedia("(pointer: coarse)").matches;
+
+    let W = 1;
+    let H = 1;
+    let DPR = 1;
+    let started = false;
+    let startStyle = 0;
+    let journey = SEGMENT * .18;
+    let elapsed = 0;
+    let lastNow = performance.now();
+    let paperPattern = null;
+    let birds = [];
+    let particles = [];
+    let currentCamera = null;
+    let previousPoemStep = -1;
+    let poemEnabled = true;
+    let autoCamera = true;
+    let returnCamera = null;
+    let returnStarted = 0;
+    let observation = { distance: 0, elevation: 0, last: -99 };
+    let wakeLock = null;
+    let uiColorKey = "";
+    let sceneKey = "";
+    let hudKey = "";
+    const variationCache = [];
+
+    const pointer = {
+      active: false, x: .5, y: .5, rawX: 0, rawY: 0, fx: 0, fy: 0,
+      lastX: .5, lastY: .5, lastMove: performance.now(), speed: 0
+    };
+    const touches = new Map();
+    const drag = { active: false, id: null, x: 0, y: 0, pinch: 0, startDist: 0 };
+    const manual = { yaw: 0, elev: 18 * DEG, dist: 1100, fov: 52 * DEG, targetY: 105, lead: 90, river: .15 };
+
+    function resize() {
+      W = Math.max(1, stage.clientWidth);
+      H = Math.max(1, stage.clientHeight);
+      DPR = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      makePaperPattern();
+    }
+
+    function makePaperPattern() {
+      const tile = document.createElement("canvas");
+      tile.width = tile.height = 96;
+      const tc = tile.getContext("2d");
+      tc.clearRect(0, 0, 96, 96);
+      const rng = seeded(91723);
+      for (let i = 0; i < 330; i++) {
+        const a = rng() * .075;
+        tc.fillStyle = "rgba(45,38,28," + a + ")";
+        tc.fillRect(rng() * 96, rng() * 96, rng() < .9 ? .55 : 2.5 + rng() * 5, rng() < .9 ? .55 : .35);
+      }
+      for (let i = 0; i < 22; i++) {
+        tc.strokeStyle = "rgba(255,255,255," + (.025 + rng() * .035) + ")";
+        tc.lineWidth = .4;
+        tc.beginPath();
+        const y = rng() * 96;
+        tc.moveTo(0, y);
+        tc.bezierCurveTo(24, y + rng() * 4, 66, y - rng() * 4, 96, y + rng() * 2);
+        tc.stroke();
+      }
+      paperPattern = ctx.createPattern(tile, "repeat");
+    }
+
+    function frontOffset(x) {
+      return (noise1(x * .00065, 7) - .5) * 1250 + Math.sin(x * .0021 + 1.7) * 310;
+    }
+
+    function styleAt(x, z) {
+      const q = (z + frontOffset(x)) / SEGMENT;
+      const i = Math.floor(q);
+      const f = q - i;
+      const t = smooth((f - .68) / .29);
+      return {
+        a: mod(startStyle + i, PALETTES.length),
+        b: mod(startStyle + i + 1, PALETTES.length),
+        t, q, f
+      };
+    }
+
+    function styleColor(s, key) {
+      return mix3(PALETTES[s.a][key], PALETTES[s.b][key], s.t);
+    }
+
+    function styleWeight(s, index) {
+      return (s.a === index ? 1 - s.t : 0) + (s.b === index ? s.t : 0);
+    }
+
+    function riverX(z) {
+      return Math.sin(z * .00072 + .4) * 480 + Math.sin(z * .00191 + 2.1) * 175;
+    }
+
+    function riverWidth(z) {
+      return 245 + Math.sin(z * .00117 + .8) * 38 + Math.sin(z * .0031) * 20;
+    }
+
+    function routeX(z) {
+      return riverX(z) * .38 + Math.sin(z * .00029 + 1.2) * 120;
+    }
+
+    function resetWorld() {
+      journey = SEGMENT * .18;
+      elapsed = 0;
+      lastNow = performance.now();
+      previousPoemStep = -1;
+      variationCache.length = 0;
+      initBirds();
+      initParticles();
+      updateStyleUI(styleAt(routeX(journey), journey), true);
+    }
+
+    function initBirds() {
+      const count = coarse ? 22 : 30;
+      birds = [];
+      const rng = seeded(43091 + startStyle * 731);
+      for (let i = 0; i < count; i++) {
+        const r = Math.sqrt((i + .45) / count);
+        const a = i * GOLDEN_ANGLE;
+        const courage = Math.pow(rng(), 4.6);
+        const ox = Math.cos(a) * r * 300;
+        const oz = Math.sin(a) * r * 150 + courage * 470;
+        const oy = 112 + (i % 5) * 19 + rng() * 22 + (1 - r) * 30;
+        const p = v3(routeX(journey) + ox, oy, journey + oz);
+        birds.push({
+          index: i, anchor: v3(ox, oy, oz), pos: p, vel: v3(0, 0, WORLD_SPEED),
+          spring: .56 + rng() * .82, damping: 2.2 + rng() * 1.2,
+          phase: rng() * TAU, boundaryPhase: rng() * TAU, courage,
+          scale: .84 + rng() * .34, yaw: 0, flap: 0
+        });
+      }
+    }
+
+    function initParticles() {
+      const count = coarse ? 142 : 228;
+      const rng = seeded(9917 + startStyle * 883);
+      particles = Array.from({ length: count }, (_, i) => {
+        const z = journey - 2600 + rng() * 6900;
+        return {
+          id: i, x: routeX(z) + (rng() - .5) * 4400, y: 18 + rng() * 520, z,
+          size: .55 + rng() * 1.65, phase: rng() * TAU, drift: rng() * 2 - 1
+        };
+      });
+    }
+
+    function chooseFrom(pool, rng, prevYaw, nextYaw) {
+      let candidates = pool.map(i => CAMERA_LIBRARY[i]);
+      const strict = candidates.filter(c =>
+        (prevYaw == null || angleDelta(c.yaw, prevYaw) >= 30 * DEG) &&
+        (nextYaw == null || angleDelta(c.yaw, nextYaw) >= 30 * DEG)
+      );
+      if (strict.length) candidates = strict;
+      return candidates[Math.floor(rng() * candidates.length)];
+    }
+
+    function makeVariation(index) {
+      const rng = seeded(7703 + index * 11939);
+      const previous = index > 0 ? getVariation(index - 1)[5] : null;
+      const finale = CAMERA_LIBRARY[index % 2 === 0 ? 8 : 9];
+      const result = [];
+      result[0] = chooseFrom([0, 10, 15], rng, previous && previous.yaw, null);
+      result[1] = chooseFrom([1, 7, 13], rng, result[0].yaw, null);
+      result[2] = chooseFrom([3, 4, 6, 11, 12, 14], rng, result[1].yaw, null);
+      result[3] = chooseFrom([2, 5, 6, 11, 12, 14], rng, result[2].yaw, finale.yaw);
+      result[4] = finale;
+      result[5] = chooseFrom([0, 7, 10, 13, 15], rng, finale.yaw, null);
+      const highCircle = index % 2 === 0;
+      const tiers = [
+        { name: "NEAR", k: .82 }, { name: "MID", k: 1 }, { name: "FAR", k: 1.22 }
+      ];
+      return result.map((shot, slot) => {
+        const tier = tiers[Math.floor(rng() * tiers.length)];
+        const altitude = highCircle ? (slot === 2 || slot === 3 ? 2 : 6) : (slot === 0 || slot === 5 ? -2 : -4);
+        return {
+          ...shot,
+          yaw: shot.yaw,
+          elev: clamp(shot.elev + altitude * DEG, 2 * DEG, 83 * DEG),
+          dist: shot.dist * tier.k * (highCircle ? 1.04 : .95),
+          fov: shot.fov * DEG,
+          tier: tier.name,
+          variation: index + 1
+        };
+      });
+    }
+
+    function getVariation(index) {
+      if (!variationCache[index]) variationCache[index] = makeVariation(index);
+      return variationCache[index];
+    }
+
+    function shotAt(cycle, shot) {
+      if (shot < 6) return getVariation(cycle)[shot];
+      return getVariation(cycle + 1)[0];
+    }
+
+    function mixCamera(a, b, t) {
+      return {
+        ...a,
+        yaw: lerpAngle(a.yaw, b.yaw, t),
+        elev: lerp(a.elev, b.elev, t),
+        dist: lerp(a.dist, b.dist, t),
+        fov: lerp(a.fov, b.fov, t),
+        targetY: lerp(a.targetY, b.targetY, t),
+        lead: lerp(a.lead, b.lead, t),
+        river: lerp(a.river, b.river, t)
+      };
+    }
+
+    function autoCameraAt(time) {
+      const cycle = Math.floor(time / CYCLE_TIME);
+      const inside = mod(time, CYCLE_TIME);
+      const shotIndex = Math.floor(inside / SHOT_TIME);
+      const local = (inside - shotIndex * SHOT_TIME) / SHOT_TIME;
+      const a = shotAt(cycle, shotIndex);
+      const b = shotAt(cycle, shotIndex + 1);
+      const glide = local < .49 ? 0 : smooth((local - .49) / .51);
+      const c = mixCamera(a, b, glide);
+      c.display = glide > .78 ? b : a;
+      c.cycle = cycle;
+      return c;
+    }
+
+    function buildCamera(params) {
+      const route = routeX(journey + params.lead);
+      const river = riverX(journey + params.lead);
+      const focusX = lerp(route, river, params.river);
+      const horizontalRight = v3(Math.cos(params.yaw), 0, Math.sin(params.yaw));
+      const focusShift = mul(horizontalRight, 155);
+      const target = add(v3(focusX, params.targetY, journey + params.lead), focusShift);
+      const ce = Math.cos(params.elev);
+      const offset = v3(
+        Math.sin(params.yaw) * ce * params.dist,
+        Math.sin(params.elev) * params.dist,
+        -Math.cos(params.yaw) * ce * params.dist
+      );
+      const eye = add(target, offset);
+      const forward = norm(sub(target, eye));
+      const right = norm(cross(v3(0, 1, 0), forward));
+      const up = norm(cross(forward, right));
+      return {
+        ...params, eye, target, forward, right, up,
+        focal: .5 * W / Math.tan(params.fov * .5)
+      };
+    }
+
+    function getCamera(dt, now) {
+      let targetParams = autoCameraAt(elapsed);
+      if (observation.last + 2 < elapsed) {
+        observation.distance *= Math.exp(-dt * .48);
+        observation.elevation *= Math.exp(-dt * .48);
+      }
+      targetParams = {
+        ...targetParams,
+        dist: clamp(targetParams.dist + observation.distance, 440, 3300),
+        elev: clamp(targetParams.elev + observation.elevation, 2 * DEG, 84 * DEG)
+      };
+
+      if (!autoCamera) {
+        targetParams = {
+          ...targetParams,
+          yaw: manual.yaw, elev: manual.elev, dist: manual.dist, fov: manual.fov,
+          targetY: manual.targetY, lead: manual.lead, river: manual.river,
+          display: { id: "FREE", zh: "自主镜头", tier: manual.dist < 850 ? "NEAR" : manual.dist > 1600 ? "FAR" : "MID", variation: targetParams.cycle + 1 }
+        };
+      } else if (returnCamera) {
+        const r = smooth((now - returnStarted) / 3000);
+        targetParams = mixCamera(returnCamera, targetParams, r);
+        targetParams.display = autoCameraAt(elapsed).display;
+        if (r >= 1) returnCamera = null;
+      }
+      return buildCamera(targetParams);
+    }
+
+    function project(p) {
+      const rel = sub(p, currentCamera.eye);
+      const cx = dot(rel, currentCamera.right);
+      const cy = dot(rel, currentCamera.up);
+      const cz = dot(rel, currentCamera.forward);
+      if (cz < 6) return null;
+      const scale = currentCamera.focal / cz;
+      return { x: W * .5 + cx * scale, y: H * .5 - cy * scale, z: cz, scale };
+    }
+
+    function depthOf(p) {
+      return dot(sub(p, currentCamera.eye), currentCamera.forward);
+    }
+
+    function projectPoly(points) {
+      const out = [];
+      let depth = 0;
+      for (const point of points) {
+        const p = project(point);
+        if (!p) return null;
+        out.push(p);
+        depth += p.z;
+      }
+      out.depth = depth / points.length;
+      return out;
+    }
+
+    function pathPoly(poly) {
+      ctx.beginPath();
+      ctx.moveTo(poly[0].x, poly[0].y);
+      for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i].x, poly[i].y);
+      ctx.closePath();
+    }
+
+    function paintPoly(points, fill, stroke = null, alpha = 1, width = .7) {
+      const poly = projectPoly(points);
+      if (!poly) return false;
+      pathPoly(poly);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      return true;
+    }
+
+    function updateWind(dt) {
+      const now = performance.now();
+      const idleTouch = coarse && !pointer.active;
+      if (pointer.active && !idleTouch) {
+        const m = Math.hypot(pointer.rawX, pointer.rawY);
+        let tx = 0;
+        let ty = 0;
+        if (m > .085) {
+          const edge = clamp((m - .085) / .915, 0, 1);
+          const power = edge * edge * (1 + edge * 1.18);
+          tx = pointer.rawX / m * power;
+          ty = pointer.rawY / m * power;
+        }
+        const reverseCutoff = 7.5 / (1 + pointer.speed * .008);
+        const a = 1 - Math.exp(-dt * reverseCutoff);
+        pointer.fx = lerp(pointer.fx, tx, a);
+        pointer.fy = lerp(pointer.fy, ty, a);
+      } else {
+        const decay = Math.exp(-dt * .44);
+        pointer.fx *= decay;
+        pointer.fy *= decay;
+      }
+      pointer.speed *= Math.exp(-dt * 4.2);
+      if (now - pointer.lastMove > 500 && !coarse) pointer.speed *= .8;
+    }
+
+    function updateBirds(dt) {
+      const center = v3(routeX(journey), 0, journey);
+      const screenRight = currentCamera.right;
+      const flatForward = norm(v3(currentCamera.forward.x, 0, currentCamera.forward.z));
+      const windWorld = add(mul(screenRight, pointer.fx * 330), mul(flatForward, -pointer.fy * 240));
+      const accelerations = birds.map(() => v3());
+
+      for (let i = 0; i < birds.length; i++) {
+        const b = birds[i];
+        const breath = Math.sin(elapsed * .77 + b.boundaryPhase) * 16;
+        const goal = add(center, b.anchor);
+        goal.x += windWorld.x * (.38 + b.courage * 1.65);
+        goal.z += windWorld.z * (.38 + b.courage * 1.65);
+        goal.y = b.anchor.y - pointer.fy * (62 + b.courage * 115) + Math.sin(elapsed * 1.16 + b.phase) * 8;
+        goal.z += Math.sin(elapsed * .43 + b.phase) * (7 + b.courage * 18);
+        const spring = mul(sub(goal, b.pos), b.spring);
+        accelerations[i] = add(accelerations[i], spring);
+
+        const screen = project(b.pos);
+        if (screen) {
+          const left = W * (.055 + Math.sin(elapsed * .53 + b.boundaryPhase) * .008);
+          const right = W * (.60 + breath / Math.max(W, 1));
+          if (screen.x < left) {
+            const k = smooth((left - screen.x) / (W * .18));
+            accelerations[i] = add(accelerations[i], mul(screenRight, 190 * k * k));
+          } else if (screen.x > right) {
+            const k = smooth((screen.x - right) / (W * .28));
+            accelerations[i] = add(accelerations[i], mul(screenRight, -190 * k * k));
+          }
+        }
+      }
+
+      const separationRadius = 64;
+      for (let i = 0; i < birds.length; i++) {
+        for (let j = i + 1; j < birds.length; j++) {
+          const d = sub(birds[i].pos, birds[j].pos);
+          const d2 = dot(d, d);
+          if (d2 > 1 && d2 < separationRadius * separationRadius) {
+            const distance = Math.sqrt(d2);
+            const falloff = Math.pow(1 - distance / separationRadius, 2);
+            const force = Math.min(84, 1550 / (d2 + 24)) * falloff;
+            const push = mul(d, force / distance);
+            accelerations[i] = add(accelerations[i], push);
+            accelerations[j] = sub(accelerations[j], push);
+          }
+        }
+      }
+
+      for (let i = 0; i < birds.length; i++) {
+        const b = birds[i];
+        let a = accelerations[i];
+        const am = len(a);
+        if (am > 210) a = mul(a, 210 / am);
+        b.vel = add(b.vel, mul(a, dt));
+        const damping = Math.exp(-b.damping * dt);
+        b.vel.x *= damping;
+        b.vel.y *= damping;
+        b.vel.z = WORLD_SPEED + (b.vel.z - WORLD_SPEED) * damping;
+        b.pos = add(b.pos, mul(b.vel, dt));
+        b.yaw = Math.atan2(b.vel.x, Math.max(12, b.vel.z));
+        b.flap = Math.sin(elapsed * (4.55 + b.spring * .56) + b.phase);
+      }
+    }
+
+    function updateParticles(dt) {
+      for (const p of particles) {
+        p.x += (Math.sin(elapsed * .39 + p.phase) * 4 + pointer.fx * 31 + p.drift * 2.4) * dt;
+        p.y += Math.sin(elapsed * .57 + p.phase) * 2.4 * dt;
+        p.z += pointer.fy * 12 * dt;
+        if (p.z < journey - 2900) {
+          p.z += 7100 + hash(p.id + Math.floor(journey / 700), 12) * 900;
+          p.x = routeX(p.z) + (hash(p.id, Math.floor(journey)) - .5) * 4400;
+          p.y = 18 + hash(p.id, 88 + Math.floor(journey / 500)) * 520;
+        }
+      }
+    }
+
+    function renderSky(s) {
+      const top = styleColor(s, "skyTop");
+      const horizon = styleColor(s, "skyHorizon");
+      const ground = styleColor(s, "ground");
+      const gradient = ctx.createLinearGradient(0, 0, 0, H);
+      gradient.addColorStop(0, rgba(top));
+      gradient.addColorStop(.47, rgba(horizon));
+      gradient.addColorStop(1, rgba(shade(ground, -12)));
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, W, H);
+
+      const night = styleWeight(s, 4);
+      if (night > .015) {
+        ctx.save();
+        for (let i = 0; i < 92; i++) {
+          const x = fract(hash(i, 31) + currentCamera.yaw / TAU * .08) * W;
+          const y = hash(i, 33) * H * .51;
+          const twinkle = .35 + .65 * Math.pow(.5 + .5 * Math.sin(elapsed * (.45 + hash(i, 34)) + i), 2);
+          ctx.globalAlpha = night * twinkle * (.28 + hash(i, 35) * .55);
+          ctx.fillStyle = "#f4f0da";
+          const r = .45 + hash(i, 36) * 1.25;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, TAU);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      const pair = [s.a, s.b];
+      const dawnPair = pair.includes(4) && (pair.includes(0) || pair.includes(2)) || pair.includes(2) && pair.includes(3);
+      const glowAmount = dawnPair ? Math.sin(Math.PI * s.t) : 0;
+      if (glowAmount > .01 && currentCamera.elev < 67 * DEG) {
+        const side = hash(Math.floor(s.q), 52) > .5 ? .72 : .24;
+        const gx = W * side;
+        const gy = H * (.43 + Math.sin(currentCamera.yaw) * .035);
+        const glow = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(W, H) * .34);
+        glow.addColorStop(0, "rgba(255,201,133," + (.21 * glowAmount) + ")");
+        glow.addColorStop(.24, "rgba(249,177,123," + (.11 * glowAmount) + ")");
+        glow.addColorStop(1, "rgba(247,181,130,0)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.save();
+        ctx.translate(gx, H * .76);
+        ctx.scale(1, .28);
+        const pool = ctx.createRadialGradient(0, 0, 0, 0, 0, W * .34);
+        pool.addColorStop(0, "rgba(255,199,121," + (.13 * glowAmount) + ")");
+        pool.addColorStop(1, "rgba(255,199,121,0)");
+        ctx.fillStyle = pool;
+        ctx.beginPath();
+        ctx.arc(0, 0, W * .34, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function renderGround() {
+      const cell = 560;
+      const rx = 3400 + currentCamera.dist * .82;
+      const rz = 4200 + currentCamera.dist * 1.05;
+      const cx = currentCamera.target.x;
+      const cz = journey + currentCamera.lead;
+      const minX = Math.floor((cx - rx) / cell);
+      const maxX = Math.ceil((cx + rx) / cell);
+      const minZ = Math.floor((cz - rz) / cell);
+      const maxZ = Math.ceil((cz + rz) / cell);
+      const cells = [];
+      for (let iz = minZ; iz <= maxZ; iz++) {
+        for (let ix = minX; ix <= maxX; ix++) {
+          const x0 = ix * cell;
+          const z0 = iz * cell;
+          const pts = [v3(x0, 0, z0), v3(x0 + cell, 0, z0), v3(x0 + cell, 0, z0 + cell), v3(x0, 0, z0 + cell)];
+          const poly = projectPoly(pts);
+          if (!poly) continue;
+          if (poly.every(p => p.x < -120 || p.x > W + 120 || p.y < -120 || p.y > H + 120)) continue;
+          cells.push({ ix, iz, pts, poly, depth: poly.depth });
+        }
+      }
+      cells.sort((a, b) => b.depth - a.depth);
+      for (const c of cells) {
+        const s = styleAt(c.ix * cell + cell * .5, c.iz * cell + cell * .5);
+        const key = hash2(c.ix, c.iz, 2) > .47 ? "fieldA" : "fieldB";
+        let color = styleColor(s, key);
+        color = shade(color, (hash2(c.ix, c.iz, 3) - .5) * 15);
+        pathPoly(c.poly);
+        ctx.fillStyle = rgba(color);
+        ctx.fill();
+        ctx.strokeStyle = rgba(shade(color, -28), .27);
+        ctx.lineWidth = .65;
+        ctx.stroke();
+
+        if (hash2(c.ix, c.iz, 5) > .44) {
+          const split = .26 + hash2(c.ix, c.iz, 6) * .48;
+          const a = v3(c.pts[0].x, .25, lerp(c.pts[0].z, c.pts[3].z, split));
+          const b = v3(c.pts[1].x, .25, lerp(c.pts[1].z, c.pts[2].z, split));
+          const pa = project(a), pb = project(b);
+          if (pa && pb) {
+            ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y);
+            ctx.strokeStyle = rgba(shade(color, 24), .22); ctx.lineWidth = .55; ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function renderRiver() {
+      const strips = [];
+      const start = journey - 4700 - currentCamera.dist;
+      const end = journey + 5200 + currentCamera.dist;
+      const step = 150;
+      for (let z = Math.floor(start / step) * step; z < end; z += step) {
+        const x0 = riverX(z), x1 = riverX(z + step);
+        const w0 = riverWidth(z), w1 = riverWidth(z + step);
+        const pts = [
+          v3(x0 - w0, .8, z), v3(x0 + w0, .8, z),
+          v3(x1 + w1, .8, z + step), v3(x1 - w1, .8, z + step)
+        ];
+        const poly = projectPoly(pts);
+        if (poly) strips.push({ z, pts, poly, depth: poly.depth });
+      }
+      strips.sort((a, b) => b.depth - a.depth);
+      for (const strip of strips) {
+        const s = styleAt(riverX(strip.z), strip.z);
+        const river = styleColor(s, "river");
+        pathPoly(strip.poly);
+        ctx.fillStyle = rgba(river);
+        ctx.fill();
+        ctx.strokeStyle = rgba(styleColor(s, "riverEdge"), .62);
+        ctx.lineWidth = .75;
+        ctx.stroke();
+        const night = styleWeight(s, 4);
+        if (night < .97) {
+          const z = strip.z;
+          const x0 = riverX(z), x1 = riverX(z + 150);
+          const glint = [
+            v3(x0 - 7, 1.1, z), v3(x0 + 7, 1.1, z),
+            v3(x1 + 7, 1.1, z + 150), v3(x1 - 7, 1.1, z + 150)
+          ];
+          paintPoly(glint, rgba(shade(river, 64)), null, (1 - night) * .17);
+        }
+      }
+    }
+
+    function face(points, color, stroke, alpha = 1) {
+      const poly = projectPoly(points);
+      if (!poly) return null;
+      return { poly, color, stroke, alpha, depth: poly.depth };
+    }
+
+    function drawFaces(faces) {
+      faces.filter(Boolean).sort((a, b) => b.depth - a.depth).forEach(f => {
+        pathPoly(f.poly);
+        ctx.globalAlpha = f.alpha;
+        ctx.fillStyle = f.color;
+        ctx.fill();
+        if (f.stroke) {
+          ctx.strokeStyle = f.stroke;
+          ctx.lineWidth = .65;
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      });
+    }
+
+    function prismFaces(x, z, w, d, y0, y1, color, outline) {
+      const b0 = v3(x - w / 2, y0, z - d / 2), b1 = v3(x + w / 2, y0, z - d / 2);
+      const b2 = v3(x + w / 2, y0, z + d / 2), b3 = v3(x - w / 2, y0, z + d / 2);
+      const t0 = v3(b0.x, y1, b0.z), t1 = v3(b1.x, y1, b1.z), t2 = v3(b2.x, y1, b2.z), t3 = v3(b3.x, y1, b3.z);
+      return [
+        face([b0, b1, t1, t0], rgba(shade(color, -10)), outline),
+        face([b1, b2, t2, t1], rgba(shade(color, -22)), outline),
+        face([b2, b3, t3, t2], rgba(shade(color, 3)), outline),
+        face([b3, b0, t0, t3], rgba(shade(color, -4)), outline),
+        face([t0, t1, t2, t3], rgba(shade(color, 7)), outline)
+      ];
+    }
+
+    function drawWindow(points, night, lit, seedValue) {
+      if (night < .03) return;
+      const poly = projectPoly(points);
+      if (!poly) return;
+      pathPoly(poly);
+      ctx.globalAlpha = night * (lit ? .92 : .24);
+      ctx.fillStyle = lit ? rgba([245, 190 + hash(seedValue, 9) * 28, 100]) : rgba([45, 55, 62]);
+      if (lit) {
+        ctx.shadowColor = "rgba(255,187,88,.85)";
+        ctx.shadowBlur = 7;
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+    }
+
+    function drawBuilding(o) {
+      const s = styleAt(o.x, o.z);
+      const wall = styleColor(s, "wall");
+      const roof = styleColor(s, "roof");
+      const outline = rgba(styleColor(s, "birdDark"), .5);
+      const snow = styleWeight(s, 3);
+      const night = styleWeight(s, 4);
+      const x = o.x, z = o.z, w = o.w, d = o.d, h = o.h;
+      const roofH = Math.min(w * .42, 34 + h * .12);
+      const b0 = v3(x - w / 2, 0, z - d / 2), b1 = v3(x + w / 2, 0, z - d / 2);
+      const b2 = v3(x + w / 2, 0, z + d / 2), b3 = v3(x - w / 2, 0, z + d / 2);
+      const e0 = v3(b0.x, h, b0.z), e1 = v3(b1.x, h, b1.z), e2 = v3(b2.x, h, b2.z), e3 = v3(b3.x, h, b3.z);
+      const r0 = v3(x, h + roofH, z - d / 2), r1 = v3(x, h + roofH, z + d / 2);
+      const faces = [
+        face([b0, b1, e1, e0], rgba(shade(wall, -4)), outline),
+        face([b1, b2, e2, e1], rgba(shade(wall, -18)), outline),
+        face([b2, b3, e3, e2], rgba(shade(wall, 4)), outline),
+        face([b3, b0, e0, e3], rgba(shade(wall, -10)), outline),
+        face([e0, r0, r1, e3], rgba(shade(roof, 4)), outline),
+        face([r0, e1, e2, r1], rgba(shade(roof, -13)), outline),
+        face([e0, e1, r0], rgba(shade(wall, 2)), outline),
+        face([e3, r1, e2], rgba(shade(wall, -4)), outline)
+      ];
+      drawFaces(faces);
+
+      if (snow > .015) {
+        paintPoly([add(e0, v3(0, 1.4, 0)), add(r0, v3(0, 1.4, 0)), add(r1, v3(0, 1.4, 0)), add(e3, v3(0, 1.4, 0))], rgba([231, 236, 234]), null, snow * .92);
+        paintPoly([add(r0, v3(0, 1.4, 0)), add(e1, v3(0, 1.4, 0)), add(e2, v3(0, 1.4, 0)), add(r1, v3(0, 1.4, 0))], rgba([211, 222, 224]), null, snow * .92);
+      }
+
+      if (o.chimney) {
+        const chimneyColor = shade(roof, -20);
+        drawFaces(prismFaces(x + w * .22, z + d * .08, w * .12, d * .18, h + roofH * .42, h + roofH + 18, chimneyColor, outline));
+        const cp = project(v3(x + w * .22, h + roofH + 22, z + d * .08));
+        if (cp && styleWeight(s, 4) < .8) {
+          ctx.globalAlpha = .08 + styleWeight(s, 1) * .08;
+          ctx.fillStyle = rgba(styleColor(s, "fog"));
+          for (let k = 0; k < 3; k++) {
+            ctx.beginPath();
+            ctx.ellipse(cp.x + Math.sin(elapsed * .25 + o.seed + k) * 5 + k * 4, cp.y - 8 - k * 8, 5 + k * 3, 3 + k * 2, -.3, 0, TAU);
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      const lit = hash(o.seed, 18) > .34;
+      const wh = h * .15, wy = h * .48, ww = w * .15;
+      drawWindow([
+        v3(x - ww, wy - wh, z - d / 2 - .5), v3(x + ww, wy - wh, z - d / 2 - .5),
+        v3(x + ww, wy + wh, z - d / 2 - .5), v3(x - ww, wy + wh, z - d / 2 - .5)
+      ], night, lit, o.seed);
+      drawWindow([
+        v3(x + w / 2 + .5, wy - wh, z - ww), v3(x + w / 2 + .5, wy - wh, z + ww),
+        v3(x + w / 2 + .5, wy + wh, z + ww), v3(x + w / 2 + .5, wy + wh, z - ww)
+      ], night, !lit || hash(o.seed, 23) > .55, o.seed + 2);
+    }
+
+    function drawChurch(o) {
+      drawBuilding({ ...o, h: o.h * .68, chimney: false, church: false });
+      const s = styleAt(o.x, o.z);
+      const wall = styleColor(s, "wall");
+      const roof = styleColor(s, "roof");
+      const outline = rgba(styleColor(s, "birdDark"), .55);
+      const towerH = o.h * 1.55;
+      drawFaces(prismFaces(o.x, o.z, o.w * .48, o.d * .48, 0, towerH, shade(wall, -4), outline));
+      const baseY = towerH;
+      const hw = o.w * .33;
+      const p0 = v3(o.x - hw, baseY, o.z - hw), p1 = v3(o.x + hw, baseY, o.z - hw);
+      const p2 = v3(o.x + hw, baseY, o.z + hw), p3 = v3(o.x - hw, baseY, o.z + hw);
+      const tip = v3(o.x, baseY + o.h * 1.05, o.z);
+      drawFaces([
+        face([p0, p1, tip], rgba(shade(roof, -2)), outline),
+        face([p1, p2, tip], rgba(shade(roof, -18)), outline),
+        face([p2, p3, tip], rgba(shade(roof, 3)), outline),
+        face([p3, p0, tip], rgba(shade(roof, -10)), outline)
+      ]);
+    }
+
+    function drawTree(o) {
+      const s = styleAt(o.x, o.z);
+      const snow = styleWeight(s, 3);
+      const baseColor = styleColor(s, "tree");
+      const p0 = project(v3(o.x, 0, o.z));
+      const p1 = project(v3(o.x, o.h, o.z));
+      if (!p0 || !p1) return;
+      const screenScale = Math.max(.18, (p0.scale + p1.scale) * .5);
+      const trunkW = Math.max(.55, o.r * .11 * screenScale);
+      ctx.strokeStyle = rgba(shade(baseColor, -47), .72);
+      ctx.lineWidth = trunkW;
+      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+
+      const decid = 1 - smooth(snow * 1.25);
+      if (decid > .01) {
+        const rr = o.r * screenScale;
+        ctx.globalAlpha = decid;
+        ctx.fillStyle = rgba(baseColor);
+        ctx.strokeStyle = rgba(shade(baseColor, -27), .42);
+        ctx.lineWidth = .7;
+        ctx.beginPath();
+        for (let i = 0; i < 11; i++) {
+          const a = i / 11 * TAU;
+          const wobble = .76 + hash(o.seed, i + 31) * .35;
+          const x = p1.x + Math.cos(a) * rr * wobble;
+          const y = p1.y + Math.sin(a) * rr * .82 * wobble + rr * .14;
+          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      if (snow > .01) {
+        const right = currentCamera.right;
+        const levels = 3;
+        for (let i = 0; i < levels; i++) {
+          const y = o.h * (.28 + i * .22);
+          const width = o.r * (1.42 - i * .28);
+          const pts = [
+            add(v3(o.x, y + o.h * .42, o.z), mul(right, 0)),
+            add(v3(o.x, y, o.z), mul(right, -width)),
+            add(v3(o.x, y, o.z), mul(right, width))
+          ];
+          paintPoly(pts, rgba(shade(baseColor, -8 + i * 4)), rgba(shade(baseColor, -34), .36), snow);
+          const cap = [
+            add(v3(o.x, y + o.h * .42, o.z), mul(right, 0)),
+            add(v3(o.x, y + o.h * .04, o.z), mul(right, -width * .72)),
+            add(v3(o.x, y + o.h * .04, o.z), mul(right, width * .72))
+          ];
+          paintPoly(cap, rgba([225, 232, 231]), null, snow * .72);
+        }
+      }
+    }
+
+    function buildObjects() {
+      const queue = [];
+      const start = Math.floor((journey - 4200 - currentCamera.dist) / 620);
+      const end = Math.ceil((journey + 5000 + currentCamera.dist) / 620);
+
+      for (let k = start; k <= end; k++) {
+        const z0 = k * 620;
+        if (hash(k, 40) > .46) {
+          const bank = hash(k, 41) > .5 ? 1 : -1;
+          const count = 5 + Math.floor(hash(k, 42) * 5);
+          const spacing = 54 + hash(k, 43) * 15;
+          for (let j = 0; j < count; j++) {
+            const z = z0 + 80 + j * spacing;
+            const x = riverX(z) + bank * (riverWidth(z) + 50 + (j % 2) * 9);
+            const o = {
+              x, z, w: 59 + hash2(k, j, 44) * 25, d: spacing + 3,
+              h: 58 + hash2(k, j, 45) * 72, seed: k * 17 + j,
+              chimney: hash2(k, j, 46) > .36
+            };
+            const d = depthOf(v3(x, o.h * .5, z));
+            if (d > 8) queue.push({ d, layer: 3, draw: () => drawBuilding(o) });
+          }
+          if (hash(k, 47) > .925) {
+            const z = z0 + 330;
+            const x = riverX(z) - bank * (riverWidth(z) + 190);
+            const o = { x, z, w: 92, d: 105, h: 126 + hash(k, 48) * 42, seed: k * 31, chimney: false };
+            const d = depthOf(v3(x, o.h, z));
+            if (d > 8) queue.push({ d, layer: 4, draw: () => drawChurch(o) });
+          }
+        }
+
+        for (let j = 0; j < 3; j++) {
+          if (hash2(k, j, 54) < .48) continue;
+          const side = hash2(k, j, 55) > .5 ? 1 : -1;
+          const z = z0 + hash2(k, j, 56) * 620;
+          const x = riverX(z) + side * (900 + hash2(k, j, 57) * 1250);
+          const o = {
+            x, z, w: 60 + hash2(k, j, 58) * 40, d: 66 + hash2(k, j, 59) * 38,
+            h: 48 + hash2(k, j, 60) * 62, seed: k * 101 + j, chimney: hash2(k, j, 61) > .5
+          };
+          const d = depthOf(v3(x, o.h * .5, z));
+          if (d > 8) queue.push({ d, layer: 3, draw: () => drawBuilding(o) });
+        }
+      }
+
+      const grid = 470;
+      const gx0 = Math.floor((currentCamera.target.x - 3600 - currentCamera.dist * .4) / grid);
+      const gx1 = Math.ceil((currentCamera.target.x + 3600 + currentCamera.dist * .4) / grid);
+      const gz0 = Math.floor((journey - 3800 - currentCamera.dist) / grid);
+      const gz1 = Math.ceil((journey + 4700 + currentCamera.dist) / grid);
+      for (let gz = gz0; gz <= gz1; gz++) {
+        for (let gx = gx0; gx <= gx1; gx++) {
+          if (hash2(gx, gz, 67) < .64) continue;
+          const x = gx * grid + (hash2(gx, gz, 68) - .5) * grid * .72;
+          const z = gz * grid + (hash2(gx, gz, 69) - .5) * grid * .72;
+          if (Math.abs(x - riverX(z)) < riverWidth(z) + 260) continue;
+          const o = { x, z, h: 65 + hash2(gx, gz, 70) * 85, r: 26 + hash2(gx, gz, 71) * 28, seed: gx * 131 + gz };
+          const d = depthOf(v3(x, o.h * .5, z));
+          if (d > 8) queue.push({ d, layer: 2, draw: () => drawTree(o) });
+        }
+      }
+      return queue;
+    }
+
+    function birdLocal(b, x, y, z) {
+      const forward = v3(Math.sin(b.yaw), 0, Math.cos(b.yaw));
+      const right = v3(Math.cos(b.yaw), 0, -Math.sin(b.yaw));
+      return add(b.pos, add(mul(right, x), add(v3(0, y, 0), mul(forward, z))));
+    }
+
+    function drawBird(b) {
+      const s = styleAt(b.pos.x, b.pos.z);
+      const light = styleColor(s, "birdLight");
+      const mid = styleColor(s, "birdMid");
+      const dark = styleColor(s, "birdDark");
+      const sc = 1.15 * b.scale;
+      const span = 31 * sc;
+      const flap = b.flap * 12 * sc;
+      const P = (x, y, z) => birdLocal(b, x * sc, y * sc, z * sc);
+      const faces = [
+        face([P(0, 3, 19), P(-5, 0, 3), P(0, -4, -10)], rgba(light), rgba(dark, .46)),
+        face([P(0, 3, 19), P(0, -4, -10), P(5, 0, 3)], rgba(shade(light, -10)), rgba(dark, .46)),
+        face([P(-5, 0, 3), P(-span / sc, flap / sc, -3), P(-9, 0, -9)], rgba(light), rgba(dark, .5)),
+        face([P(-span / sc, flap / sc, -3), P(-17, flap * .42 / sc, -13), P(-9, 0, -9)], rgba(mid), rgba(dark, .48)),
+        face([P(5, 0, 3), P(9, 0, -9), P(span / sc, flap / sc, -3)], rgba(shade(light, -5)), rgba(dark, .5)),
+        face([P(span / sc, flap / sc, -3), P(9, 0, -9), P(17, flap * .42 / sc, -13)], rgba(shade(mid, -7)), rgba(dark, .48)),
+        face([P(0, -4, -8), P(-11, 1, -22), P(-2, 1, -17)], rgba(mid), rgba(dark, .5)),
+        face([P(0, -4, -8), P(2, 1, -17), P(11, 1, -22)], rgba(shade(mid, -9)), rgba(dark, .5)),
+        face([P(0, 3, 19), P(-3, 5, 12), P(3, 5, 12)], rgba(shade(light, 7)), rgba(dark, .42))
+      ];
+      drawFaces(faces);
+
+      const keelA = project(P(0, -4, -10));
+      const keelB = project(P(0, 3, 19));
+      if (keelA && keelB) {
+        ctx.beginPath(); ctx.moveTo(keelA.x, keelA.y); ctx.lineTo(keelB.x, keelB.y);
+        ctx.strokeStyle = rgba(dark, .35); ctx.lineWidth = .55; ctx.stroke();
+      }
+    }
+
+    function drawBirdShadow(b) {
+      const p = project(v3(b.pos.x, 1.5, b.pos.z));
+      if (!p) return;
+      const side = project(add(v3(b.pos.x, 1.5, b.pos.z), mul(currentCamera.right, 28 * b.scale)));
+      if (!side) return;
+      const r = Math.max(1.8, Math.hypot(side.x - p.x, side.y - p.y));
+      const alpha = clamp(.19 * (1 - b.pos.y / 680), .025, .16);
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(Math.atan2(side.y - p.y, side.x - p.x));
+      ctx.scale(1, .28);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+      g.addColorStop(0, "rgba(35,32,28," + alpha + ")");
+      g.addColorStop(1, "rgba(35,32,28,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+
+    function particleType(index) {
+      if (index === 2) return "petal";
+      if (index === 3) return "snow";
+      if (index === 4) return "firefly";
+      return "dust";
+    }
+
+    function drawParticleKind(p, kind, alpha) {
+      const pp = project(v3(p.x, p.y, p.z));
+      if (!pp || pp.x < -30 || pp.x > W + 30 || pp.y < -30 || pp.y > H + 30) return;
+      const size = clamp(p.size * pp.scale * 4.6, .55, 6.2);
+      ctx.save();
+      ctx.translate(pp.x, pp.y);
+      ctx.rotate(elapsed * (.22 + p.drift * .08) + p.phase);
+      ctx.globalAlpha = alpha;
+      if (kind === "snow") {
+        ctx.fillStyle = "#f5f7f3";
+        ctx.beginPath(); ctx.arc(0, 0, size * .62, 0, TAU); ctx.fill();
+        if (size > 2.2) {
+          ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.lineWidth = .55;
+          ctx.beginPath(); ctx.moveTo(-size, 0); ctx.lineTo(size, 0); ctx.moveTo(0, -size); ctx.lineTo(0, size); ctx.stroke();
+        }
+      } else if (kind === "petal") {
+        ctx.fillStyle = "rgba(218,137,144,.9)";
+        ctx.beginPath(); ctx.ellipse(0, 0, size * 1.2, size * .48, .3, 0, TAU); ctx.fill();
+      } else if (kind === "firefly") {
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 3.2);
+        g.addColorStop(0, "rgba(250,230,127,.95)");
+        g.addColorStop(.25, "rgba(238,208,99,.45)");
+        g.addColorStop(1, "rgba(238,208,99,0)");
+        ctx.globalAlpha *= .55 + .45 * Math.sin(elapsed * 1.3 + p.phase) ** 2;
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, size * 3.2, 0, TAU); ctx.fill();
+      } else {
+        ctx.strokeStyle = "rgba(240,229,204,.76)";
+        ctx.lineWidth = Math.max(.45, size * .22);
+        ctx.beginPath(); ctx.moveTo(-size * 1.4, 0); ctx.quadraticCurveTo(0, size * .7, size * 1.4, 0); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function addParticles(queue) {
+      for (const p of particles) {
+        const d = depthOf(v3(p.x, p.y, p.z));
+        if (d < 7) continue;
+        const s = styleAt(p.x, p.z);
+        const kindA = particleType(s.a);
+        const kindB = particleType(s.b);
+        queue.push({
+          d, layer: 5,
+          draw: () => {
+            if (kindA === kindB) drawParticleKind(p, kindA, .48 + .34 * p.size / 2);
+            else {
+              drawParticleKind(p, kindA, (1 - s.t) * .72);
+              drawParticleKind(p, kindB, s.t * .72);
+            }
+          }
+        });
+      }
+    }
+
+    function renderWorld(s) {
+      renderSky(s);
+      renderGround();
+      renderRiver();
+      const queue = buildObjects();
+      addParticles(queue);
+      for (const b of birds) {
+        const shadowDepth = depthOf(v3(b.pos.x, 1, b.pos.z));
+        const birdDepth = depthOf(b.pos);
+        if (shadowDepth > 7) queue.push({ d: shadowDepth, layer: 1, draw: () => drawBirdShadow(b) });
+        if (birdDepth > 7) queue.push({ d: birdDepth, layer: 7, draw: () => drawBird(b) });
+      }
+      queue.sort((a, b) => b.d - a.d || a.layer - b.layer);
+      queue.forEach(item => item.draw());
+
+      const mist = styleWeight(s, 1);
+      const snowHaze = styleWeight(s, 3) * .2;
+      if (mist + snowHaze > .01) {
+        const fog = styleColor(s, "fog");
+        const veilGradient = ctx.createLinearGradient(0, H * .22, 0, H);
+        veilGradient.addColorStop(0, rgba(fog, 0));
+        veilGradient.addColorStop(.58, rgba(fog, mist * .09 + snowHaze * .04));
+        veilGradient.addColorStop(1, rgba(fog, mist * .18 + snowHaze * .08));
+        ctx.fillStyle = veilGradient;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      if (paperPattern) {
+        ctx.save();
+        ctx.globalCompositeOperation = "multiply";
+        ctx.globalAlpha = .075;
+        ctx.fillStyle = paperPattern;
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
+      }
+    }
+
+    function updateStyleUI(s, immediate = false) {
+      const ui = styleColor(s, "ui");
+      const colorKey = ui.map(v => Math.round(v)).join(",");
+      if (colorKey !== uiColorKey) {
+        uiColorKey = colorKey;
+        document.documentElement.style.setProperty("--ink", colorKey);
+      }
+      const dominant = s.t > .5 ? PALETTES[s.b] : PALETTES[s.a];
+      if (dominant.id !== sceneKey) {
+        sceneKey = dominant.id;
+        sceneName.textContent = dominant.zh + " · " + dominant.id;
+        sceneName.style.transitionDuration = immediate ? "0s" : "1.2s";
+      }
+    }
+
+    function setLetters(el, line, offset) {
+      el.textContent = "";
+      Array.from(line).forEach((char, i) => {
+        const span = document.createElement("span");
+        span.textContent = char === " " ? "\u00a0" : char;
+        span.style.setProperty("--i", i + offset);
+        el.appendChild(span);
+      });
+    }
+
+    function updatePoem() {
+      if (!started || !poemEnabled) return;
+      const poemTime = elapsed + 2;
+      const step = Math.floor(poemTime / 13.5);
+      const phase = mod(poemTime, 13.5);
+      if (step !== previousPoemStep) {
+        previousPoemStep = step;
+        const epoch = Math.floor(step / POEMS.length);
+        const stride = [1, 5, 7, 11][epoch % 4];
+        const index = mod(step * stride + epoch * 3, POEMS.length);
+        setLetters(poemA, POEMS[index][0], 0);
+        setLetters(poemB, POEMS[index][1], POEMS[index][0].length + 3);
+        poemEl.classList.remove("resting");
+        poemEl.classList.remove("shown");
+        void poemEl.offsetWidth;
+        poemEl.classList.add("shown");
+      }
+      poemEl.classList.toggle("resting", phase > 10.9);
+    }
+
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.master = null;
+        this.musicBus = null;
+        this.windGain = null;
+        this.riverGain = null;
+        this.wingGain = null;
+        this.buffers = [];
+        this.index = 0;
+        this.plays = 0;
+        this.enabled = true;
+        this.timer = null;
+      }
+
+      wavDataUri(track) {
+        const sampleRate = 6000;
+        const duration = 17.6;
+        const samples = Math.floor(sampleRate * duration);
+        const bytes = new Uint8Array(44 + samples * 2);
+        const view = new DataView(bytes.buffer);
+        const text = (at, value) => { for (let i = 0; i < value.length; i++) bytes[at + i] = value.charCodeAt(i); };
+        text(0, "RIFF"); view.setUint32(4, 36 + samples * 2, true); text(8, "WAVE");
+        text(12, "fmt "); view.setUint32(16, 16, true); view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true); view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true); view.setUint16(34, 16, true); text(36, "data"); view.setUint32(40, samples * 2, true);
+        const roots = [45, 41];
+        const scales = track === 0 ? [0, 2, 4, 7, 9, 12, 7, 4] : [0, 3, 5, 7, 10, 12, 15, 10];
+        const pattern = track === 0 ? [0, 4, 2, 6, 1, 5, 3, 7, 2, 4, 6, 5] : [0, 3, 1, 5, 2, 7, 4, 6, 5, 2, 3, 1];
+        const beatLength = track === 0 ? .72 : .81;
+        for (let i = 0; i < samples; i++) {
+          const t = i / sampleRate;
+          const beat = t / beatLength;
+          const step = Math.floor(beat * 2);
+          const local = fract(beat * 2);
+          const midi = roots[track] + scales[pattern[step % pattern.length] % scales.length];
+          const f = 440 * Math.pow(2, (midi - 69) / 12);
+          const rootF = 440 * Math.pow(2, (roots[track] - 69) / 12);
+          const env = Math.exp(-local * 4.7) * (.72 + .28 * Math.sin(Math.PI * local));
+          const pluck = (Math.sin(TAU * f * t) + .38 * Math.sin(TAU * f * 2.01 * t)) * env;
+          const drone = Math.sin(TAU * rootF * t) * .42 + Math.sin(TAU * rootF * .5 * t + .8) * .22;
+          const air = Math.sin(TAU * (f * .251) * t + Math.sin(t * .31)) * .13;
+          const fade = Math.min(1, t / 1.2, (duration - t) / .9);
+          const value = clamp((pluck * .25 + drone * .28 + air * .22) * fade, -.92, .92);
+          view.setInt16(44 + i * 2, value * 32767, true);
+        }
+        let binary = "";
+        const chunk = 0x6000;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(bytes.length, i + chunk)));
+        }
+        return "data:audio/wav;base64," + btoa(binary);
+      }
+
+      noiseBuffer(seconds = 3) {
+        const buffer = this.ctx.createBuffer(1, this.ctx.sampleRate * seconds, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let last = 0;
+        for (let i = 0; i < data.length; i++) {
+          const white = Math.random() * 2 - 1;
+          last = last * .84 + white * .16;
+          data[i] = last;
+        }
+        return buffer;
+      }
+
+      async start() {
+        if (this.ctx) {
+          await this.ctx.resume();
+          return;
+        }
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        this.ctx = new AC();
+        this.master = this.ctx.createGain();
+        this.master.gain.setValueAtTime(.0001, this.ctx.currentTime);
+        this.master.gain.exponentialRampToValueAtTime(.82, this.ctx.currentTime + 5);
+        this.master.connect(this.ctx.destination);
+
+        this.musicBus = this.ctx.createGain();
+        this.musicBus.gain.value = .34;
+        this.musicBus.connect(this.master);
+
+        const windSource = this.ctx.createBufferSource();
+        windSource.buffer = this.noiseBuffer(4); windSource.loop = true;
+        const windFilter = this.ctx.createBiquadFilter();
+        windFilter.type = "lowpass"; windFilter.frequency.value = 530; windFilter.Q.value = .45;
+        this.windGain = this.ctx.createGain(); this.windGain.gain.value = .045;
+        windSource.connect(windFilter).connect(this.windGain).connect(this.master);
+        const lfo = this.ctx.createOscillator(), lfoDepth = this.ctx.createGain();
+        lfo.frequency.value = .085; lfoDepth.gain.value = .018;
+        lfo.connect(lfoDepth).connect(this.windGain.gain); lfo.start(); windSource.start();
+
+        const riverSource = this.ctx.createBufferSource();
+        riverSource.buffer = this.noiseBuffer(3); riverSource.loop = true;
+        const riverFilter = this.ctx.createBiquadFilter();
+        riverFilter.type = "bandpass"; riverFilter.frequency.value = 760; riverFilter.Q.value = 4.8;
+        this.riverGain = this.ctx.createGain(); this.riverGain.gain.value = .0001;
+        riverSource.connect(riverFilter).connect(this.riverGain).connect(this.master); riverSource.start();
+
+        const wingSource = this.ctx.createBufferSource();
+        wingSource.buffer = this.noiseBuffer(2); wingSource.loop = true;
+        const wingFilter = this.ctx.createBiquadFilter();
+        wingFilter.type = "highpass"; wingFilter.frequency.value = 2450; wingFilter.Q.value = .7;
+        this.wingGain = this.ctx.createGain(); this.wingGain.gain.value = .0001;
+        wingSource.connect(wingFilter).connect(this.wingGain).connect(this.master); wingSource.start();
+
+        const uris = [this.wavDataUri(0), this.wavDataUri(1)];
+        this.buffers = await Promise.all(uris.map(async uri => {
+          const data = await fetch(uri).then(r => r.arrayBuffer());
+          return this.ctx.decodeAudioData(data);
+        }));
+        this.playNext();
+      }
+
+      playNext() {
+        if (!this.ctx || !this.buffers.length) return;
+        const source = this.ctx.createBufferSource();
+        source.buffer = this.buffers[this.index];
+        source.playbackRate.value = 1 + Math.sin(this.plays * 1.618) * .0055;
+        source.detune.value = Math.sin(this.plays * 2.414) * 11;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 1550 + hash(this.plays, this.index) * 950;
+        filter.Q.value = .42;
+        const gain = this.ctx.createGain();
+        gain.gain.value = .88 + hash(this.plays, 90) * .12;
+        source.connect(filter).connect(gain).connect(this.musicBus);
+        source.start();
+        source.onended = () => {
+          this.index = 1 - this.index;
+          this.plays++;
+          this.timer = setTimeout(() => this.playNext(), 2400);
+        };
+      }
+
+      update() {
+        if (!this.ctx || !currentCamera) return;
+        const now = this.ctx.currentTime;
+        const windMag = clamp(Math.hypot(pointer.fx, pointer.fy), 0, 2);
+        const nearRiver = clamp(1 - Math.abs(currentCamera.eye.x - riverX(currentCamera.eye.z)) / 900, 0, 1);
+        const low = clamp(1 - currentCamera.eye.y / 720, 0, 1);
+        const close = clamp(1 - currentCamera.dist / 1650, 0, 1);
+        const flap = .45 + .55 * Math.abs(Math.sin(elapsed * 4.8));
+        this.windGain.gain.setTargetAtTime(.035 + windMag * .032, now, .42);
+        this.riverGain.gain.setTargetAtTime(.002 + nearRiver * low * .12, now, .65);
+        this.wingGain.gain.setTargetAtTime(.0005 + close * flap * .055, now, .12);
+      }
+
+      toggle() {
+        this.enabled = !this.enabled;
+        if (this.ctx && this.master) {
+          this.master.gain.cancelScheduledValues(this.ctx.currentTime);
+          this.master.gain.setTargetAtTime(this.enabled ? .82 : .0001, this.ctx.currentTime, .35);
+        }
+        return this.enabled;
+      }
+    }
+
+    const audio = new AudioEngine();
+
+    function updateHUD(camera) {
+      const d = camera.display || { zh: "自主镜头", id: "FREE", tier: "MID", variation: 1 };
+      const name = d.zh + " · " + d.id.replaceAll("_", " ");
+      const variation = "VAR " + String(d.variation || camera.cycle + 1).padStart(2, "0") + " / " + (d.tier || "MID");
+      const mode = autoCamera ? (returnCamera ? "RETURNING" : "AUTO") : "SELF";
+      const key = name + variation + mode;
+      if (key !== hudKey) {
+        hudKey = key;
+        cameraName.textContent = name;
+        variationEl.textContent = variation;
+        cameraModeEl.textContent = mode;
+      }
+    }
+
+    function frame(now) {
+      const dt = Math.min(.033, Math.max(.001, (now - lastNow) / 1000));
+      lastNow = now;
+      if (started) {
+        elapsed += dt;
+        journey += WORLD_SPEED * dt;
+      } else {
+        elapsed += dt * .12;
+      }
+      updateWind(dt);
+      currentCamera = getCamera(dt, now);
+      updateBirds(dt);
+      updateParticles(dt);
+      const style = styleAt(routeX(journey), journey);
+      renderWorld(style);
+      updateStyleUI(style);
+      updatePoem();
+      updateHUD(currentCamera);
+      audio.update();
+      requestAnimationFrame(frame);
+    }
+
+    function pointerPosition(e) {
+      const x = e.offsetX == null ? W * .5 : e.offsetX;
+      const y = e.offsetY == null ? H * .5 : e.offsetY;
+      return { x: clamp(x, 0, W), y: clamp(y, 0, H) };
+    }
+
+    function setWindPosition(x, y) {
+      const now = performance.now();
+      const dt = Math.max(8, now - pointer.lastMove) / 1000;
+      pointer.speed = Math.hypot(x / W - pointer.lastX, y / H - pointer.lastY) / dt * Math.max(W, H);
+      pointer.lastX = x / W; pointer.lastY = y / H; pointer.lastMove = now;
+      pointer.x = x / W; pointer.y = y / H;
+      pointer.rawX = (pointer.x - .5) * 2;
+      pointer.rawY = (pointer.y - .5) * 2;
+    }
+
+    canvas.addEventListener("pointerenter", e => {
+      if (e.pointerType === "mouse") pointer.active = true;
+    });
+
+    canvas.addEventListener("pointerleave", e => {
+      if (e.pointerType === "mouse") pointer.active = false;
+    });
+
+    canvas.addEventListener("pointerdown", e => {
+      const p = pointerPosition(e);
+      setWindPosition(p.x, p.y);
+      pointer.active = true;
+      touches.set(e.pointerId, p);
+      canvas.setPointerCapture(e.pointerId);
+      if (!autoCamera) {
+        if (touches.size === 1) {
+          drag.active = true; drag.id = e.pointerId; drag.x = p.x; drag.y = p.y;
+        } else if (touches.size === 2) {
+          const pts = [...touches.values()];
+          drag.pinch = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          drag.startDist = manual.dist;
+        }
+      }
+    });
+
+    canvas.addEventListener("pointermove", e => {
+      const p = pointerPosition(e);
+      setWindPosition(p.x, p.y);
+      if (e.pointerType === "mouse") pointer.active = true;
+      if (touches.has(e.pointerId)) touches.set(e.pointerId, p);
+      if (!autoCamera && drag.active && drag.id === e.pointerId && touches.size === 1) {
+        const dx = p.x - drag.x, dy = p.y - drag.y;
+        manual.yaw -= dx * .0042;
+        manual.elev = clamp(manual.elev + dy * .0032, 2 * DEG, 83 * DEG);
+        drag.x = p.x; drag.y = p.y;
+      }
+      if (!autoCamera && touches.size === 2 && drag.pinch > 0) {
+        const pts = [...touches.values()];
+        const distance = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+        manual.dist = clamp(drag.startDist * drag.pinch / Math.max(20, distance), 380, 3400);
+      }
+    });
+
+    function releasePointer(e) {
+      touches.delete(e.pointerId);
+      if (e.pointerType !== "mouse") pointer.active = touches.size > 0;
+      if (drag.id === e.pointerId) {
+        drag.active = false;
+        drag.id = null;
+      }
+      if (touches.size < 2) drag.pinch = 0;
+    }
+
+    canvas.addEventListener("pointerup", releasePointer);
+    canvas.addEventListener("pointercancel", releasePointer);
+
+    canvas.addEventListener("wheel", e => {
+      e.preventDefault();
+      if (autoCamera) {
+        observation.distance = clamp(observation.distance + e.deltaY * .42, -360, 720);
+        observation.elevation = clamp(observation.elevation + e.deltaY * .006 * DEG, -8 * DEG, 12 * DEG);
+        observation.last = elapsed;
+      } else {
+        manual.dist = clamp(manual.dist * Math.exp(e.deltaY * .0011), 380, 3400);
+      }
+    }, { passive: false });
+
+    function setCameraMode(auto) {
+      if (auto === autoCamera) return;
+      if (!auto) {
+        manual.yaw = currentCamera.yaw;
+        manual.elev = currentCamera.elev;
+        manual.dist = currentCamera.dist;
+        manual.fov = currentCamera.fov;
+        manual.targetY = currentCamera.targetY;
+        manual.lead = currentCamera.lead;
+        manual.river = currentCamera.river;
+        returnCamera = null;
+      } else {
+        returnCamera = {
+          yaw: currentCamera.yaw, elev: currentCamera.elev, dist: currentCamera.dist,
+          fov: currentCamera.fov, targetY: currentCamera.targetY,
+          lead: currentCamera.lead, river: currentCamera.river
+        };
+        returnStarted = performance.now();
+      }
+      autoCamera = auto;
+      cameraToggle.setAttribute("aria-pressed", String(autoCamera));
+      cameraToggle.innerHTML = autoCamera ? '镜头 <span class="wide">AUTO</span>' : '镜头 <span class="wide">SELF</span>';
+    }
+
+    cameraToggle.addEventListener("click", e => {
+      e.stopPropagation();
+      setCameraMode(!autoCamera);
+    });
+
+    soundToggle.addEventListener("click", e => {
+      e.stopPropagation();
+      const on = audio.toggle();
+      soundToggle.setAttribute("aria-pressed", String(on));
+      soundToggle.innerHTML = on ? '声 <span class="wide">ON</span>' : '声 <span class="wide">OFF</span>';
+      if (audio.ctx && on) audio.ctx.resume();
+    });
+
+    poemToggle.addEventListener("click", e => {
+      e.stopPropagation();
+      poemEnabled = !poemEnabled;
+      poemEl.classList.toggle("disabled", !poemEnabled);
+      poemToggle.setAttribute("aria-pressed", String(poemEnabled));
+      poemToggle.innerHTML = poemEnabled ? '诗 <span class="wide">ON</span>' : '诗 <span class="wide">OFF</span>';
+    });
+
+    async function fullscreen() {
+      try {
+        if (!document.fullscreenElement && stage.requestFullscreen) await stage.requestFullscreen({ navigationUI: "hide" });
+        else if (document.fullscreenElement) await document.exitFullscreen();
+      } catch (_) {}
+      try {
+        if (screen.orientation && screen.orientation.lock) await screen.orientation.lock("landscape");
+      } catch (_) {}
+    }
+
+    fullscreenButton.addEventListener("click", e => {
+      e.stopPropagation();
+      fullscreen();
+    });
+
+    async function keepAwake() {
+      try {
+        if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
+      } catch (_) {}
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && started) {
+        keepAwake();
+        if (audio.ctx && audio.enabled) audio.ctx.resume();
+      }
+    });
+
+    document.querySelectorAll(".scene-choice").forEach(button => {
+      button.addEventListener("click", () => {
+        startStyle = Number(button.dataset.scene);
+        document.querySelectorAll(".scene-choice").forEach(other => {
+          const selected = other === button;
+          other.classList.toggle("selected", selected);
+          other.setAttribute("aria-checked", String(selected));
+        });
+        resetWorld();
+      });
+    });
+
+    document.querySelector("#start").addEventListener("click", () => {
+      started = true;
+      elapsed = 0;
+      lastNow = performance.now();
+      veil.classList.add("gone");
+      fullscreen();
+      keepAwake();
+      audio.start().catch(() => {
+        soundToggle.setAttribute("aria-pressed", "false");
+      });
+      setTimeout(() => document.querySelector("#hint").style.opacity = ".22", 9000);
+    });
+
+    addEventListener("keydown", e => {
+      if (e.key.toLowerCase() === "c") setCameraMode(!autoCamera);
+      if (e.key.toLowerCase() === "m") soundToggle.click();
+      if (e.key.toLowerCase() === "p") poemToggle.click();
+      if (e.key === "Escape" && !autoCamera) setCameraMode(true);
+    });
+
+    addEventListener("resize", resize);
+    resize();
+    resetWorld();
+    currentCamera = buildCamera(autoCameraAt(0));
+    requestAnimationFrame(frame);
+  })();
+  </script>
+</body>
+</html>

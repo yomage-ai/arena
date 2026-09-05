@@ -1,0 +1,81 @@
+{
+  "updatedAt": "2026-09-05T12:27:51.951240+00:00",
+  "reason": "Import user-provided GPT5.6-sol-max migration result; clarify existing three results as GPT6-Astra-xhigh.",
+  "files": [
+    {
+      "from": "results/migration/gpt6-astra/import-01/index.html",
+      "to": "results/migration/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "603a0730f50e2bc477526663acdc616e8fd7d49a62dfaedd29d98ead37397c58"
+    },
+    {
+      "from": "results/migration/gpt6-astra/import-01/cover.png",
+      "to": "results/migration/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "9219db38fab68edaa39346758b65819a89628801c28a414cdffd1d5783f0d34a"
+    },
+    {
+      "from": "results/pvz/gpt6-astra/import-01/index.html",
+      "to": "results/pvz/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "2af6638906ce5fce51fe70dc524745c63b3092a136d3b45597004788f6091e13"
+    },
+    {
+      "from": "results/pvz/gpt6-astra/import-01/cover.png",
+      "to": "results/pvz/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "73227b09b451c9ed1b0e464e1749f4573829c66a563ee3590e2845785f0f27a1"
+    },
+    {
+      "from": "results/bicycle/gpt6-astra/import-01/index.html",
+      "to": "results/bicycle/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+    },
+    {
+      "from": "results/bicycle/gpt6-astra/import-01/cover.svg",
+      "to": "results/bicycle/gpt6-astra-xhigh/import-01/cover.svg",
+      "sha256": "889c308fc70f65e1f8046af00cdfb4f73d1b99424da9aa29e11d66b1dffb318e"
+    },
+    {
+      "from": "results/bicycle/gpt6-astra/import-01/pelican-ride.html",
+      "to": "results/bicycle/gpt6-astra-xhigh/import-01/pelican-ride.html",
+      "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+    },
+    {
+      "from": "site/works/migration/gpt6-astra/import-01/index.html",
+      "to": "site/works/migration/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "603a0730f50e2bc477526663acdc616e8fd7d49a62dfaedd29d98ead37397c58"
+    },
+    {
+      "from": "site/works/migration/gpt6-astra/import-01/cover.png",
+      "to": "site/works/migration/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "9219db38fab68edaa39346758b65819a89628801c28a414cdffd1d5783f0d34a"
+    },
+    {
+      "from": "site/works/pvz/gpt6-astra/import-01/index.html",
+      "to": "site/works/pvz/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "2af6638906ce5fce51fe70dc524745c63b3092a136d3b45597004788f6091e13"
+    },
+    {
+      "from": "site/works/pvz/gpt6-astra/import-01/cover.png",
+      "to": "site/works/pvz/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "73227b09b451c9ed1b0e464e1749f4573829c66a563ee3590e2845785f0f27a1"
+    },
+    {
+      "from": "site/works/bicycle/gpt6-astra/import-01/index.html",
+      "to": "site/works/bicycle/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+    },
+    {
+      "from": "site/works/bicycle/gpt6-astra/import-01/cover.svg",
+      "to": "site/works/bicycle/gpt6-astra-xhigh/import-01/cover.svg",
+      "sha256": "889c308fc70f65e1f8046af00cdfb4f73d1b99424da9aa29e11d66b1dffb318e"
+    },
+    {
+      "from": "site/works/bicycle/gpt6-astra/import-01/pelican-ride.html",
+      "to": "site/works/bicycle/gpt6-astra-xhigh/import-01/pelican-ride.html",
+      "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+    },
+    {
+      "from": "/Users/apm30/Documents/project/测试环境/index.html",
+      "to": "results/migration/gpt5-6-sol-max/import-01/index.html",
+      "sha256": "2a342f057af559c6ca90d2689f26bc33d7a4734a594418abcec90ca5ab15a704"
+    }
+  ]
+}

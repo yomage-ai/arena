@@ -1,0 +1,112 @@
+{
+  "importedAt": "2026-09-05T12:55:17.057578+00:00",
+  "sourceProjectFrom": "moon-garden-defense",
+  "sourceProjectTo": "source-projects/moon-garden-defense",
+  "wholeDirectoryPreserved": true,
+  "sourceEntry": "source-projects/moon-garden-defense/dist-single/月光花园守卫战.html",
+  "destination": "results/pvz/gpt5-6-sol-max/import-01/index.html",
+  "model": "GPT5.6-sol-max",
+  "modelBasis": "沿用本轮同系列测评的 GPT5.6-sol-max 配置",
+  "promptVersionId": "pvz-v1",
+  "bytes": 2710370,
+  "sha256": "d47b8c0a7b453273a89f4635519d76a419c72e3c2fd4159d994e17abbdd65f2f",
+  "verifiedFiles": [
+    {
+      "path": "public/favicon.svg",
+      "sha256": "e6d2e59b7b5bbb0342e0fb496dfc262decbfe4426bbb7b047aec8d467d1dc6f7",
+      "bytes": 712
+    },
+    {
+      "path": "public/game-source/game.js",
+      "sha256": "6a8d1e073697316c231cf801daaf712926f213d4d615247f0018792ef9339a7f",
+      "bytes": 23434
+    },
+    {
+      "path": "public/game-source/index.html",
+      "sha256": "4ba5ef8ebca24913381ff5c99672b8e91e284238e379325b68e5a69ddc9e57bb",
+      "bytes": 3654
+    },
+    {
+      "path": "public/game-source/styles.css",
+      "sha256": "4ab2b939f529a031c8a7a4798f5fb6919b3d9cdb7ebd8f61854dbc2dd284b981",
+      "bytes": 18497
+    },
+    {
+      "path": "public/assets/moon-garden-sprite-atlas.png",
+      "sha256": "784e6ab8fdcd838ae4ec41eb899f3775f5ddced23b34d3411e6e972e549ee646",
+      "bytes": 1998569
+    },
+    {
+      "path": "src-intermediate/moon-garden-sprite-atlas-original.png",
+      "sha256": "784e6ab8fdcd838ae4ec41eb899f3775f5ddced23b34d3411e6e972e549ee646",
+      "bytes": 1998569
+    },
+    {
+      "path": "src-intermediate/art-prompts.md",
+      "sha256": "0be463fde48b5d7f839eae281c78776b1d89aebc2258b2194cdbc25bdf9eff16",
+      "bytes": 2109
+    },
+    {
+      "path": "scripts/build-single.mjs",
+      "sha256": "90161414e7a415203c40e4adeb7c90621474f90074fd1c19a585198c6f926a29",
+      "bytes": 1380
+    },
+    {
+      "path": "app/layout.tsx",
+      "sha256": "8b2d5e43402f8ff7b69e603a9935c8429a200cd85c23ee13a9e8119ee76ac455",
+      "bytes": 380
+    },
+    {
+      "path": "app/page.tsx",
+      "sha256": "fe6b17eb38b6c2e3d710892ca638eb2d811dbecabe9330e40e56813c75dcf75a",
+      "bytes": 214
+    },
+    {
+      "path": "app/globals.css",
+      "sha256": "f283b4483c1bee2de3aeef4046c42e7b165ca92cb523df74ce46f2bbeb2ff3b5",
+      "bytes": 295
+    },
+    {
+      "path": "dist-single/月光花园守卫战.html",
+      "sha256": "d47b8c0a7b453273a89f4635519d76a419c72e3c2fd4159d994e17abbdd65f2f",
+      "bytes": 2710370
+    },
+    {
+      "path": "README.md",
+      "sha256": "f2676b88b1bda8989cb3fa29b8c146644cce61fada3a6ddb81b155ebb505a727",
+      "bytes": 1047
+    },
+    {
+      "path": "package.json",
+      "sha256": "6507ab9901e25d584ff848abb1e351551a95948578ef58d8422da7553bd26048",
+      "bytes": 1569
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "94973b5ea13e60f7f49f2f9f69677f2cc10866d498382a7f5cf40d27803fdf1d",
+      "bytes": 347344
+    },
+    {
+      "path": "next.config.ts",
+      "sha256": "d063bebef3a4878ae82f9f9547c2c9675b8b6945ab23702932dcb63a011a9fc9",
+      "bytes": 104
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "3c028e727dde6c92022197ba7241a424ccd1e3d335f1f46cc9bbf91a8a3a968c",
+      "bytes": 1807
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "81aca06cd76be09d9b65c7dff6a031c38664263b506ea792a28f36b17be25f2a",
+      "bytes": 671
+    }
+  ],
+  "cover": {
+    "file": "results/pvz/gpt5-6-sol-max/import-01/cover.jpg",
+    "source": "原始单 HTML 成品的实际开场页面截图",
+    "capturedAt": "2026-09-05T12:56:47.646728+00:00",
+    "bytes": 41523,
+    "sha256": "cfed1013de0c4b621adee37ce48596b6bafa454ffdaebea0946764c0f4b213a3"
+  }
+}

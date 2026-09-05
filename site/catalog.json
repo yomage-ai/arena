@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "projects": [
+    {
+      "id": "migration",
+      "title": "候鸟迁徙",
+      "category": "交互场景",
+      "description": "跟随候鸟，穿过风、河流与四季。看看 AI 如何让一场迁徙变得可感、可交互。",
+      "focus": [
+        "场景表达",
+        "运动连贯",
+        "交互反馈"
+      ],
+      "deviceNote": "建议使用电脑或手机横屏体验；在作品内点击开始后启用声音。",
+      "defaultPromptVersionId": "migration-v1",
+      "promptVersions": [
+        {
+          "id": "migration-v1",
+          "label": "原始提示词 v1",
+          "text": "用纯原生 HTML5 Canvas 写一个零依赖单文件交互作品《候鸟 · MIGRATION》：\\\\\n一群纸质感几何候鸟沿一条无限延伸的迁徙航线飞行，世界、镜头、音乐、诗句\\\\\n全部程序化生成，永不循环重复。\n【世界：风格是地理属性】\n俯瞰大地程序化无限生成：田块网格、双正弦蜿蜒河流、欧洲老城临河联排屋\\\\\n（共用山墙、高低错落、偶发教堂尖塔）、后排散屋、烟囱、树木\\\\\n5 种场景风格 = 5 段地理气候，沿飞行方向分段轮换（每段约 8600 世界单位）：\\\\\n暖纸 WARM / 雾境 MIST / 暮粉 DUSK / 雪境 SNOW / 夜航 NIGHT\\\\\n风格锋面参差不齐、带长过渡带：地面、天空、雾、粒子、鸟的配色\\\\\n全部在两种风格间连续插值，绝不硬切\\\\\n风格细节：雪境针叶树+屋脊积雪；夜航窗户亮灯、星星浮现、河面反光熄灭；\\\\\n晨昏锋面处地平线出现太阳光晕和地面光池（不画太阳圆盘）\\\\\n粒子随风格换型：尘絮 / 雪花（最多约240颗）/ 花瓣 / 萤火，参与深度排序\\\\\n【鸟群：30 只独立弹簧（触屏 22 只）】\n金角螺旋铺满椭圆盘 + 分层高度；每只鸟独立刚度、独立相位、\\\\\n胆量按幂律分布（少数头鸟敢冲很远）\\\\\n几何纸鸟造型：鸟头、龙骨、双翼、尾，三角面拼成，带地面投影\\\\\nBoids 分离力（平方衰减+力上限+速度阻尼，滑开而不是弹开）\\\\\n左侧 60% 屏幕软引力边界：越靠边推动衰减越强，每只鸟边界呼吸相位不同\\\\\n鸟色随场景冷暖偏移 10–20%（保持纸白主调，夜航转月光蓝灰），\\\\\n过渡带内每只鸟按自身位置采样，群体可同时带两端色\\\\\n【镜头：无剪辑的自动运镜系统】\n16 个命名镜位库（正俯视、俯冲、贴河掠水、沿河前推、侧向轨道、\\\\\n低空宽景、环绕、拉远揭示、正背面、迎面、高空漂移……）\\\\\n每圈约 96 秒，每镜 16–19 秒，段内前半保持、后半平滑滑向下一镜，\\\\\n全程连续无切换；跨圈无缝衔接\\\\\n每圈按规则重排变奏：骨架固定（俯视→下降→中景→压轴→回升），\\\\\n高圈/低圈交替，压轴背面/迎面隔圈轮换，相邻镜偏航差≥30°防跳剪，\\\\\n距离近/中/远三档随机抽卡；左上角实时显示镜位名与变奏号（如 VAR 02）\\\\\n自动/自主镜头切换：自主模式下拖拽转镜头（俯仰+偏航）、滚轮或双指捏合真缩放\\\\\n每圈按规则重排变奏：骨架固定（俯视→下降→中景→压轴→回升），\\\\\n高圈/低圈交替，压轴背面/迎面隔圈轮换，相邻镜偏航差≥30°防跳剪，\\\\\n距离近/中/远三档随机抽卡；左上角实时显示镜位名与变奏号（如 VAR 02）\\\\\n自动/自主镜头切换：自主模式下拖拽转镜头（俯仰+偏航）、滚轮或双指捏合真缩放\\\\\n【交互：鼠标 = 风】\n全程连续无切换；跨圈无缝衔接\\\\\n每圈按规则重排变奏：骨架固定（俯视→下降→中景→压轴→回升），\\\\\n高圈/低圈交替，压轴背面/迎面隔圈轮换，相邻镜偏航差≥30°防跳剪，\\\\\n距离近/中/远三档随机抽卡；左上角实时显示镜位名与变奏号（如 VAR 02）\\\\\n自动/自主镜头切换：自主模式下拖拽转镜头（俯仰+偏航）、滚轮或双指捏合真缩放\\\\\n【交互：鼠标 = 风】\n光标偏移引航鸟群（越靠屏幕边缘漂移越快），带微抖死区；\\\\\n光标越快响应越缓（反向 1€ 滤波），松手后风势缓缓消散、纸飞机自己滑回航线\\\\\n自动模式下滚轮 = 轻微观察偏移（拉远/抬高），停手 2 秒缓慢回归\\\\\n手机：触摸即风眼；竖拿时整页 CSS 旋转 90° 强制横向体验；按 DPR 渲染防糊\\\\\n【声音】\n两首内嵌 base64 配乐交替循环（曲间停 2.4 秒），开场 5 秒淡入\\\\\nWebAudio 程序化环境声三层：风（低通噪声+LFO 起伏）、\\\\\n河水（窄带噪声，镜头低且贴近河道才浮现）、纸翼簌簌（高频，贴近才可闻）\\\\\n音乐开关按钮\\\\\n【诗句层】\n13 段候鸟主题短诗随旅程轮播，逐字淡入 + 一条横线展开；\\\\\n白天墨色、夜航转白，颜色随世界换装渐变；可开关\\\\\n【开场与 UI】\n「开始迁徙 →」按钮：请求全屏 + 锁横屏 + 防息屏\\\\\n开局场景选择（暖纸/暮粉/夜航/雾/雪）= 选择起飞地点，之后仍沿同一航线飞\\\\\n米纸底色 #f6f2e9、墨字 #3a362c，UI 墨色随场景自动变色\\\\\n大屏适配：≥2200px UI 文字约 1.5 倍，≥3200px 约 2 倍；小屏不变。"
+        }
+      ]
+    },
+    {
+      "id": "pvz",
+      "title": "植物大战僵尸",
+      "category": "交互游戏",
+      "description": "从一颗向日葵到一整座庭院。体验 AI 做出的塔防游戏，观察玩法、策略与操作反馈。",
+      "focus": [
+        "种植与战斗",
+        "胜负闭环",
+        "操作反馈"
+      ],
+      "deviceNote": "建议使用电脑或手机横屏体验。",
+      "defaultPromptVersionId": "pvz-v1",
+      "promptVersions": [
+        {
+          "id": "pvz-v1",
+          "label": "原始提示词 v1",
+          "text": "使用 HTML 复刻《植物大战僵尸》游戏。所有中间文件一并保留不要丢弃，最终输出的 HTML 只要编译成单 HTML 即可。没有要求和限制，请向我展现你的能力上限，效果越好我越满意。"
+        }
+      ]
+    },
+    {
+      "id": "bicycle",
+      "title": "鹈鹕骑自行车",
+      "category": "交互动效",
+      "description": "让一只鹈鹕踏上自行车，沿海岸慢慢骑行。观察角色、车轮和脚踏之间的运动配合。",
+      "focus": [
+        "骑行动作",
+        "机械运动",
+        "交互控制"
+      ],
+      "deviceNote": "支持电脑和手机浏览；可在作品内暂停或继续骑行。",
+      "defaultPromptVersionId": "bicycle-v1",
+      "promptVersions": [
+        {
+          "id": "bicycle-v1",
+          "label": "原始提示词 v1",
+          "text": "创建一个 HTML，内容是 SVG 绘制一个鹈鹕骑自行车的 2D 动画，你不需要任何测试"
+        }
+      ]
+    },
+    {
+      "id": "lunar-rover",
+      "title": "月球车",
+      "category": "三维场景",
+      "description": "让月面探测车驶入太空中的荒原。观察模型细节、月面质感，以及自由浏览时的空间表现。",
+      "focus": [
+        "模型细节",
+        "月面质感",
+        "自由浏览"
+      ],
+      "deviceNote": "建议使用电脑体验；拖拽旋转、滚轮缩放，右键拖拽平移。",
+      "defaultPromptVersionId": "lunar-rover-v1",
+      "promptVersions": [
+        {
+          "id": "lunar-rover-v1",
+          "label": "原始提示词 v1",
+          "text": "创建一个网页，中间是一辆高精度、充满细节、极度写实的月面探测车 3D 模型，并且探测车在同样精细真实的月球表面上缓慢行驶，背景为太空，环境并不是二维静态的，可以通过鼠标进行缩放、旋转和自由浏览。"
+        }
+      ]
+    }
+  ],
+  "models": [
+    {
+      "id": "gpt6-astra-xhigh",
+      "label": "GPT6-Astra-xhigh",
+      "product": null,
+      "version": "GPT6-Astra-xhigh"
+    },
+    {
+      "id": "gpt5-6-sol-max",
+      "label": "GPT5.6-sol-max",
+      "product": null,
+      "version": "GPT5.6-sol-max"
+    }
+  ],
+  "results": [
+    {
+      "id": "migration-import-01",
+      "projectId": "migration",
+      "modelId": "gpt6-astra-xhigh",
+      "title": "候鸟 · MIGRATION",
+      "description": "纸翼、风景与旅程。跟随鸟群，探索不同季节的迁徙场景。",
+      "promptVersionId": "migration-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/migration/gpt6-astra-xhigh/import-01/index.html",
+      "cover": "./works/migration/gpt6-astra-xhigh/import-01/cover.png",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：xhigh（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "已确认由 GPT6-Astra-xhigh 生成，已关联原始提示词 v1。生成轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "pvz-import-01",
+      "projectId": "pvz",
+      "modelId": "gpt6-astra-xhigh",
+      "title": "植物大战僵尸 · 晴日庭院",
+      "description": "收集阳光、种下植物，守住你的小院。支持冒险与无尽模式。",
+      "promptVersionId": "pvz-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/pvz/gpt6-astra-xhigh/import-01/index.html",
+      "cover": "./works/pvz/gpt6-astra-xhigh/import-01/cover.png",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：xhigh（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "已确认由 GPT6-Astra-xhigh 生成，已关联原始提示词 v1。生成轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "bicycle-import-01",
+      "projectId": "bicycle",
+      "modelId": "gpt6-astra-xhigh",
+      "title": "海风骑行 · Pelican on a bicycle",
+      "description": "鹈鹕迎着海风骑行。支持暂停、继续和速度切换。",
+      "promptVersionId": "bicycle-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bicycle/gpt6-astra-xhigh/import-01/index.html",
+      "cover": "./works/bicycle/gpt6-astra-xhigh/import-01/cover.svg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：xhigh（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "已确认由 GPT6-Astra-xhigh 生成。恢复的 index.html 与 pelican-ride.html 内容完全一致，作为同一份结果收录，两份文件均保留。已关联用户补充的原始提示词 v1。生成轮次与人工干预待补充。",
+      "knownIssues": []
+    },
+    {
+      "id": "migration-sol-max-import-01",
+      "projectId": "migration",
+      "modelId": "gpt5-6-sol-max",
+      "title": "候鸟 · MIGRATION",
+      "description": "纸鸟沿着无尽航线飞行。移动光标引风，从五种场景中选择起飞地点。",
+      "promptVersionId": "migration-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/migration/gpt5-6-sol-max/import-01/index.html",
+      "cover": "./works/migration/gpt5-6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：max（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户确认由 GPT5.6-sol-max 使用与此前候鸟作品相同的提示词生成，关联原始提示词 v1。原件由“测试环境/index.html”迁入；生成日期、轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "bicycle-sol-max-import-01",
+      "projectId": "bicycle",
+      "modelId": "gpt5-6-sol-max",
+      "title": "鹈鹕的海岸骑行",
+      "description": "鹈鹕沿着海岸公路骑行，海浪、车轮与围巾一起运动。支持暂停和继续动画。",
+      "promptVersionId": "bicycle-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bicycle/gpt5-6-sol-max/import-01/index.html",
+      "cover": "./works/bicycle/gpt5-6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：max（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户提供的 GPT5.6-sol-max 鹈鹕骑自行车测试结果，关联当前原始提示词 v1。原件由“测试环境/index.html”迁入；生成日期、轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "pvz-sol-max-import-01",
+      "projectId": "pvz",
+      "modelId": "gpt5-6-sol-max",
+      "title": "月光花园守卫战",
+      "description": "种下六种植物，收集阳光，在三波进攻中守住月光下的花园。支持暂停和倍速。",
+      "promptVersionId": "pvz-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/pvz/gpt5-6-sol-max/import-01/index.html",
+      "cover": "./works/pvz/gpt5-6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：max（沿用本轮 GPT5.6-sol-max 配置）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户提供的 moon-garden-defense 工程，按此前 GPT5.6-sol-max 配置收录并关联原始提示词 v1。使用工程内已生成的单 HTML 成品；完整工程及中间文件保留在 source-projects/moon-garden-defense。生成日期、轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "lunar-rover-sol-max-import-01",
+      "projectId": "lunar-rover",
+      "modelId": "gpt5-6-sol-max",
+      "title": "月面巡视器 · LUNA-07",
+      "description": "六轮巡视器缓慢驶过月面，支持旋转、缩放和平移视角，可暂停行驶或重置镜头。",
+      "promptVersionId": "lunar-rover-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/lunar-rover/gpt5-6-sol-max/import-01/index.html",
+      "cover": "./works/lunar-rover/gpt5-6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：max（沿用此前 GPT5.6-sol-max 配置）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户本次提供的模型名称为 gpt5.6，沿用此前 GPT5.6-sol-max 配置收录。原始交付是 React / Three.js 工程；收录时增加静态挂载入口、打包客户端脚本并调整本地字体路径，场景、交互组件和原有全局样式未改写。完整源码、依赖、中间文件及原构建产物保留在 source-projects/lunar-rover/。生成日期、轮次与生成过程中的人工干预待补充。",
+      "knownIssues": []
+    },
+    {
+      "id": "lunar-rover-astra-xhigh-import-01",
+      "projectId": "lunar-rover",
+      "modelId": "gpt6-astra-xhigh",
+      "title": "SELENE · 月面漫游",
+      "description": "跟随玉衡号六轮探测车巡航，或切换自由探索。支持旋转、缩放、平移与键盘移动，可暂停和调整行驶倍率。",
+      "promptVersionId": "lunar-rover-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/lunar-rover/gpt6-astra-xhigh/import-01/index.html",
+      "cover": "./works/lunar-rover/gpt6-astra-xhigh/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：xhigh（沿用此前 GPT6-Astra-xhigh 配置）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户本次提供的模型名称为 gpt6，沿用此前 GPT6-Astra-xhigh 配置，关联同一份月球车原始提示词。原交付为 lunar-explorer React / Three.js 工程；收录时仅增加静态挂载入口和打包客户端依赖，原场景、模型、交互组件和编译全局样式未改写。完整工程与原构建产物保留在 source-projects/lunar-explorer/。生成日期、轮次与生成过程中的人工干预待补充。",
+      "knownIssues": []
+    }
+  ]
+}

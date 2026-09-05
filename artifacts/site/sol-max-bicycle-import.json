@@ -1,0 +1,16 @@
+{
+  "importedAt": "2026-09-05T12:50:08.168615+00:00",
+  "source": "/Users/apm30/Documents/project/测试环境/index.html",
+  "destination": "results/bicycle/gpt5-6-sol-max/import-01/index.html",
+  "bytes": 21782,
+  "sha256": "2892d269c76b97898260d9dd83df0fbd050ba1dc8ae913097ed2fbc6e0546a0a",
+  "model": "GPT5.6-sol-max",
+  "promptVersionId": "bicycle-v1",
+  "cover": {
+    "file": "results/bicycle/gpt5-6-sol-max/import-01/cover.jpg",
+    "source": "原始 HTML 页面实际截图",
+    "capturedAt": "2026-09-05T12:51:36.701340+00:00",
+    "sha256": "a6f5f82fd899da75c9360bf0925d8bc62584baecd0a9fab3cd2159c31b231188",
+    "bytes": 82898
+  }
+}

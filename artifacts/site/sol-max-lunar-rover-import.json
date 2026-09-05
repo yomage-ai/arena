@@ -1,0 +1,747 @@
+{
+  "importedAt": "2026-09-05T13:56:38.349835+00:00",
+  "originalSource": "/Users/apm30/Documents/project/测试环境",
+  "archivedSource": "source-projects/lunar-rover",
+  "model": "GPT5.6-sol-max",
+  "modelNote": "用户本次称 gpt5.6，沿用此前 GPT5.6-sol-max 配置",
+  "method": "Move every top-level entry without rewriting; preserve dependencies, caches, intermediate files and existing build outputs. Leave the source root available.",
+  "entries": [
+    {
+      "name": "app",
+      "device": 16777233,
+      "inode": 27431376
+    },
+    {
+      "name": "dist",
+      "device": 16777233,
+      "inode": 27506556
+    },
+    {
+      "name": ".oxlintrc.json",
+      "device": 16777233,
+      "inode": 27431380
+    },
+    {
+      "name": "tsconfig.tsbuildinfo",
+      "device": 16777233,
+      "inode": 27506415
+    },
+    {
+      "name": "node_modules",
+      "device": 16777233,
+      "inode": 27432307
+    },
+    {
+      "name": ".vinext",
+      "device": 16777233,
+      "inode": 27474131
+    },
+    {
+      "name": ".next",
+      "device": 16777233,
+      "inode": 27474164
+    },
+    {
+      "name": "next-env.d.ts",
+      "device": 16777233,
+      "inode": 27474167
+    },
+    {
+      "name": "components",
+      "device": 16777233,
+      "inode": 27431391
+    },
+    {
+      "name": "public",
+      "device": 16777233,
+      "inode": 27431381
+    },
+    {
+      "name": ".gitignore",
+      "device": 16777233,
+      "inode": 27431375
+    },
+    {
+      "name": "package-lock.json",
+      "device": 16777233,
+      "inode": 27474103
+    },
+    {
+      "name": "package.json",
+      "device": 16777233,
+      "inode": 27431383
+    },
+    {
+      "name": "hooks",
+      "device": 16777233,
+      "inode": 27431453
+    },
+    {
+      "name": "lib",
+      "device": 16777233,
+      "inode": 27431455
+    },
+    {
+      "name": "components.json",
+      "device": 16777233,
+      "inode": 27431457
+    },
+    {
+      "name": "tsconfig.json",
+      "device": 16777233,
+      "inode": 27431384
+    },
+    {
+      "name": ".openai",
+      "device": 16777233,
+      "inode": 27431385
+    },
+    {
+      "name": "vite.config.ts",
+      "device": 16777233,
+      "inode": 27431387
+    },
+    {
+      "name": ".oxfmtrc.json",
+      "device": 16777233,
+      "inode": 27431388
+    },
+    {
+      "name": ".wrangler",
+      "device": 16777233,
+      "inode": 27474229
+    },
+    {
+      "name": "next.config.ts",
+      "device": 16777233,
+      "inode": 27431389
+    }
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 384,
+      "sha256": "14c2d4b7781dcd266e563c4f08880637ae620c7e8a182246a23b138e5f791e8e"
+    },
+    {
+      "path": ".oxfmtrc.json",
+      "bytes": 260,
+      "sha256": "0962fdddb1840a06b5afb918ff3f2ff56bce346082651ec5c3567c01dd809f17"
+    },
+    {
+      "path": ".oxlintrc.json",
+      "bytes": 1370,
+      "sha256": "1a7aa1c7d83b05939e4e697eed9316224caea8958c4ad12837f8be740c13a47d"
+    },
+    {
+      "path": "components.json",
+      "bytes": 516,
+      "sha256": "9928283696d86836422959a2c520df83a718d31ffbcab533a14ca8dca2c8d475"
+    },
+    {
+      "path": "next-env.d.ts",
+      "bytes": 189,
+      "sha256": "a291a6b60536fec0a3b9d4ffd6d51179b463e9bc20281d7499d756813b4c07d5"
+    },
+    {
+      "path": "next.config.ts",
+      "bytes": 104,
+      "sha256": "d063bebef3a4878ae82f9f9547c2c9675b8b6945ab23702932dcb63a011a9fc9"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 370604,
+      "sha256": "264480b07960454c307c4087496357a319af21e4972c3798bb1fe89b8739a759"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1555,
+      "sha256": "186fa08ca5c265b1f204c64e09d54fcbf7a6ce0b1a372e11895dc4f2420422cb"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 671,
+      "sha256": "81aca06cd76be09d9b65c7dff6a031c38664263b506ea792a28f36b17be25f2a"
+    },
+    {
+      "path": "tsconfig.tsbuildinfo",
+      "bytes": 322290,
+      "sha256": "0f3d627a3707c5b90a76b0a91f70df0fb4f85bdfcdcfb01842af754c2e6ca0f0"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 1807,
+      "sha256": "3c028e727dde6c92022197ba7241a424ccd1e3d335f1f46cc9bbf91a8a3a968c"
+    },
+    {
+      "path": "app/globals.css",
+      "bytes": 5347,
+      "sha256": "ceb9d3e4cbd2d5bef0f6a00748cd03a270dc25168b11d9d4ee51cccc79a66d8e"
+    },
+    {
+      "path": "app/layout.tsx",
+      "bytes": 750,
+      "sha256": "3fdc97f70e2be0378b4e316d927df5ffa249c272ab0cd568057d9e9a53db2a0f"
+    },
+    {
+      "path": "app/page.tsx",
+      "bytes": 127,
+      "sha256": "ea7b0ebbd59821b16e26fdd6a8de01dcd90239ce3b67ef87ac88f58b8a43e3d9"
+    },
+    {
+      "path": "dist/server/BUILD_ID",
+      "bytes": 36,
+      "sha256": "fed2fdfec487ff890ba2c3c25375300e0cfa6516a436a6e5cc01bf9580a1a0a1"
+    },
+    {
+      "path": "dist/server/__vite_rsc_assets_manifest.js",
+      "bytes": 2317,
+      "sha256": "597509366b61c81311a6e77bfadc0f4f52f68e315c990b1313ae1f908ff8fc11"
+    },
+    {
+      "path": "dist/server/index.js",
+      "bytes": 201547,
+      "sha256": "a8887c2e1d3d541e1a8ad8c3ad7137020c6745a2dce2348fd9f9131d4f71efef"
+    },
+    {
+      "path": "dist/server/vinext-client-assets.js",
+      "bytes": 1470,
+      "sha256": "ef1c28ed50fef541b40e5c1bce03abc52f432df2d692944e59e274cb6431eb39"
+    },
+    {
+      "path": "dist/server/vinext-externals.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "dist/server/vinext-server.json",
+      "bytes": 86,
+      "sha256": "757d7ccb880064c18fc658a0934fde7a4499147652dd47c552d5b39a7274941d"
+    },
+    {
+      "path": "dist/server/wrangler.json",
+      "bytes": 1162,
+      "sha256": "e1f48b28c25a27e4d0fa162c1e511ca87bdf9c79374fded0bed89f680866602a"
+    },
+    {
+      "path": "dist/server/_next/static/app-page-cache-CZxXGA64.js",
+      "bytes": 5193,
+      "sha256": "4bf66e48f5e7c19cb6c7edfa166f72d9713ecfa9c502c357c3f6439e5631dc84"
+    },
+    {
+      "path": "dist/server/_next/static/app-page-cache-finalizer-CyjaxxA6.js",
+      "bytes": 3479,
+      "sha256": "506648452021b45ed725a4642ae3d1a1c1604f54435832dd1b88692c9644afcc"
+    },
+    {
+      "path": "dist/server/_next/static/app-page-cache-render-Xn6L_rZV.js",
+      "bytes": 1916,
+      "sha256": "c0bb5650f0a82a1c0cf74ff7e8a4d7f84625969b58240bf572bbd081056fede0"
+    },
+    {
+      "path": "dist/server/_next/static/app-page-stream-DUoMf3rw.js",
+      "bytes": 9924,
+      "sha256": "68ff49968db99b9c177073e4004fcdea8d6ee63a0c206fe18b50d80b945ceb01"
+    },
+    {
+      "path": "dist/server/_next/static/app-prerender-endpoints-CQHBWZMu.js",
+      "bytes": 2012,
+      "sha256": "03e9e4352dd099cb1b646894e0f393fe1ff38429634ab3d479e0eaaf48e8e101"
+    },
+    {
+      "path": "dist/server/_next/static/app-prerender-static-params-B1qD0gKS.js",
+      "bytes": 170,
+      "sha256": "c281eb6996d11c128a775c6b5b401a9ca602cbe3d57fcb2a1c55cba51816158e"
+    },
+    {
+      "path": "dist/server/_next/static/app-route-handler-dispatch-DMACElpX.js",
+      "bytes": 26099,
+      "sha256": "649a1e4a002cf8c663ff9f158f0d628790779eab58f1ce78a3165113e6dd91b3"
+    },
+    {
+      "path": "dist/server/_next/static/app-segment-config-BzwQOiD4.js",
+      "bytes": 14921,
+      "sha256": "43826f78d83d3e8f03ba5ce250438484906fd034ce141859eb260834a880e849"
+    },
+    {
+      "path": "dist/server/_next/static/app-static-generation-Cz2cfjjU.js",
+      "bytes": 916,
+      "sha256": "71451721ae4a42108e9ed32567cd9d9861beb4952215b0fd57ffc373cd3edc01"
+    },
+    {
+      "path": "dist/server/_next/static/cache-headers-CVCg5nyl.js",
+      "bytes": 48174,
+      "sha256": "dbd9ec19108b48f008ffd82ab100d10976075127eb423ed1fdfa24bddbf68ea9"
+    },
+    {
+      "path": "dist/server/_next/static/framework~index-C0-sSg6i.js",
+      "bytes": 190,
+      "sha256": "7529aaf93938283ea00498ada86b731c88f9ce69a661dfe9f02ccf24ae6bc957"
+    },
+    {
+      "path": "dist/server/_next/static/framework~index~layout~page~app-page-cache-render~app-page-cache~app-route-handler-dispatch-euTdYXWf.js",
+      "bytes": 6125,
+      "sha256": "c57d6bf2a1f6372f8dfa8908f35593dcc3d6b51950f35f0391801a6baabd8b13"
+    },
+    {
+      "path": "dist/server/_next/static/framework~index~page~app-route-handler-dispatch-Czyy2-iO.js",
+      "bytes": 56613,
+      "sha256": "648e4fa7ae87991a6cd983562b20963627fb399e9ba85bdd2bec5d74f5c46861"
+    },
+    {
+      "path": "dist/server/_next/static/implicit-tags-DA_YQzOB.js",
+      "bytes": 1667,
+      "sha256": "58af3dd5a076eaf90de3cd6dfc64ebda25b30594870c48f0644c96e93366c231"
+    },
+    {
+      "path": "dist/server/_next/static/isr-cache-D0bg-jI2.js",
+      "bytes": 4925,
+      "sha256": "0578f290d2589e10c66f92063615dc91e43c99a6617a4eb53ff75dc2ee5e11a5"
+    },
+    {
+      "path": "dist/server/_next/static/navigation-runtime-DIybYABz.js",
+      "bytes": 803,
+      "sha256": "bdf8e57f317aef23c6a6dfd4c037a0e6bb285cd3bcbe0a4820b98836893fb76e"
+    },
+    {
+      "path": "dist/server/_next/static/page-Bi83Ooi7.js",
+      "bytes": 343,
+      "sha256": "1a10c3de8e2b73e77ad41e0f92a6586486d70b236a1bcc68385464a32de707cc"
+    },
+    {
+      "path": "dist/server/_next/static/record-Crmk5sem.js",
+      "bytes": 4966,
+      "sha256": "a155c7fbc8fd61743bd99312bd732a1f70831895af410310ccddfbeea0f4ac8d"
+    },
+    {
+      "path": "dist/server/_next/static/rolldown-runtime-DUnMT5BP.js",
+      "bytes": 694,
+      "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75"
+    },
+    {
+      "path": "dist/server/_next/static/root-params-0DVgYa50.js",
+      "bytes": 1243,
+      "sha256": "11a5bf36cfb6cf3c20f4fbecc124da514b4f4d65b288b5ab7b4b994572bb1344"
+    },
+    {
+      "path": "dist/server/_next/static/rsc-C0u-JDoU.js",
+      "bytes": 725,
+      "sha256": "ab8a43d1d8d1e73a971a7c041e19fae50ec31e261094ddf3a4f716f9f916b7e6"
+    },
+    {
+      "path": "dist/server/_next/static/text-stream-BWrVuWsn.js",
+      "bytes": 19413,
+      "sha256": "ef30f0f7c564b7547ebe85703e0922a6607dcc12ed18cf8a05161fa6e4af6d5a"
+    },
+    {
+      "path": "dist/server/_next/static/css/index.Bh_Wo1cH.css",
+      "bytes": 33115,
+      "sha256": "aad2de24f9b73bf5a4843ff06a416f3e1f4354e8b0da5158741281d94b80ebb5"
+    },
+    {
+      "path": "dist/server/ssr/__vite_rsc_assets_manifest.js",
+      "bytes": 2317,
+      "sha256": "597509366b61c81311a6e77bfadc0f4f52f68e315c990b1313ae1f908ff8fc11"
+    },
+    {
+      "path": "dist/server/ssr/index.js",
+      "bytes": 278325,
+      "sha256": "be937dc76c7e2663a4a418149888da0c50ed391ccc0684caa21326ab2ac032eb"
+    },
+    {
+      "path": "dist/server/ssr/vinext-client-assets.js",
+      "bytes": 1470,
+      "sha256": "ef1c28ed50fef541b40e5c1bce03abc52f432df2d692944e59e274cb6431eb39"
+    },
+    {
+      "path": "dist/server/ssr/vinext-server.json",
+      "bytes": 86,
+      "sha256": "757d7ccb880064c18fc658a0934fde7a4499147652dd47c552d5b39a7274941d"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/app-prefetch-fetch-queue-DxuBK-0j.js",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/app-router-scroll--pdW6Q5q.js",
+      "bytes": 2548,
+      "sha256": "b4c38c88d38cf00f1ebe95a416565037890ebf4840be07b6f8ad626676bd5f8e"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/error-boundary-BR25YNLd.js",
+      "bytes": 5404,
+      "sha256": "765d8dc26f1a1b982b46dd4526077eaae1de0710879441fec425feec60d4b295"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/layout-segment-context-Bmoyw7Af.js",
+      "bytes": 381,
+      "sha256": "5a0b4659c33c3b067cc26d804eddb6829ef02f67949a2097efa4a8ba2327e34c"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/lunar-experience-y9XTwAAV.js",
+      "bytes": 967381,
+      "sha256": "c989cb84947f6ce6fb97b5bcc9fd4dbcf1bd7f4bd17a0e3aaf0f94990c9f508c"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/static.edge-CKJjMt3N.js",
+      "bytes": 168,
+      "sha256": "9aa4706e79212b5ce4072eb3d7600afd525dc33bf2f7a66f64a94ffbc9fd7149"
+    },
+    {
+      "path": "dist/server/ssr/_next/static/streamed-icons-BZpLCcmq.js",
+      "bytes": 691,
+      "sha256": "66718795c8b508966592a01dd32c2f35c985b4735ea87ad7d0e4cd722e1770ac"
+    },
+    {
+      "path": "dist/server/.vite/manifest.json",
+      "bytes": 8209,
+      "sha256": "a6027816492fb2dd22cc30a31cbda33f1fccc487eb8a5a607e977dc3e82b6250"
+    },
+    {
+      "path": "dist/.openai/hosting.json",
+      "bytes": 31,
+      "sha256": "d532abb65cf9ae20634b464d954cb4a08a0de9f3cd3cdf7f9c3ec8948826d947"
+    },
+    {
+      "path": "dist/client/.assetsignore",
+      "bytes": 30,
+      "sha256": "14ce8d5101f6d8f172242053466d44f5e2cd622dee81db53c14bd445c25d1942"
+    },
+    {
+      "path": "dist/client/_headers",
+      "bytes": 131,
+      "sha256": "2148fb62669525f5091532d36d4a48a8da95b08a5a797bacde75d2fe981351bb"
+    },
+    {
+      "path": "dist/client/favicon.svg",
+      "bytes": 451,
+      "sha256": "935e7eeb6d88513f112297b6353f90639ca51096a1c3cfcdf3617ece073ee5bf"
+    },
+    {
+      "path": "dist/client/vinext-client-entry-manifest.json",
+      "bytes": 65,
+      "sha256": "5ee38b9628acd8e0750789022e506ddc2a64a3b02e1310365e3126f8f2a67f68"
+    },
+    {
+      "path": "dist/client/_next/static/css/index.Bh_Wo1cH.css",
+      "bytes": 33115,
+      "sha256": "aad2de24f9b73bf5a4843ff06a416f3e1f4354e8b0da5158741281d94b80ebb5"
+    },
+    {
+      "path": "dist/client/_next/static/f0c450cb-e5ff-4753-9b14-b4d94e5f42b0/_buildManifest.js",
+      "bytes": 159,
+      "sha256": "47f02b34be6dc481257b6efce4c19e19111f37ef5c437f8ffed44f0da97fa9bb"
+    },
+    {
+      "path": "dist/client/_next/static/f0c450cb-e5ff-4753-9b14-b4d94e5f42b0/_ssgManifest.js",
+      "bytes": 76,
+      "sha256": "653f3e53e89b4f8548ff86c19e92bb3c6b84b6be7485a320b1e00893ed877479"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2",
+      "bytes": 16540,
+      "sha256": "58a6b173d5ca1dec92166ea3c6cb1a84a4144556d10928ac14e8e6b40e4787bd"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2",
+      "bytes": 7968,
+      "sha256": "f689f638f29fff460a2d5749edb5d5c38d7bef0389f32032d871f23fc6ebb008"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2",
+      "bytes": 14900,
+      "sha256": "6129fc8571c3e0cb0a4c41f5160c974a843b055009dc4ad8858bd808e18a2d86"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2",
+      "bytes": 29288,
+      "sha256": "9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2",
+      "bytes": 7252,
+      "sha256": "b7a545bbb08256bd809f11cfe66d88da3e22d169ea4407737b1ef0ec1ed3d791"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2",
+      "bytes": 23108,
+      "sha256": "5f3d6ad60f29d6cb708414ec6887163d63bf197377ef5417d2483ff31ace6c3b"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2",
+      "bytes": 5892,
+      "sha256": "d67e4a94ba498635f764ddca7d1ec4271f5642f032eb24b426764480f66f8497"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2",
+      "bytes": 14712,
+      "sha256": "745994b5cd950ec201b66526375f057d540847cccfc70f4f24f5f571d26d3923"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2",
+      "bytes": 12872,
+      "sha256": "75b3bedbebc35f347c0ae3b416aa871941555357e7b0f83767eb5987875589ed"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2",
+      "bytes": 7728,
+      "sha256": "16e1d48b6dd29eb240aec5db36184eb182933c082cd43de7f35af686d58087d2"
+    },
+    {
+      "path": "dist/client/_next/static/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2",
+      "bytes": 6204,
+      "sha256": "e27f657e38d52887baa3b6b2f812bef93dfdd356f0810e40edd4ee284cc7e9f6"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/app-route-prefetch-policy-CC2pbC2Z.js",
+      "bytes": 937,
+      "sha256": "c2b4606f2f1648519a88686474e3a200b27c0f5d79f1b5cfc39e9ccf4d66e7e8"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/framework-BVgzrtAD.js",
+      "bytes": 190154,
+      "sha256": "4ead67b19c771ab79f59a09d40b54e229ff162b20035c83b18d41c6890e7e9f7"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/index-BHXaATBO.js",
+      "bytes": 192325,
+      "sha256": "2d52c99772588b0f47349d337c65f1fc1071576af410613b3f29265775306c25"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/layout-segment-context-BUYZRYWj.js",
+      "bytes": 494,
+      "sha256": "6ff863fde014c7385f44a04239700e74535687ce21f1c8bc5167ff822e5723aa"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/lunar-experience-L2T0_Mb6.js",
+      "bytes": 966487,
+      "sha256": "191f3a738a3bee5dcb9f520daabe5128d599bf3be3a64c24b275d75a02ad9322"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/rolldown-runtime-C60lm6uB.js",
+      "bytes": 694,
+      "sha256": "5db5ba82eef00d1dee7e86e663098c9427d01183a88d357437daff295aec3e75"
+    },
+    {
+      "path": "dist/client/_next/static/chunks/streamed-icons-Bqpxntp6.js",
+      "bytes": 772,
+      "sha256": "4c8048e5ace29c02ccf23ef631ad78aab65f4260785d8be7b09d2c22a9e8c66a"
+    },
+    {
+      "path": "dist/client/.vite/manifest.json",
+      "bytes": 2337,
+      "sha256": "0bcc1587831bc70243cbe28a7e7e237c79bb2c3eb72853a6ae2f14f7861018e7"
+    },
+    {
+      "path": ".vinext/dev/lock.json",
+      "bytes": 184,
+      "sha256": "cff9617855d227ad444f0c2eb47c1360720cd42f1eddf4acbfe59a7adfc712c2"
+    },
+    {
+      "path": ".vinext/fonts/geist-8ac0455e797f/geist-001175b1.woff2",
+      "bytes": 16540,
+      "sha256": "58a6b173d5ca1dec92166ea3c6cb1a84a4144556d10928ac14e8e6b40e4787bd"
+    },
+    {
+      "path": ".vinext/fonts/geist-8ac0455e797f/geist-52306abf.woff2",
+      "bytes": 7968,
+      "sha256": "f689f638f29fff460a2d5749edb5d5c38d7bef0389f32032d871f23fc6ebb008"
+    },
+    {
+      "path": ".vinext/fonts/geist-8ac0455e797f/geist-875ccdd4.woff2",
+      "bytes": 14900,
+      "sha256": "6129fc8571c3e0cb0a4c41f5160c974a843b055009dc4ad8858bd808e18a2d86"
+    },
+    {
+      "path": ".vinext/fonts/geist-8ac0455e797f/geist-98bbbccb.woff2",
+      "bytes": 29288,
+      "sha256": "9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608"
+    },
+    {
+      "path": ".vinext/fonts/geist-8ac0455e797f/geist-ff2310f5.woff2",
+      "bytes": 7252,
+      "sha256": "b7a545bbb08256bd809f11cfe66d88da3e22d169ea4407737b1ef0ec1ed3d791"
+    },
+    {
+      "path": ".vinext/fonts/geist-8ac0455e797f/style.css",
+      "bytes": 1984,
+      "sha256": "7a5b5efc1d3b626b933e83ad8c7cc5f7b3393f6b40b1d09955f09d6d999507eb"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2",
+      "bytes": 23108,
+      "sha256": "5f3d6ad60f29d6cb708414ec6887163d63bf197377ef5417d2483ff31ace6c3b"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2",
+      "bytes": 5892,
+      "sha256": "d67e4a94ba498635f764ddca7d1ec4271f5642f032eb24b426764480f66f8497"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/geist-mono-44745446.woff2",
+      "bytes": 14712,
+      "sha256": "745994b5cd950ec201b66526375f057d540847cccfc70f4f24f5f571d26d3923"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2",
+      "bytes": 12872,
+      "sha256": "75b3bedbebc35f347c0ae3b416aa871941555357e7b0f83767eb5987875589ed"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2",
+      "bytes": 7728,
+      "sha256": "16e1d48b6dd29eb240aec5db36184eb182933c082cd43de7f35af686d58087d2"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2",
+      "bytes": 6204,
+      "sha256": "e27f657e38d52887baa3b6b2f812bef93dfdd356f0810e40edd4ee284cc7e9f6"
+    },
+    {
+      "path": ".vinext/fonts/geist-mono-00e989178794/style.css",
+      "bytes": 2400,
+      "sha256": "776a62283d0a40cef478ee2d8e20ec4ca98d6e68013e913c34fa1ca07afc7662"
+    },
+    {
+      "path": "components/lunar-experience.tsx",
+      "bytes": 32294,
+      "sha256": "9c89fe06a60e1c8ad263114c834286e01eb63bd207d06931ef49869fb4c085a0"
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "bytes": 3247,
+      "sha256": "081d2a1cb4f3aec636a6894d9eff4e90d476d5db85b82d0399c1f4d18517112e"
+    },
+    {
+      "path": "public/favicon.svg",
+      "bytes": 451,
+      "sha256": "935e7eeb6d88513f112297b6353f90639ca51096a1c3cfcdf3617ece073ee5bf"
+    },
+    {
+      "path": "lib/utils.ts",
+      "bytes": 169,
+      "sha256": "9304a861c8673bee09e0f12de31773abbde503b02e59dfd74763ddec2e37cf05"
+    },
+    {
+      "path": ".openai/hosting.json",
+      "bytes": 31,
+      "sha256": "d532abb65cf9ae20634b464d954cb4a08a0de9f3cd3cdf7f9c3ec8948826d947"
+    }
+  ],
+  "staticPackaging": {
+    "script": "scripts/build-lunar-rover.mjs",
+    "reason": "Original React / Three.js / Vinext project has no standalone HTML; static mount adapter bundles original client scene.",
+    "changes": [
+      "Add HTML and React mount entry",
+      "Bundle original client components and dependencies using installed esbuild",
+      "Reuse original compiled global CSS byte for byte",
+      "Copy original cached fonts and adjust font CSS URLs to relative paths"
+    ],
+    "unchanged": [
+      "Original source files, generated geometry, scene, motion and controls",
+      "Original build outputs, dependencies and intermediate files"
+    ],
+    "entry": "./works/lunar-rover/gpt5-6-sol-max/import-01/index.html",
+    "resultDirectory": "results/lunar-rover/gpt5-6-sol-max/import-01"
+  },
+  "resultFiles": [
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/app.js",
+      "bytes": 1171993,
+      "sha256": "46ab4cab2f5101568557573c08aba423ea73dd8fcffc8a309997b2faab890303"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/app.js.LEGAL.txt",
+      "bytes": 4506,
+      "sha256": "b9c6f27c66b83887896f001d9e3c13d2b47e7c6ca821206a7eb6b9106c063182"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-001175b1.woff2",
+      "bytes": 16540,
+      "sha256": "58a6b173d5ca1dec92166ea3c6cb1a84a4144556d10928ac14e8e6b40e4787bd"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-52306abf.woff2",
+      "bytes": 7968,
+      "sha256": "f689f638f29fff460a2d5749edb5d5c38d7bef0389f32032d871f23fc6ebb008"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-875ccdd4.woff2",
+      "bytes": 14900,
+      "sha256": "6129fc8571c3e0cb0a4c41f5160c974a843b055009dc4ad8858bd808e18a2d86"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-98bbbccb.woff2",
+      "bytes": 29288,
+      "sha256": "9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-ff2310f5.woff2",
+      "bytes": 7252,
+      "sha256": "b7a545bbb08256bd809f11cfe66d88da3e22d169ea4407737b1ef0ec1ed3d791"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2",
+      "bytes": 23108,
+      "sha256": "5f3d6ad60f29d6cb708414ec6887163d63bf197377ef5417d2483ff31ace6c3b"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2",
+      "bytes": 5892,
+      "sha256": "d67e4a94ba498635f764ddca7d1ec4271f5642f032eb24b426764480f66f8497"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-44745446.woff2",
+      "bytes": 14712,
+      "sha256": "745994b5cd950ec201b66526375f057d540847cccfc70f4f24f5f571d26d3923"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2",
+      "bytes": 12872,
+      "sha256": "75b3bedbebc35f347c0ae3b416aa871941555357e7b0f83767eb5987875589ed"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2",
+      "bytes": 7728,
+      "sha256": "16e1d48b6dd29eb240aec5db36184eb182933c082cd43de7f35af686d58087d2"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2",
+      "bytes": 6204,
+      "sha256": "e27f657e38d52887baa3b6b2f812bef93dfdd356f0810e40edd4ee284cc7e9f6"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts.css",
+      "bytes": 3947,
+      "sha256": "d424cb1f0082f49e69a3e55192c2a54c94062e42400f10b66dfe7fb99fdf3d69"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/assets/style.css",
+      "bytes": 33115,
+      "sha256": "aad2de24f9b73bf5a4843ff06a416f3e1f4354e8b0da5158741281d94b80ebb5"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/cover.jpg",
+      "bytes": 83164,
+      "sha256": "21f1787eea21a67dea7c535696f9ed6ffc4fc4c99114ad629181f248e7f95369"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/favicon.svg",
+      "bytes": 451,
+      "sha256": "935e7eeb6d88513f112297b6353f90639ca51096a1c3cfcdf3617ece073ee5bf"
+    },
+    {
+      "path": "results/lunar-rover/gpt5-6-sol-max/import-01/index.html",
+      "bytes": 590,
+      "sha256": "4aaa34b72e48b954fbe8dd2d82811353d05479192dc7afe3f05a82a3f731b2b4"
+    }
+  ],
+  "cover": {
+    "path": "results/lunar-rover/gpt5-6-sol-max/import-01/cover.jpg",
+    "sourceUrl": "http://127.0.0.1:8776/works/lunar-rover/gpt5-6-sol-max/import-01/index.html",
+    "method": "Actual default 3D scene browser screenshot",
+    "width": 1280,
+    "height": 720
+  }
+}

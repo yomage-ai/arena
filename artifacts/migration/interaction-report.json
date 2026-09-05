@@ -1,0 +1,36 @@
+{
+  "errors": [],
+  "offlineAudio": true,
+  "lowCamera": {
+    "yaw": 0.7948967157973199,
+    "pitch": 0.055293693417899,
+    "distance": 1310.4426293324375,
+    "height": 184.8551913535218
+  },
+  "zoom": 1053.2596584984697,
+  "mobile": {
+    "rotated": true,
+    "birds": 22,
+    "dpr": 3,
+    "distanceBefore": 1435.7856822250185,
+    "distanceAfter": 879.0752023866637
+  },
+  "audio": [
+    {
+      "event": "start",
+      "when": 0.13333333333333333,
+      "now": 0.05333333333333334,
+      "duration": 48
+    },
+    {
+      "event": "ended",
+      "now": 48.138666666666666
+    },
+    {
+      "event": "start",
+      "when": 50.538666666666664,
+      "now": 48.138666666666666,
+      "duration": 48
+    }
+  ]
+}

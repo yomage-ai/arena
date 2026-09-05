@@ -1,0 +1,150 @@
+Bundled license information:
+
+scheduler/cjs/scheduler.production.js:
+  /**
+   * @license React
+   * scheduler.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+react/cjs/react.production.js:
+  /**
+   * @license React
+   * react.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+react-dom/cjs/react-dom.production.js:
+  /**
+   * @license React
+   * react-dom.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+react-dom/cjs/react-dom-client.production.js:
+  /**
+   * @license React
+   * react-dom-client.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+react/cjs/react-jsx-runtime.production.js:
+  /**
+   * @license React
+   * react-jsx-runtime.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+use-sync-external-store/cjs/use-sync-external-store-shim.production.js:
+  /**
+   * @license React
+   * use-sync-external-store-shim.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.production.js:
+  /**
+   * @license React
+   * use-sync-external-store-shim/with-selector.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+three/build/three.core.js:
+three/build/three.module.js:
+  /**
+   * @license
+   * Copyright 2010-2026 Three.js Authors
+   * SPDX-License-Identifier: MIT
+   */
+
+@react-three/fiber/dist/events-156d8d12.esm.js:
+  /**
+   * @license React
+   * react-reconciler-constants.production.js
+   *
+   * Copyright (c) Meta Platforms, Inc. and affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+  /**
+  * @license React
+  * react-reconciler.production.js
+  *
+  * Copyright (c) Meta Platforms, Inc. and affiliates.
+  *
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  */
+  /**
+  * @license React
+  * react-reconciler.development.js
+  *
+  * Copyright (c) Meta Platforms, Inc. and affiliates.
+  *
+  * This source code is licensed under the MIT license found in the
+  * LICENSE file in the root directory of this source tree.
+  */
+
+camera-controls/dist/camera-controls.module.js:
+  /*!
+   * camera-controls
+   * https://github.com/yomotsu/camera-controls
+   * (c) 2017 @yomotsu
+   * Released under the MIT License.
+   */
+
+lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs:
+lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs:
+lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs:
+lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs:
+lucide-react/dist/esm/defaultAttributes.mjs:
+lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs:
+lucide-react/dist/esm/context.mjs:
+lucide-react/dist/esm/Icon.mjs:
+lucide-react/dist/esm/createLucideIcon.mjs:
+lucide-react/dist/esm/icons/gauge.mjs:
+lucide-react/dist/esm/icons/mouse.mjs:
+lucide-react/dist/esm/icons/move-3d.mjs:
+lucide-react/dist/esm/icons/pause.mjs:
+lucide-react/dist/esm/icons/play.mjs:
+lucide-react/dist/esm/icons/rotate-3d.mjs:
+lucide-react/dist/esm/icons/rotate-ccw.mjs:
+lucide-react/dist/esm/icons/satellite.mjs:
+lucide-react/dist/esm/icons/sun.mjs:
+lucide-react/dist/esm/icons/zoom-in.mjs:
+lucide-react/dist/esm/lucide-react.mjs:
+  /**
+   * @license lucide-react v1.31.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   */

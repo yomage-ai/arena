@@ -1,0 +1,11 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const path=require('node:path');
+const built=path.join(__dirname,'../artifacts/builds/pvz/index.html');
+const html=fs.readFileSync(fs.existsSync(built)?built:path.join(__dirname,'../results/pvz/gpt6-astra-xhigh/import-01/index.html'),'utf8');
+test('deliverable has exactly one inline script and stylesheet, with no build placeholders',()=>{assert.equal((html.match(/<script>/g)||[]).length,1);assert.equal((html.match(/<style>/g)||[]).length,1);assert.ok(!html.includes('INLINE_CSS'));assert.ok(!html.includes('INLINE_JS'));assert.ok(!/<(?:script|link|img)[^>]+(?:src|href)=["'](?:https?:|\.\/|\/)/i.test(html));});
+test('compiled JavaScript parses as a single classic script',()=>{const js=html.match(/<script>([\s\S]*)<\/script>/)[1];assert.doesNotThrow(()=>new vm.Script(js));});
+test('game has no fetch, module import, CDN, WebSocket, or remote font dependency',()=>{assert.ok(!/\bfetch\s*\(|\bimport\s*\(|new\s+WebSocket|@import\s|https?:\/\//.test(html.replaceAll('http://www.w3.org/2000/svg','')));});
+test('every source file remains and build output includes each source',()=>{for(const name of ['engine.js','art.js','audio.js','app.js']){const source=fs.readFileSync(path.join(__dirname,'../src',name),'utf8');assert.ok(html.includes(source),name);}assert.ok(fs.existsSync(path.join(__dirname,'../src/style.css')));assert.ok(fs.existsSync(path.join(__dirname,'../src/index.html')));});

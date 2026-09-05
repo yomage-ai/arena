@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eee9d7">
+<meta name="description" content="一个可以离线游玩的手绘植物大战僵尸 HTML 游戏。收集阳光、种下植物、守卫庭院。">
+<title>植物大战僵尸 · 晴日庭院</title>
+<style>/* INLINE_CSS */</style>
+</head>
+<body>
+<div class="page-grain" aria-hidden="true"></div>
+<main class="app">
+ <header class="masthead">
+  <div class="brand"><canvas id="brand-art" width="110" height="110" aria-hidden="true"></canvas><div><div class="eyebrow">A LITTLE SUN. A LOT OF COURAGE.</div><h1>植物<span>大战</span>僵尸<sup>晴日庭院</sup></h1></div></div>
+  <div class="header-right"><span class="day-tag"><i></i> 今天也是守护草坪的好日子</span><button class="text-button" id="almanac-btn" title="植物与僵尸图鉴"><span class="icon" data-icon="book"></span>庭院图鉴</button><button class="icon-button" id="settings-btn" aria-label="游戏设置" data-icon="settings"></button><button class="icon-button" id="fullscreen-btn" aria-label="切换全屏" data-icon="fullscreen"></button></div>
+ </header>
+ <section class="game-shell" aria-label="植物大战僵尸游戏">
+  <div class="seedbank">
+   <div class="sun-bank" aria-label="当前阳光"><canvas id="sun-art" width="110" height="110" aria-hidden="true"></canvas><div><span class="micro-label">阳光储备</span><strong id="sun-value">250</strong></div></div>
+   <div class="seed-divider"></div><div class="seed-packets" id="seed-packets" role="group" aria-label="植物种子，快捷键 1 到 8"></div>
+   <button id="shovel-btn" class="shovel-button" aria-label="铲子，快捷键 E" aria-pressed="false"><svg viewBox="0 0 56 66" aria-hidden="true"><path d="M35 5l13 8-9 13-7-4z" fill="none" stroke="#785833" stroke-width="5" stroke-linejoin="round"/><path d="M36 24L22 45" stroke="#9a7241" stroke-width="7"/><path d="M15 37l17 11-12 13Q3 64 6 48z" fill="#aab9ad" stroke="#566c5e" stroke-width="3"/><path d="M12 51l6 4" stroke="#dfe6d4" stroke-width="3"/></svg><span>铲子 <kbd>E</kbd></span></button>
+   <div class="chapter-chip"><span>ADVENTURE</span><strong id="chapter-value">晴日庭院</strong><small id="chapter-sub">第 1 天 · 白昼</small></div>
+  </div>
+  <div class="stage" id="stage">
+   <canvas id="game" width="1600" height="760" aria-label="五行九列草坪。选择植物后点击空地种植，点击阳光收集。" tabindex="0"></canvas>
+   <div class="stage-caption"><span class="weather-dot"></span><span>晴日庭院</span><b>☀</b><span>26°</span></div>
+   <div id="selection-hint" class="selection-hint" hidden></div>
+   <div id="wave-banner" class="wave-banner" aria-live="polite"></div>
+   <div class="lobby" id="lobby">
+    <div class="lobby-kicker"><span></span> YOUR LAWN. YOUR RULES. <span></span></div>
+    <h2>一小片草坪，一场大冒险。</h2>
+    <p>种下你的植物小队，把不速之客挡在家门外。</p>
+    <div class="mode-switch" role="group" aria-label="选择游戏模式"><button class="active" id="adventure-mode" aria-pressed="true">冒险模式 <span>6 波挑战</span></button><button id="endless-mode" aria-pressed="false">无尽模式 <span>守到最后</span></button></div>
+    <div class="lobby-actions"><button class="primary-button" id="start-btn">开始守卫 <span>→</span></button><button class="resume-button" id="resume-btn" hidden>继续上次</button><button class="how-button" id="how-btn" aria-label="查看玩法说明">?</button></div>
+    <div class="lobby-tip">一颗向日葵，往往是美好开局的第一步。</div>
+   </div>
+   <div class="tutorial-toast" id="tutorial-toast" hidden><span data-icon="sprout" class="icon"></span><span id="tutorial-text">先种下向日葵，让阳光源源不断。</span><button id="dismiss-tutorial" aria-label="关闭提示">×</button></div>
+   <div class="toast" id="toast" role="status"></div>
+   <div class="plant-tooltip" id="plant-tooltip" hidden></div>
+  </div>
+  <footer class="game-hud">
+   <div class="status-group"><span class="live-dot" id="status-dot"></span><strong id="game-status">庭院已就绪</strong><span class="hud-separator">/</span><span id="kill-stat">小心，它们想吃掉你的脑子。</span></div>
+   <div class="wave-progress"><span id="wave-label">进攻波次</span><div class="progress-track" id="wave-track"><div id="wave-fill"></div><span class="wave-flag">⚑</span><span class="wave-flag">⚑</span></div><strong id="wave-count">0 <span>/ 6</span></strong></div>
+   <div class="play-controls"><time id="game-time">00:00</time><button id="speed-btn" title="切换游戏速度">1×</button><button id="sound-btn" aria-label="开启声音" data-icon="mute"></button><button id="pause-btn" aria-label="暂停游戏，空格键" data-icon="pause" disabled></button></div>
+  </footer>
+ </section>
+ <div class="underbar"><div><span class="small-leaf">❧</span> 保持阳光，保持战斗。</div><div class="keyboard-tips"><span><kbd>1–8</kbd> 选择植物</span><span><kbd>E</kbd> 铲子</span><span><kbd>Space</kbd> 暂停</span><span><kbd>Esc</kbd> 取消</span></div><span class="edition">THE SUNNY YARD EDITION · FAN MADE</span></div>
+</main>
+<div class="modal-backdrop" id="modal-backdrop" hidden><section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close" id="modal-close" aria-label="关闭弹窗">×</button><div id="modal-content"></div></section></div>
+<script>/* INLINE_JS */</script>
+</body>
+</html>

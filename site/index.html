@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="在AI 试验场体验不同 AI 制作的 HTML 作品，查看提示词、模型与生成记录。">
+  <title>AI 试验场 · AI 作品测评</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/style.css">
+  <script type="module" src="./assets/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到作品</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="./" aria-label="AI 试验场首页"><span class="brand-symbol" aria-hidden="true">AI</span><span>AI 试验场<small>AI ARENA</small></span></a>
+      <div class="project-nav-head"><span>测评项目</span><span id="project-total"></span></div>
+      <nav id="project-nav" class="project-nav" aria-label="选择测评项目"></nav>
+      <div class="sidebar-bottom"><button class="rules-button" type="button" data-open-rules><span aria-hidden="true">◎</span> 测评规则 <span aria-hidden="true">↗</span></button><p>相同提示词，不同的解法。</p></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span>作品集 <span class="breadcrumb-divider">/</span> <span id="breadcrumb">浏览作品</span></span><button class="top-rules" type="button" data-open-rules>测评规则 ↗</button><span class="collection-label">HTML COLLECTION</span></header>
+      <main id="main" tabindex="-1">
+        <div id="notice" class="notice" role="status" hidden></div>
+        <div id="loading" class="load-state" role="status"><span class="loading-dot" aria-hidden="true"></span>正在加载作品…</div>
+        <div id="load-error" class="load-state error-state" hidden><h1>作品暂时无法加载</h1><p id="load-error-message">请检查网络后重试。</p><button id="retry" class="primary-button" type="button">重新加载</button></div>
+        <div id="project-content" hidden>
+          <section class="project-intro" aria-labelledby="project-title"><div><div class="eyebrow"><span id="project-number">PROJECT 01</span><span class="eyebrow-line" aria-hidden="true"></span><span id="project-category"></span></div><h1 id="project-title"></h1><p id="project-description"></p><ul id="project-focus" class="focus-tags" aria-label="建议考察点"></ul></div><div class="project-counter"><strong id="available-count">0</strong><span>份可体验作品</span></div></section>
+          <section class="prompt-strip" aria-label="当前项目提示词"><span class="prompt-icon" aria-hidden="true">“</span><div><strong>同题提示词</strong><span id="prompt-summary"></span></div><button id="open-prompt" class="secondary-button" type="button">查看提示词 <span aria-hidden="true">↗</span></button></section>
+          <section class="works-section" aria-labelledby="works-title"><div class="section-heading"><h2 id="works-title">AI 生成结果 <span id="model-count"></span></h2><span class="section-hint">选择一份作品，直接体验</span></div><div id="works-grid" class="works-grid"></div><div id="empty-state" class="empty-state" hidden><div class="empty-glyph" aria-hidden="true">＋</div><h2>这道题，还在等待第一份作品</h2><p>作品收录后，你可以在这里选择不同 AI 的生成结果。</p><button id="browse-available" class="primary-button" type="button">看看已有作品 <span aria-hidden="true">→</span></button></div></section>
+          <div class="viewing-note"><span aria-hidden="true">↗</span><p>作品在新标签页打开，回到这里可切换其他结果。<span id="device-note"></span></p></div>
+        </div>
+        <noscript>
+          <div class="notice">
+            <p>启用 JavaScript 后可切换项目、查看记录，也可直接打开已有作品：</p>
+            <p><a href="./works/migration/gpt6-astra-xhigh/import-01/index.html" target="_blank" rel="noopener">候鸟迁徙（GPT6-Astra-xhigh）↗</a> · <a href="./works/migration/gpt5-6-sol-max/import-01/index.html" target="_blank" rel="noopener">候鸟迁徙（GPT5.6-sol-max）↗</a></p>
+            <p><a href="./works/pvz/gpt6-astra-xhigh/import-01/index.html" target="_blank" rel="noopener">植物大战僵尸（GPT6-Astra-xhigh）↗</a> · <a href="./works/pvz/gpt5-6-sol-max/import-01/index.html" target="_blank" rel="noopener">月光花园守卫战（GPT5.6-sol-max）↗</a> · <a href="./works/bicycle/gpt6-astra-xhigh/import-01/index.html" target="_blank" rel="noopener">鹈鹕骑自行车（GPT6-Astra-xhigh）↗</a> · <a href="./works/bicycle/gpt5-6-sol-max/import-01/index.html" target="_blank" rel="noopener">鹈鹕骑自行车（GPT5.6-sol-max）↗</a></p>
+            <p><a href="./works/lunar-rover/gpt6-astra-xhigh/import-01/index.html" target="_blank" rel="noopener">SELENE · 月面漫游（GPT6-Astra-xhigh）↗</a> · <a href="./works/lunar-rover/gpt5-6-sol-max/import-01/index.html" target="_blank" rel="noopener">月面巡视器 · LUNA-07（GPT5.6-sol-max）↗</a></p>
+          </div>
+        </noscript>
+      </main>
+      <footer><span>AI 试验场 <span aria-hidden="true">/</span> 体验每一种可能</span><span id="collection-total">作品持续收录中</span></footer>
+    </div>
+  </div>
+  <dialog id="details-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><span id="dialog-eyebrow" class="eyebrow">生成记录</span><button id="close-dialog" class="close-button" type="button" aria-label="关闭详情">×</button></div><h2 id="dialog-title"></h2><div id="dialog-body"></div><div id="dialog-status" role="status" class="dialog-status"></div></dialog>
+</body>
+</html>

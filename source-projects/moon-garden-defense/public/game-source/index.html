@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#120d2c">
+  <meta name="description" content="种下奇妙植物，守护月光下的花园。">
+  <title>月光花园守卫战</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-shell" id="gameShell">
+    <header class="game-header">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"><span>月</span></div>
+        <div>
+          <p class="eyebrow" id="levelLabel">第一夜 · 后院保卫战</p>
+          <h1>月光花园守卫战</h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="sun-counter" aria-label="阳光数量"><span class="sprite sun"></span><strong id="sunCount">175</strong></div>
+        <button class="round-button" id="speedButton" type="button" aria-label="切换游戏速度">1×</button>
+        <button class="round-button" id="pauseButton" type="button" aria-label="暂停游戏">Ⅱ</button>
+        <button class="round-button" id="soundButton" type="button" aria-label="关闭声音">♪</button>
+      </div>
+    </header>
+
+    <section class="game-stage" aria-label="游戏战场">
+      <aside class="seed-bank" id="seedBank" aria-label="植物卡牌"></aside>
+      <div class="battlefield-wrap">
+        <div class="sky-strip" aria-hidden="true">
+          <div class="stars"></div><i class="moon"></i><i class="cloud c1"></i><i class="cloud c2"></i>
+          <div class="far-hills"></div><div class="fence"></div>
+        </div>
+        <div class="lawn-area" id="lawnArea">
+          <div class="mower-layer" id="mowerLayer" aria-hidden="true"></div>
+          <div class="lawn-grid" id="lawnGrid" role="grid" aria-label="五行九列草坪"></div>
+          <div class="entity-layer" id="entityLayer" aria-hidden="true"></div>
+          <div class="sun-layer" id="sunLayer"></div>
+          <div class="fx-layer" id="fxLayer" aria-hidden="true"></div>
+        </div>
+        <div class="wave-meter">
+          <span id="waveLabel">月色正静…</span>
+          <div class="meter-track"><i id="waveProgress"></i><b class="flag f1">⚑</b><b class="flag f2">⚑</b><b class="flag f3">☠</b></div>
+          <strong id="timerLabel">准备</strong>
+        </div>
+      </div>
+    </section>
+
+    <footer class="game-footer">
+      <div class="hint" id="gameHint"><kbd>1—6</kbd> 选植物 · <kbd>空格</kbd> 暂停 · 右键或双击铲除</div>
+      <div class="score">击退 <strong id="killCount">0</strong>　·　得分 <strong id="scoreCount">0</strong></div>
+    </footer>
+
+    <section class="start-overlay" id="startOverlay" aria-labelledby="overlayTitle">
+      <div class="overlay-card">
+        <p class="eyebrow">THE MOON GARDEN</p>
+        <h2 id="overlayTitle">今夜，花园需要你。</h2>
+        <p id="overlayCopy">种下植物，收集阳光，在三波怪客踏进门廊前守住五条草坪。</p>
+        <div class="feature-row" aria-label="游戏特色">
+          <span><b>6</b> 种植物</span><span><b>3</b> 波进攻</span><span><b>5</b> 辆草坪车</span>
+        </div>
+        <button class="primary-button" id="startButton" type="button"><span>开始守夜</span><i>→</i></button>
+        <small>原创美术与玩法致敬经典塔防游戏</small>
+      </div>
+    </section>
+
+    <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+    <div class="rotate-notice">横屏体验更佳</div>
+  </main>
+  <script src="game.js" defer></script>
+</body>
+</html>

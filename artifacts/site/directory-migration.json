@@ -1,0 +1,47 @@
+[
+  {
+    "from": "候鸟-MIGRATION.html",
+    "to": "results/migration/gpt6-astra/import-01/index.html",
+    "sha256": "603a0730f50e2bc477526663acdc616e8fd7d49a62dfaedd29d98ead37397c58"
+  },
+  {
+    "from": "植物大战僵尸.html",
+    "to": "results/pvz/gpt6-astra/import-01/index.html",
+    "sha256": "2af6638906ce5fce51fe70dc524745c63b3092a136d3b45597004788f6091e13"
+  },
+  {
+    "from": "index.html",
+    "to": "results/bicycle/gpt6-astra/import-01/index.html",
+    "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+  },
+  {
+    "from": "pelican-ride.html",
+    "to": "results/bicycle/gpt6-astra/import-01/pelican-ride.html",
+    "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+  },
+  {
+    "from": "晴日庭院-完整项目.zip",
+    "to": "artifacts/archives/晴日庭院-完整项目.zip",
+    "sha256": "8e67fe1167fe3e905e8d093a8ae1df7b53218e7dde5608ed192d436be38feca9"
+  },
+  {
+    "from": "site/assets/migration-cover.png",
+    "to": "results/migration/gpt6-astra/import-01/cover.png",
+    "sha256": "9219db38fab68edaa39346758b65819a89628801c28a414cdffd1d5783f0d34a"
+  },
+  {
+    "from": "site/assets/pvz-cover.png",
+    "to": "results/pvz/gpt6-astra/import-01/cover.png",
+    "sha256": "73227b09b451c9ed1b0e464e1749f4573829c66a563ee3590e2845785f0f27a1"
+  },
+  {
+    "from": "site/works/migration/unattributed",
+    "to": "site/works/migration/gpt6-astra",
+    "sha256": null
+  },
+  {
+    "from": "site/works/pvz/unattributed",
+    "to": "site/works/pvz/gpt6-astra",
+    "sha256": null
+  }
+]

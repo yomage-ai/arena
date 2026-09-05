@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: deliverable has exactly one inline script and stylesheet, with no build placeholders
+ok 1 - deliverable has exactly one inline script and stylesheet, with no build placeholders
+  ---
+  duration_ms: 0.896542
+  type: 'test'
+  ...
+# Subtest: compiled JavaScript parses as a single classic script
+ok 2 - compiled JavaScript parses as a single classic script
+  ---
+  duration_ms: 0.799209
+  type: 'test'
+  ...
+# Subtest: game has no fetch, module import, CDN, WebSocket, or remote font dependency
+ok 3 - game has no fetch, module import, CDN, WebSocket, or remote font dependency
+  ---
+  duration_ms: 0.206917
+  type: 'test'
+  ...
+# Subtest: every source file remains and build output includes each source
+ok 4 - every source file remains and build output includes each source
+  ---
+  duration_ms: 0.278
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 35.902833

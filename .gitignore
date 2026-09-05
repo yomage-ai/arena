@@ -1,0 +1,37 @@
+# Installed dependencies and local framework state
+node_modules/
+.next/
+.vinext/
+.wrangler/
+.vite/
+.vercel/
+dist/
+coverage/
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+
+# Machine-specific settings and credentials
+.DS_Store
+.env*
+!.env.example
+.openai/
+.codex/
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
+
+# Publish copies are reconstructed from the archived results.
+/site/works/
+/artifacts/builds/
+/artifacts/*.zip
+/artifacts/archives/
+/artifacts/site/build-info.json
+/artifacts/build-info.json
+/artifacts/migration/build-info.json
+/source-projects/*/dist-single/
+
+# Original compiled CSS and cached font files used by the two static
+# adapters are explicitly tracked as small, fixed build inputs.

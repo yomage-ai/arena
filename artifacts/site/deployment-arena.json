@@ -1,0 +1,202 @@
+{
+  "release": "20260905T151050Z",
+  "server": "ubuntu@124.221.20.152",
+  "domain": "arena.yomage.com",
+  "brand": "AI 试验场",
+  "archive": "artifacts/ai-arena-deploy.zip",
+  "archiveSha256": "f7fdab0c440e9afb9acc6dd25e99133db0b1d82e8fb48b75bcfce19b4dcb8115",
+  "files": [
+    {
+      "path": "404.html",
+      "sha256": "53c3e6d3854ff539323f14b650b9f53c8248264f2a8a6153d4eef3860e918e0d"
+    },
+    {
+      "path": "assets/app.js",
+      "sha256": "483d5d6e5e5488938cf5612f56412fcc2c5adec096c6c76830dcfc3286d7b168"
+    },
+    {
+      "path": "assets/catalog-core.mjs",
+      "sha256": "2126a9a6a781e895e2e984f42d0d7d622f407baddaf2cb80a4dcd818d656ad44"
+    },
+    {
+      "path": "assets/favicon.svg",
+      "sha256": "22b90e6929c25bc83c9eabf868fead580d3611cde748a6841de43bf4fea7dd99"
+    },
+    {
+      "path": "assets/style.css",
+      "sha256": "13e4e390e6700d93d963232eda8ad4e587987f12d28068d971afb601075406f2"
+    },
+    {
+      "path": "catalog.json",
+      "sha256": "a217c44241abe3721c6f97da1284de4f7c7830ac3e6086deeaec9d17a3ac8532"
+    },
+    {
+      "path": "index.html",
+      "sha256": "497369c30b882d175828903767a97d5f3d15540d568c79c1b6efa7f15a2d7a8a"
+    },
+    {
+      "path": "works/bicycle/gpt5-6-sol-max/import-01/cover.jpg",
+      "sha256": "a6f5f82fd899da75c9360bf0925d8bc62584baecd0a9fab3cd2159c31b231188"
+    },
+    {
+      "path": "works/bicycle/gpt5-6-sol-max/import-01/index.html",
+      "sha256": "2892d269c76b97898260d9dd83df0fbd050ba1dc8ae913097ed2fbc6e0546a0a"
+    },
+    {
+      "path": "works/bicycle/gpt6-astra-xhigh/import-01/cover.svg",
+      "sha256": "889c308fc70f65e1f8046af00cdfb4f73d1b99424da9aa29e11d66b1dffb318e"
+    },
+    {
+      "path": "works/bicycle/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+    },
+    {
+      "path": "works/bicycle/gpt6-astra-xhigh/import-01/pelican-ride.html",
+      "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/app.js",
+      "sha256": "46ab4cab2f5101568557573c08aba423ea73dd8fcffc8a309997b2faab890303"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/app.js.LEGAL.txt",
+      "sha256": "b9c6f27c66b83887896f001d9e3c13d2b47e7c6ca821206a7eb6b9106c063182"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts.css",
+      "sha256": "d424cb1f0082f49e69a3e55192c2a54c94062e42400f10b66dfe7fb99fdf3d69"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-001175b1.woff2",
+      "sha256": "58a6b173d5ca1dec92166ea3c6cb1a84a4144556d10928ac14e8e6b40e4787bd"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-52306abf.woff2",
+      "sha256": "f689f638f29fff460a2d5749edb5d5c38d7bef0389f32032d871f23fc6ebb008"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-875ccdd4.woff2",
+      "sha256": "6129fc8571c3e0cb0a4c41f5160c974a843b055009dc4ad8858bd808e18a2d86"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-98bbbccb.woff2",
+      "sha256": "9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-ff2310f5.woff2",
+      "sha256": "b7a545bbb08256bd809f11cfe66d88da3e22d169ea4407737b1ef0ec1ed3d791"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2",
+      "sha256": "5f3d6ad60f29d6cb708414ec6887163d63bf197377ef5417d2483ff31ace6c3b"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2",
+      "sha256": "d67e4a94ba498635f764ddca7d1ec4271f5642f032eb24b426764480f66f8497"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-44745446.woff2",
+      "sha256": "745994b5cd950ec201b66526375f057d540847cccfc70f4f24f5f571d26d3923"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2",
+      "sha256": "75b3bedbebc35f347c0ae3b416aa871941555357e7b0f83767eb5987875589ed"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2",
+      "sha256": "16e1d48b6dd29eb240aec5db36184eb182933c082cd43de7f35af686d58087d2"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2",
+      "sha256": "e27f657e38d52887baa3b6b2f812bef93dfdd356f0810e40edd4ee284cc7e9f6"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/style.css",
+      "sha256": "aad2de24f9b73bf5a4843ff06a416f3e1f4354e8b0da5158741281d94b80ebb5"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/cover.jpg",
+      "sha256": "21f1787eea21a67dea7c535696f9ed6ffc4fc4c99114ad629181f248e7f95369"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/favicon.svg",
+      "sha256": "935e7eeb6d88513f112297b6353f90639ca51096a1c3cfcdf3617ece073ee5bf"
+    },
+    {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/index.html",
+      "sha256": "4aaa34b72e48b954fbe8dd2d82811353d05479192dc7afe3f05a82a3f731b2b4"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-astra-xhigh/import-01/assets/app.js",
+      "sha256": "7b40fc37bb68f0f6f5352ceecbdb41953cc0484604f33cdc5590356a91591691"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-astra-xhigh/import-01/assets/app.js.LEGAL.txt",
+      "sha256": "9d92a11f056beff4ed389f6f27afbfae8d76d4fddf5374b923eb2b0728dbf852"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-astra-xhigh/import-01/assets/style.css",
+      "sha256": "a54899fb7b435d74ada8319cee67b3f518d2e6828a12b501843f6321afc09d37"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-astra-xhigh/import-01/cover.jpg",
+      "sha256": "8c0bc62838cf2cecc2c01daed37935780b8a6b9d260334c2f120c2446e60007b"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-astra-xhigh/import-01/favicon.svg",
+      "sha256": "fb5a12bee7332fd7f0c5023b3d72a865c1c9677fa644688a4353386bf1fa9ce6"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "cc51e57185a77a4cfe7c2ac1345e95a0b2100cc97eb41c6fbd8117d5e77d33af"
+    },
+    {
+      "path": "works/migration/gpt5-6-sol-max/import-01/cover.jpg",
+      "sha256": "eef78f6837250fc61b314facb655d402fa6e872f9c15e33e65f520a64fc654e7"
+    },
+    {
+      "path": "works/migration/gpt5-6-sol-max/import-01/index.html",
+      "sha256": "2a342f057af559c6ca90d2689f26bc33d7a4734a594418abcec90ca5ab15a704"
+    },
+    {
+      "path": "works/migration/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "9219db38fab68edaa39346758b65819a89628801c28a414cdffd1d5783f0d34a"
+    },
+    {
+      "path": "works/migration/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "603a0730f50e2bc477526663acdc616e8fd7d49a62dfaedd29d98ead37397c58"
+    },
+    {
+      "path": "works/pvz/gpt5-6-sol-max/import-01/cover.jpg",
+      "sha256": "cfed1013de0c4b621adee37ce48596b6bafa454ffdaebea0946764c0f4b213a3"
+    },
+    {
+      "path": "works/pvz/gpt5-6-sol-max/import-01/index.html",
+      "sha256": "d47b8c0a7b453273a89f4635519d76a419c72e3c2fd4159d994e17abbdd65f2f"
+    },
+    {
+      "path": "works/pvz/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "73227b09b451c9ed1b0e464e1749f4573829c66a563ee3590e2845785f0f27a1"
+    },
+    {
+      "path": "works/pvz/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "2af6638906ce5fce51fe70dc524745c63b3092a136d3b45597004788f6091e13"
+    }
+  ],
+  "deployment": {
+    "status": "live",
+    "verifiedAt": "2026-09-05T15:22:54.503139+00:00",
+    "url": "https://arena.yomage.com/",
+    "root": "/var/www/arena.yomage.com/current",
+    "nginxConfig": "/etc/nginx/sites-available/arena.yomage.com",
+    "dnsA": "124.221.20.152",
+    "https": true,
+    "httpRedirect": 301,
+    "certificateExpires": "2026-12-04",
+    "renewalTimer": "certbot.timer",
+    "renewalDryRun": "passed",
+    "verifiedHttpFiles": 44,
+    "siteTestsPassed": 9,
+    "screenshot": "artifacts/site/arena-live.jpg"
+  }
+}

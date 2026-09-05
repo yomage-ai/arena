@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+
+* { box-sizing: border-box; }
+html, body, .site-frame { margin: 0; width: 100%; min-height: 100%; background: #0b071a; }
+body { overflow: hidden; }
+.site-frame { height: 100svh; }
+.game-frame { display: block; width: 100%; height: 100%; border: 0; background: #0b071a; }

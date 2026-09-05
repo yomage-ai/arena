@@ -1,0 +1,16 @@
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const read=p=>readFile(path.join(root,p),'utf8');
+const template=await read('src/index.html');
+const css=await read('src/style.css');
+const files=['engine.js','art.js','audio.js','app.js'];
+const js=(await Promise.all(files.map(name=>read('src/'+name)))).map((s,i)=>`/* ===== ${files[i]} ===== */\n${s}`).join('\n');
+const output=template.replace('/* INLINE_CSS */',()=>css).replace('/* INLINE_JS */',()=>js);
+const outputPath='artifacts/builds/pvz/index.html';
+await mkdir(path.dirname(path.join(root,outputPath)),{recursive:true});
+await writeFile(path.join(root,outputPath),output);
+await mkdir(path.join(root,'artifacts'),{recursive:true});
+await writeFile(path.join(root,'artifacts/build-info.json'),JSON.stringify({builtAt:new Date().toISOString(),output:outputPath,bytes:Buffer.byteLength(output),sources:['src/index.html','src/style.css',...files.map(s=>'src/'+s)],externalDependencies:0},null,2));
+console.log(`Built ${outputPath} (${(Buffer.byteLength(output)/1024).toFixed(1)} KB). Archived results remain unchanged.`);
