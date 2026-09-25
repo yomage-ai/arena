@@ -1,10 +1,11 @@
 {
-  "release": "20260905T151050Z",
+  "release": "20260925T105926Z",
   "server": "ubuntu@124.221.20.152",
   "domain": "arena.yomage.com",
   "brand": "AI 试验场",
+  "gitCommit": "0231842",
   "archive": "artifacts/ai-arena-deploy.zip",
-  "archiveSha256": "f7fdab0c440e9afb9acc6dd25e99133db0b1d82e8fb48b75bcfce19b4dcb8115",
+  "archiveSha256": "14d37221b9294eaa2d786ef91ac89559612cbd69d09a1196332eefb868f765ea",
   "files": [
     {
       "path": "404.html",
@@ -12,11 +13,11 @@
     },
     {
       "path": "assets/app.js",
-      "sha256": "483d5d6e5e5488938cf5612f56412fcc2c5adec096c6c76830dcfc3286d7b168"
+      "sha256": "38e41a30added9020c0487cd9374c8d3384a94727e752c3c2a79e6529998cb79"
     },
     {
       "path": "assets/catalog-core.mjs",
-      "sha256": "2126a9a6a781e895e2e984f42d0d7d622f407baddaf2cb80a4dcd818d656ad44"
+      "sha256": "68d8dd624d58975fcc058009a77e80a5af68853c8c915a75f67f29036b8d17ae"
     },
     {
       "path": "assets/favicon.svg",
@@ -28,11 +29,19 @@
     },
     {
       "path": "catalog.json",
-      "sha256": "a217c44241abe3721c6f97da1284de4f7c7830ac3e6086deeaec9d17a3ac8532"
+      "sha256": "05cf8e69324482d49b3a1703659af100c94888762572fea244f83254e096cd47"
     },
     {
       "path": "index.html",
-      "sha256": "497369c30b882d175828903767a97d5f3d15540d568c79c1b6efa7f15a2d7a8a"
+      "sha256": "fc281522a6fe80f7f32fe23dc7fc28abcfcc6f8e3abe393d19211db35157b51a"
+    },
+    {
+      "path": "works/bicycle/doubao-seed-2-1-pro/import-01/cover.jpg",
+      "sha256": "cfcbde4fc14178753bbdb8870e889fe9492c181541ef351cd1ba01ff567b93eb"
+    },
+    {
+      "path": "works/bicycle/doubao-seed-2-1-pro/import-01/index.html",
+      "sha256": "33602fad892c3ce921fb80492a9bd30506b9818aa5004996f3d1e109e0a28bd6"
     },
     {
       "path": "works/bicycle/gpt5-6-sol-max/import-01/cover.jpg",
@@ -55,16 +64,76 @@
       "sha256": "cb137149434bc5a02a8336797bd1cec642ba3dfb0eb351b6be35d55bf6818bf2"
     },
     {
+      "path": "works/bicycle/gpt6-sol-max/import-01/cover.jpg",
+      "sha256": "2fbb58cb1f92c3ff0d208604aa723bf6733f86ebfec5d632d83ec8379146a246"
+    },
+    {
+      "path": "works/bicycle/gpt6-sol-max/import-01/index.html",
+      "sha256": "8f05c7b185c8299870812359a336458e12292896b47e54e5febad4c6e7e80796"
+    },
+    {
+      "path": "works/bicycle/opus-5-5/import-01/cover.jpg",
+      "sha256": "0c9294c8d939620253072d0321d9f5072e43148772a749d2e6bbaa2da627bf64"
+    },
+    {
+      "path": "works/bicycle/opus-5-5/import-01/index.html",
+      "sha256": "8083628b6ee9a70c354a23c17d0daa3ef79dfe8f7537da6db33d923d5fdec4b2"
+    },
+    {
+      "path": "works/bicycle/opus-5-5/import-01/pelican-bike.html",
+      "sha256": "b503c1db5a5f34e6dbfa7d7b7c5e0f49d7e7fa85622030f3e4e71e85739dbc9e"
+    },
+    {
+      "path": "works/bottled-ocean/gpt6-astra-xhigh/import-01/bottle-ocean.html",
+      "sha256": "25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94"
+    },
+    {
+      "path": "works/bottled-ocean/gpt6-astra-xhigh/import-01/cover.png",
+      "sha256": "e0deebaf3e4cb6548943b77299752a0ca901271b220655f69a80a767f2d176ba"
+    },
+    {
+      "path": "works/bottled-ocean/gpt6-astra-xhigh/import-01/index.html",
+      "sha256": "25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94"
+    },
+    {
+      "path": "works/bottled-ocean/gpt6-sol-max/import-01/bottled-ocean.html",
+      "sha256": "b63adca34a64b377a20fc9a324c10713348c1dde06ba5a2d2d9cecc20bb00e9f"
+    },
+    {
+      "path": "works/bottled-ocean/gpt6-sol-max/import-01/cover.jpg",
+      "sha256": "72267924a4594029d68dbcf3c0b20d8d56a0ff098edfde7610b2ef7c9f029fdb"
+    },
+    {
+      "path": "works/bottled-ocean/gpt6-sol-max/import-01/index.html",
+      "sha256": "b63adca34a64b377a20fc9a324c10713348c1dde06ba5a2d2d9cecc20bb00e9f"
+    },
+    {
+      "path": "works/bottled-ocean/opus-5-5/import-01/cover.jpg",
+      "sha256": "8179b68f791559a251926b9abf8a4a3b7358de20ec2b15c6218c8d91a1db61e5"
+    },
+    {
+      "path": "works/bottled-ocean/opus-5-5/import-01/index.html",
+      "sha256": "cb293f07716738dd968b65ef60cc615aa74a90ba969e9c03da9e976bc89255c2"
+    },
+    {
+      "path": "works/bottled-ocean/opus-5-5/import-01/original.html",
+      "sha256": "cb293f07716738dd968b65ef60cc615aa74a90ba969e9c03da9e976bc89255c2"
+    },
+    {
+      "path": "works/lunar-rover/doubao-seed-2-1-pro/import-01/cover.jpg",
+      "sha256": "c7c3b07cf5f558f377c08d1ee9f032ff2e873b71b82955ef4f29916a1ed5f8f6"
+    },
+    {
+      "path": "works/lunar-rover/doubao-seed-2-1-pro/import-01/index.html",
+      "sha256": "6dd6a30e54b12a658f86fbcf1eef4029f6c9c0af4af9d61bd1f81b1072896763"
+    },
+    {
       "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/app.js",
       "sha256": "46ab4cab2f5101568557573c08aba423ea73dd8fcffc8a309997b2faab890303"
     },
     {
       "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/app.js.LEGAL.txt",
       "sha256": "b9c6f27c66b83887896f001d9e3c13d2b47e7c6ca821206a7eb6b9106c063182"
-    },
-    {
-      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts.css",
-      "sha256": "d424cb1f0082f49e69a3e55192c2a54c94062e42400f10b66dfe7fb99fdf3d69"
     },
     {
       "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts/geist-8ac0455e797f/geist-001175b1.woff2",
@@ -111,6 +180,10 @@
       "sha256": "e27f657e38d52887baa3b6b2f812bef93dfdd356f0810e40edd4ee284cc7e9f6"
     },
     {
+      "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/fonts.css",
+      "sha256": "d424cb1f0082f49e69a3e55192c2a54c94062e42400f10b66dfe7fb99fdf3d69"
+    },
+    {
       "path": "works/lunar-rover/gpt5-6-sol-max/import-01/assets/style.css",
       "sha256": "aad2de24f9b73bf5a4843ff06a416f3e1f4354e8b0da5158741281d94b80ebb5"
     },
@@ -151,6 +224,122 @@
       "sha256": "cc51e57185a77a4cfe7c2ac1345e95a0b2100cc97eb41c6fbd8117d5e77d33af"
     },
     {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/README.md",
+      "sha256": "14ff974f6020b7e17d62109f3749ab49faba9f4141cd2838129ff2b410cb9404"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/assets/README.md",
+      "sha256": "d068132aea3595ff9cc9f7dc8f8478cf0f5d4a80bc5b4006824d6959f56d3fc8"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/assets/moon_04_diff_2k.jpg",
+      "sha256": "8d0021790b5ccbb7fce0ea09a59bd1b8579439ae1d05c4469a38eb783f3d262d"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/assets/moon_04_nor_gl_2k.jpg",
+      "sha256": "f73d40eee1c1353271ae3baa489a21fa418abdf974d9106de5c80ea5bdc0486b"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/assets/moon_04_rough_2k.jpg",
+      "sha256": "6afc5ef58329ec06d79b9e9224b8c0d5ebb07e2cdcbbc51925c567ae1c218230"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/cover.jpg",
+      "sha256": "8d3abecff33d6d95ccc6f9bb1ab388ad9fbfabf634abc879738b757badc0619e"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/index.html",
+      "sha256": "41c8766f1f20c7d90d5b2b2dfbbff77ca959bf22679f34f2df90dfa62344de0d"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/main.js",
+      "sha256": "07d4f853c14e6d43fdc725c977a47db5f93571353e1bd8ec3b4d84ed9b82de90"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/styles.css",
+      "sha256": "b7c2df94806a4236ff1d48b02de493cacd06df851573a4a36df37000cf8b38ae"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/vendor/three/LICENSE",
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/vendor/three/addons/controls/OrbitControls.js",
+      "sha256": "faabb4e8dfd9235ee4a9fd7c9a3d75f90f1689dbd4944bd6fd32117dacec5f93"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/vendor/three/addons/geometries/RoundedBoxGeometry.js",
+      "sha256": "c1b7c9bd2cddff2e3f3a0723f618a3d364a47450e3d25771d21faed88410bec8"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/vendor/three/three.core.js",
+      "sha256": "3718df126d69c125362a03340913204470d8c50238605150e57f808840fb7759"
+    },
+    {
+      "path": "works/lunar-rover/gpt6-sol-max/import-01/vendor/three/three.module.js",
+      "sha256": "bbf5ed13fe4373f5bd38b14ea8e62e9f157327da5638edc6d3863e08b167c9c7"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/cover.jpg",
+      "sha256": "c54de9ae9965e01f6df5919044f1d26e133cef4e6f16958a5cefc28bfdfba190"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/index.html",
+      "sha256": "060c95e9e63f78c81f184bc473ae17efd00ffad988d1a5d70aee881556b5453b"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/effects.js",
+      "sha256": "c426479a946f3c7967b947dc1f93487ff93161ea8287afcebb87d2a7b7cb44d7"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/main.js",
+      "sha256": "c5fe091a995a7c57d751f95a1f144395989dd8b9c32a557824d020f6fcd007e5"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/noise.js",
+      "sha256": "994f4e72076ce965a31db946ac0e225e1d7004d4631c9fcaed6e2b416cfe64c1"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/rover-model.js",
+      "sha256": "74f22f727ac3b4ac458abc165b3b103da3ba74d08b6e036627099e01cf7a8bcd"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/rover.js",
+      "sha256": "dcc84cc76dde5ff5baffb82cab2be6fdba7f4008e5d97f9903ff102efa9fd74d"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/sky.js",
+      "sha256": "a3e99103725aacd1c7357798a6c5f36184b3d58a3d250a410f2c5edc0fb3b0cf"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/terrain.js",
+      "sha256": "c8b1e114bd463778a4d5f7ed44b00a5c7a7fd12ba233a5e6525137d8ab605487"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/js/textures.js",
+      "sha256": "4acd71575be7541f52c3f0746acc2541617c09aa57896ba2203a891fe3c1cf9b"
+    },
+    {
+      "path": "works/lunar-rover/opus-5-5/import-01/original.html",
+      "sha256": "aa1f524aa6f81cb5c99d82792158e817da82b3edeb560807a6489a3dc0014a3a"
+    },
+    {
+      "path": "works/migration/doubao-seed-2-1-pro/import-01/cover.jpg",
+      "sha256": "704ee77853b08f0eccc5e165aa59561bfe38ecdc8488a1b572233f4ee2a4eb8c"
+    },
+    {
+      "path": "works/migration/doubao-seed-2-1-pro/import-01/index.html",
+      "sha256": "a86596a17d15a3ef94d1560376a834acb95e52a16ae73e61068477c9e91f6952"
+    },
+    {
+      "path": "works/migration/doubao-seed-2-1-pro/import-02/cover.jpg",
+      "sha256": "f835925ac56c2fb97735ae0386718f918226e147644b0febd067ba5f792c4e32"
+    },
+    {
+      "path": "works/migration/doubao-seed-2-1-pro/import-02/index.html",
+      "sha256": "e5f1da15b5c280282ae5230d06a4f80932959f8600cf09413f7ade471b568e5f"
+    },
+    {
       "path": "works/migration/gpt5-6-sol-max/import-01/cover.jpg",
       "sha256": "eef78f6837250fc61b314facb655d402fa6e872f9c15e33e65f520a64fc654e7"
     },
@@ -167,6 +356,22 @@
       "sha256": "603a0730f50e2bc477526663acdc616e8fd7d49a62dfaedd29d98ead37397c58"
     },
     {
+      "path": "works/migration/gpt6-sol-max/import-01/cover.jpg",
+      "sha256": "b7e5462148b4d59bbe6180bc8b5bfe4e371a44e8623fe7a9aec066228f230089"
+    },
+    {
+      "path": "works/migration/gpt6-sol-max/import-01/index.html",
+      "sha256": "f047d40fa7caecd207ff763003e2d90d85ebd3b3fcfb760d8a4c175d89b482ec"
+    },
+    {
+      "path": "works/migration/opus-5-5/import-01/cover.jpg",
+      "sha256": "51f6b671c5e43d9d421a9c4337b2bb4c2fd836556a8b190fcbfb4ca54a7a205a"
+    },
+    {
+      "path": "works/migration/opus-5-5/import-01/index.html",
+      "sha256": "7d516efa50c393a1b1dd8c7c5d3e60b28cb45aebebe983e00a594a83c32a2ad7"
+    },
+    {
       "path": "works/pvz/gpt5-6-sol-max/import-01/cover.jpg",
       "sha256": "cfed1013de0c4b621adee37ce48596b6bafa454ffdaebea0946764c0f4b213a3"
     },
@@ -181,22 +386,38 @@
     {
       "path": "works/pvz/gpt6-astra-xhigh/import-01/index.html",
       "sha256": "2af6638906ce5fce51fe70dc524745c63b3092a136d3b45597004788f6091e13"
+    },
+    {
+      "path": "works/pvz/gpt6-sol-max/import-01/cover.png",
+      "sha256": "0a3456e792cee78951ae7ec43b01a65bb3833bf165fe53bd4e1baf0effccac17"
+    },
+    {
+      "path": "works/pvz/gpt6-sol-max/import-01/index.html",
+      "sha256": "b761a39cacc42d774f216523708d6582181c7d94f05b46e20b452abec997a175"
+    },
+    {
+      "path": "works/pvz/opus-5-5/import-01/cover.jpg",
+      "sha256": "a14e36748528fd031bef68a44a1f0d077650b3fbe3b09d00080ba105664173a1"
+    },
+    {
+      "path": "works/pvz/opus-5-5/import-01/index.html",
+      "sha256": "ebcdb78af9636e87c9c0a78a6cc9ba4398b92117a3fc3db5202d37d7aae9310b"
     }
   ],
   "deployment": {
     "status": "live",
-    "verifiedAt": "2026-09-05T15:22:54.503139+00:00",
+    "verifiedAt": "2026-09-25T11:03:34.030973+00:00",
     "url": "https://arena.yomage.com/",
     "root": "/var/www/arena.yomage.com/current",
+    "releaseDirectory": "/var/www/arena.yomage.com/releases/20260925T105926Z",
+    "previousRelease": "20260905T151050Z",
     "nginxConfig": "/etc/nginx/sites-available/arena.yomage.com",
     "dnsA": "124.221.20.152",
     "https": true,
     "httpRedirect": 301,
-    "certificateExpires": "2026-12-04",
-    "renewalTimer": "certbot.timer",
-    "renewalDryRun": "passed",
-    "verifiedHttpFiles": 44,
-    "siteTestsPassed": 9,
-    "screenshot": "artifacts/site/arena-live.jpg"
+    "verifiedHttpFiles": 99,
+    "siteTestsPassed": 20,
+    "allTestsPassed": 39,
+    "browserSmokeTest": "Astra bottled ocean card, Three.js r160, speed, pause and storm passed without script errors"
   }
 }

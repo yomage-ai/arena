@@ -233,3 +233,10 @@
 - 实景桌面截图作为封面，原测试的五张截图和检查 JSON 归档在 `source-projects/gpt6-astra-bottled-ocean/artifacts/`；来源文件和校验值见 `gpt6-astra-xhigh-bottled-ocean-import.json`。作品从在线 CDN 加载 Three.js r160，断网时三维场景无法启动。
 - 独立 Chrome 检查：从项目页第一张 Astra 卡片进入作品，1280 × 720 WebGL 画布载入，Three.js r160 CDN 返回 200，2514 个水面体素和 6 只海鸥已初始化。×12 推进模拟、暂停冻结模拟、风暴按钮按下与松开均正常；未捕获脚本异常或失败请求。此为入口和关键交互抽查，未对全部场景细节、长期帧率或所有浏览器做验收。
 - 全站五个项目、二十三份归档结果，其中十九份可见；Doubao 仍隐藏。`npm run test:site` 的 20 项检查通过，部署 ZIP 中 99 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## AI 试验场更新发布（2026-09-25）
+
+- 将 23 份归档作品及对应网站、来源工程提交为 Git `0231842`，已推送到 `origin/main`。本地 `npm test` 的 39 项检查通过；静态部署 ZIP 与 `site/` 的 99 个文件逐字节一致。
+- 服务器 `ubuntu@124.221.20.152` 新建版本 `/var/www/arena.yomage.com/releases/20260925T105926Z`，用上传 ZIP 和清单逐文件核验 SHA-256 后，原子切换 `current`；旧版本 `20260905T151050Z` 保留可回退。没有改动 Nginx 配置或上传制作工程。
+- 公网 HTTPS 逐文件验证 99/99 个文件的 SHA-256 与 MIME 类型，缺失和私有路径均返回 404，HTTP 返回 301 并跳转 HTTPS。线上清单显示 5 个项目、23 份结果，其中 19 份可见，Doubao 仍隐藏。
+- 公网 Chrome 从 Astra《瓶中沧海》卡片进入作品，Three.js r160 CDN 返回 200，三维画面初始化；×12 倍速、暂停与风暴按钮抽查通过，未捕获脚本异常或失败请求。发布清单和核验时间见 `deployment-arena.json`。
