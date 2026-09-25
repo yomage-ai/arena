@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23090d12'/%3E%3Ccircle cx='32' cy='32' r='21' fill='none' stroke='%23dfab6e' stroke-width='3'/%3E%3Cpath d='M18 37c13-1 23-10 28-22M24 51c2-17 14-28 28-30' fill='none' stroke='%23dfab6e' stroke-width='2'/%3E%3C/svg%3E">
+  <title>SELENE 07 — 月面探测任务</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="experience">
+    <div id="scene" aria-label="可交互的三维月面探测车场景"></div>
+    <div class="scene-vignette" aria-hidden="true"></div>
+    <div class="scene-grain" aria-hidden="true"></div>
+
+    <div class="loading" id="loading" role="status" aria-live="polite">
+      <div class="loading-mark"><span></span><span></span><span></span></div>
+      <p>正在建立月面信号</p>
+      <div class="loading-track"><i></i></div>
+      <small>SELENE MISSION / 07</small>
+    </div>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="SELENE 月面探测任务首页">
+        <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-name">SELENE<span> / 07</span></span>
+      </a>
+      <div class="header-center"><span class="header-cross">✳</span> LUNAR EXPLORATION PROGRAM <span class="header-cross">✳</span></div>
+      <div class="header-actions">
+        <span class="live-indicator"><i></i> 实时模拟</span>
+        <button class="icon-button fullscreen-button" id="fullscreen" aria-label="进入全屏" title="全屏浏览">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H4a1 1 0 0 0-1 1v4M16 3h4a1 1 0 0 1 1 1v4M21 16v4a1 1 0 0 1-1 1h-4M3 16v4a1 1 0 0 0 1 1h4"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="intro" aria-label="任务介绍">
+      <div class="eyebrow"><span class="line"></span> MISSION LOG 001 <span class="muted">/</span> 月球南极</div>
+      <h1>驶向<br><em>未知之境</em><span class="heading-dot">.</span></h1>
+      <p>在寂静的月面上，跟随 SELENE 07<br>探索每一道未被记录的地形。</p>
+      <div class="intro-marker"><span>01</span><i></i><span>03</span></div>
+    </section>
+
+    <aside class="telemetry" aria-label="探测车遥测信息">
+      <div class="telemetry-top"><span>ROVER TELEMETRY</span><span class="telemetry-pulse"></span></div>
+      <div class="telemetry-heading"><span class="tiny-label">任务状态</span><strong>探索中 <span class="status-ring"></span></strong></div>
+      <div class="telemetry-line"></div>
+      <div class="metric"><span>行驶距离 <small>TRAVERSED</small></span><strong id="distance">0.00 <small>m</small></strong></div>
+      <div class="metric"><span>当前速度 <small>VELOCITY</small></span><strong id="speed">0.04 <small>m/s</small></strong></div>
+      <div class="metric"><span>电池状态 <small>POWER</small></span><strong id="battery">96 <small>%</small></strong></div>
+      <div class="power-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="telemetry-bottom"><span class="signal-icon" aria-hidden="true">◉</span> 地球通信链路稳定</div>
+    </aside>
+
+    <div class="rover-tag" aria-hidden="true"><span class="tag-pip"></span><span>SELENE 07</span><i></i><small>自主巡视探测车</small></div>
+
+    <div class="coordinate-readout" aria-hidden="true"><span>南纬 89.2°</span><span>东经 23.4°</span><span>海拔 -2,430 M</span></div>
+
+    <div class="hint" id="hint"><span class="mouse-icon" aria-hidden="true"><i></i></span><span>拖动旋转 <b>·</b> 滚轮缩放 <b>·</b> 右键平移</span></div>
+
+    <footer class="control-deck">
+      <div class="deck-main">
+        <div class="deck-title"><span class="deck-index">01 / 03</span><span>月面漫游 <small>LUNAR DRIVE</small></span></div>
+        <div class="playback-controls">
+          <button id="play-pause" class="play-button" aria-label="暂停行驶" title="暂停或继续行驶">
+            <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M7 4.8c0-.8.9-1.3 1.6-.9l11 7.2a1.1 1.1 0 0 1 0 1.8l-11 7.2c-.7.5-1.6 0-1.6-.9V4.8z"/></svg>
+          </button>
+          <span id="elapsed" class="elapsed">00:00</span>
+          <div class="progress-track" role="presentation"><span id="progress"></span></div>
+          <span class="duration">03:00</span>
+        </div>
+        <div class="camera-controls" aria-label="镜头视角">
+          <span class="controls-label">视角</span>
+          <button class="camera-button active" data-view="overview" aria-pressed="true">总览</button>
+          <button class="camera-button" data-view="detail" aria-pressed="false">近景</button>
+          <button class="camera-button" data-view="ground" aria-pressed="false">贴地</button>
+          <button id="reset-view" class="reset-button" aria-label="重置视角" title="重置视角">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11a8.5 8.5 0 1 1 2.2 6.9M3.5 17v-5.5H9"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="deck-bottom"><span>SELENE EXPLORATION SYSTEMS © 2026</span><span class="deck-bottom-right">建立在真实三维空间中的交互漫游 <i></i> 001 / 003</span></div>
+    </footer>
+
+    <div class="fallback" id="fallback" hidden>
+      <strong>无法启动三维场景</strong>
+      <span>请使用支持 WebGL 的现代浏览器打开此页面。</span>
+    </div>
+  </main>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

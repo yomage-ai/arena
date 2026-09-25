@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>月面巡视器 · 高精度三维交互场景</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%239a9a96'/%3E%3Ccircle cx='11' cy='12' r='3' fill='%237c7c78'/%3E%3Ccircle cx='20' cy='19' r='2.2' fill='%237c7c78'/%3E%3Ccircle cx='21' cy='10' r='1.4' fill='%237c7c78'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  --ink:#d9e2ec;
+  --ink-dim:#8b99a8;
+  --ink-faint:#5d6a78;
+  --line:rgba(190,208,226,.18);
+  --line-strong:rgba(190,208,226,.34);
+  --amber:#d8a24a;
+  --amber-dim:rgba(216,162,74,.16);
+  --panel:rgba(7,11,16,.62);
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+#scene{position:fixed;inset:0;display:block;cursor:grab;touch-action:none}
+#scene:active{cursor:grabbing}
+
+/* ===== 加载遮罩 ===== */
+#loader{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .8s ease}
+#loader.done{opacity:0;pointer-events:none}
+.moon-mark{width:64px;height:64px;animation:breathe 2.4s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.03)}}
+#loader .load-text{font-size:13px;letter-spacing:.32em;color:var(--ink-dim);text-indent:.32em;font-weight:300}
+#loader .load-bar{width:180px;height:1px;background:rgba(255,255,255,.12);position:relative;overflow:hidden}
+#loader .load-bar i{position:absolute;inset:0;width:40%;background:var(--amber);animation:slide 1.3s ease-in-out infinite}
+@keyframes slide{0%{left:-40%}100%{left:100%}}
+
+/* ===== HUD 通用 ===== */
+.hud{position:fixed;z-index:10;pointer-events:none}
+.panel{background:var(--panel);border:1px solid var(--line)}
+.panel::before,.panel::after{content:"";position:absolute;width:9px;height:9px;border-color:var(--amber);border-style:solid;opacity:.85}
+.panel::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.panel::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+
+/* 左上标题 */
+#hud-title{top:22px;left:26px;max-width:min(460px,60vw)}
+#hud-title h1{font-size:17px;font-weight:500;letter-spacing:.14em;color:#eef3f8}
+#hud-title .en{font-size:10px;letter-spacing:.3em;color:var(--amber);margin-top:7px;font-weight:400;text-indent:.04em}
+#hud-title .rule{width:42px;height:1px;background:var(--amber);margin:11px 0 9px;opacity:.75}
+#hud-title p{font-size:11.5px;line-height:1.75;color:var(--ink-dim);font-weight:300;letter-spacing:.04em}
+
+/* 右上操作提示 */
+#hud-help{top:22px;right:26px;width:208px;padding:13px 16px;font-size:11px;line-height:2;color:var(--ink-dim);font-weight:300;letter-spacing:.05em}
+#hud-help .k{display:inline-block;min-width:58px;color:var(--ink);font-family:var(--mono);font-size:10.5px;letter-spacing:.02em}
+#hud-help .dot{color:var(--amber);margin-right:8px}
+
+/* 左下遥测 */
+#hud-telemetry{left:26px;bottom:26px;width:248px;padding:15px 17px 13px}
+#hud-telemetry .t-title{font-size:10px;letter-spacing:.34em;color:var(--ink-faint);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+#hud-telemetry .t-title .live{display:flex;align-items:center;gap:6px;letter-spacing:.18em;color:var(--amber)}
+#hud-telemetry .t-title .live i{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 7px var(--amber);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.t-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px dashed rgba(190,208,226,.08)}
+.t-row:last-child{border-bottom:none}
+.t-row .lbl{font-size:11px;color:var(--ink-dim);letter-spacing:.08em}
+.t-row .val{font-family:var(--mono);font-size:12.5px;color:#eef3f8;letter-spacing:.02em}
+.t-row .val .unit{font-size:9.5px;color:var(--ink-faint);margin-left:3px}
+.t-row .val.st-run{color:#7fc98c}
+.t-row .val.st-pause{color:var(--amber)}
+#t-mode.st-run{color:#7fc98c}
+#t-mode.st-pause{color:var(--amber)}
+
+/* 右下控制 */
+#hud-ctrl{right:26px;bottom:26px;display:flex;gap:10px;pointer-items:none}
+.btn{pointer-events:auto;background:var(--panel);border:1px solid var(--line);color:var(--ink);font-family:var(--sans);font-size:11.5px;letter-spacing:.12em;padding:11px 16px;cursor:pointer;display:flex;align-items:center;gap:9px;transition:border-color .2s,background .2s,color .2s;font-weight:400}
+.btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.btn:hover{border-color:var(--line-strong);background:rgba(18,26,36,.75)}
+.btn.on{border-color:rgba(216,162,74,.6);background:var(--amber-dim);color:var(--amber)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* 底部中央提示 */
+#hud-hint{bottom:30px;left:50%;transform:translateX(-50%);font-size:10.5px;letter-spacing:.26em;color:var(--ink-faint);text-indent:.26em;font-weight:300;white-space:nowrap}
+@media (max-width:760px){
+  #hud-title{top:16px;left:16px;max-width:74vw}
+  #hud-title h1{font-size:14px}
+  #hud-title .en{font-size:8.5px;letter-spacing:.16em}
+  #hud-title p{display:none}
+  #hud-help{display:none}
+  #hud-telemetry{left:14px;bottom:14px;width:200px;padding:11px 13px}
+  #hud-ctrl{right:14px;bottom:14px;flex-direction:column;gap:8px}
+  .btn{padding:9px 12px;font-size:10.5px}
+  #hud-hint{display:none}
+}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<!-- 加载遮罩 -->
+<div id="loader">
+  <svg class="moon-mark" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="25" fill="none" stroke="#9a9a96" stroke-width="1.2"/>
+    <circle cx="24" cy="25" r="5.5" fill="none" stroke="#7c7c78" stroke-width="1"/>
+    <circle cx="40" cy="38" r="4" fill="none" stroke="#7c7c78" stroke-width="1"/>
+    <circle cx="41" cy="21" r="2.4" fill="none" stroke="#7c7c78" stroke-width="1"/>
+    <circle cx="32" cy="32" r="29" fill="none" stroke="#d8a24a" stroke-width=".7" stroke-dasharray="4 6" opacity=".7">
+      <animateTransform attributeName="transform" type="rotate" from="0 32 32" to="360 32 32" dur="9s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+  <div class="load-text">正在构建月面环境</div>
+  <div class="load-bar"><i></i></div>
+</div>
+
+<!-- 左上：标题 -->
+<header id="hud-title" class="hud">
+  <h1>月面巡视器 · 三维交互场景</h1>
+  <div class="en">LUNAR SURFACE ROVER · REAL-TIME 3D</div>
+  <div class="rule"></div>
+  <p>巡视器正沿预定考察路线低速行驶，六轮独立悬挂随月面起伏自适应调整。<br>你可以随时环绕、缩放或脱离跟随，自由浏览整个着陆区。</p>
+</header>
+
+<!-- 右上：操作 -->
+<div id="hud-help" class="hud panel">
+  <div><span class="dot">·</span><span class="k">左键拖拽</span>环绕 / 旋转视角</div>
+  <div><span class="dot">·</span><span class="k">滚轮</span>缩放观察距离</div>
+  <div><span class="dot">·</span><span class="k">右键拖拽</span>平移浏览位置</div>
+</div>
+
+<!-- 左下：遥测 -->
+<div id="hud-telemetry" class="hud panel">
+  <div class="t-title"><span>遥测 TELEMETRY</span><span class="live"><i></i><span id="t-mode">行驶中</span></span></div>
+  <div class="t-row"><span class="lbl">行驶速度</span><span class="val" id="t-speed">0.00<span class="unit">m/s</span></span></div>
+  <div class="t-row"><span class="lbl">累计里程</span><span class="val" id="t-dist">0.0<span class="unit">m</span></span></div>
+  <div class="t-row"><span class="lbl">坐标 X / Z</span><span class="val" id="t-pos">0.0 / 0.0</span></div>
+  <div class="t-row"><span class="lbl">俯仰 / 横滚</span><span class="val" id="t-att">0.0° / 0.0°</span></div>
+  <div class="t-row"><span class="lbl">太阳高度角</span><span class="val" id="t-sun">24.0°</span></div>
+</div>
+
+<!-- 右下：控制 -->
+<div id="hud-ctrl" class="hud">
+  <button class="btn on" id="btn-follow" aria-pressed="true">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><path d="M12 6a6 6 0 0 1 6 6"/></svg>
+    <span id="follow-label">跟随视角</span>
+  </button>
+  <button class="btn" id="btn-pause" aria-pressed="false">
+    <svg viewBox="0 0 24 24" id="pause-icon"><rect x="7" y="5" width="3.2" height="14"/><rect x="13.8" y="5" width="3.2" height="14"/></svg>
+    <span id="pause-label">暂停行驶</span>
+  </button>
+  <button class="btn" id="btn-reset">
+    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+    <span>重置视角</span>
+  </button>
+</div>
+
+<div id="hud-hint" class="hud">拖拽旋转 · 滚轮缩放 · 右键平移</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.__SCENE_READY__ = false;
+
+/* ===== 1. 渲染器 / 场景 / 相机 ===== */
+const canvas = document.getElementById('scene');
+const isMobile = matchMedia('(max-width:760px)').matches;
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 1.75));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.98;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x000000, 0.0034); // 真空无大气雾，仅用于地形边缘融入黑色天空
+
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 2200);
+camera.position.set(9, 6.2, 12);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 2.4;
+controls.maxDistance = 75;
+controls.maxPolarAngle = 1.535;   // 约 88°，防止穿到月面之下
+controls.enablePan = true;
+controls.screenSpacePanning = false;
+controls.target.set(0, 1.2, 0);
+
+const SUN_DIR = new THREE.Vector3(-0.42, 0.405, -0.81).normalize(); // 太阳高度角约 24°
+
+/* ===== 2. 确定性噪声与月面高度场 ===== */
+// 整数哈希 → [0,1)
+function hash2(ix, iz) {
+  let h = Math.imul(ix, 374761393) ^ Math.imul(iz, 668265263);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
+}
+function smooth(t) { return t * t * (3 - 2 * t); }
+function valueNoise(x, z) {
+  const ix = Math.floor(x), iz = Math.floor(z);
+  const fx = x - ix, fz = z - iz;
+  const a = hash2(ix, iz), b = hash2(ix + 1, iz), c = hash2(ix, iz + 1), d = hash2(ix + 1, iz + 1);
+  const u = smooth(fx), v = smooth(fz);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm(x, z, oct = 5) {
+  let sum = 0, amp = 0.5, freq = 1, norm = 0;
+  for (let i = 0; i < oct; i++) {
+    sum += amp * (valueNoise(x * freq, z * freq) * 2 - 1);
+    norm += amp;
+    amp *= 0.5;
+    freq *= 2.07;
+  }
+  return sum / norm;
+}
+
+// 预生成陨石坑（确定性分布：小坑多、大坑少）
+const CRATERS = [];
+(function genCraters() {
+  let seed = 20260922;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  // 大型地貌坑
+  for (let i = 0; i < 14; i++) {
+    const ang = rnd() * Math.PI * 2, rad = 70 + rnd() * 115;
+    const r = 16 + rnd() * 26;
+    CRATERS.push({ x: Math.cos(ang) * rad, z: Math.sin(ang) * rad, r, d: r * (0.1 + rnd() * 0.05) });
+  }
+  // 中型坑
+  for (let i = 0; i < 46; i++) {
+    const ang = rnd() * Math.PI * 2, rad = 18 + rnd() * 165;
+    const r = 4 + rnd() * 11;
+    CRATERS.push({ x: Math.cos(ang) * rad, z: Math.sin(ang) * rad, r, d: r * (0.12 + rnd() * 0.06) });
+  }
+  // 巡视路线区的小型坑（浅而密，供悬挂响应）
+  for (let i = 0; i < 26; i++) {
+    const ang = rnd() * Math.PI * 2, rad = 6 + rnd() * 48;
+    const r = 0.9 + rnd() * 2.6;
+    CRATERS.push({ x: Math.cos(ang) * rad, z: Math.sin(ang) * rad, r, d: r * (0.1 + rnd() * 0.05) });
+  }
+})();
+
+function craterContribution(x, z) {
+  let h = 0;
+  for (let i = 0; i < CRATERS.length; i++) {
+    const cr = CRATERS[i];
+    const dx = x - cr.x, dz = z - cr.z;
+    const d2 = dx * dx + dz * dz;
+    const cut = cr.r * 2.3;
+    if (d2 > cut * cut) continue;
+    const d = Math.sqrt(d2) / cr.r;
+    const bowl = -cr.d * Math.exp(-d * d * 3.1);                    // 碗状凹陷
+    const rim = cr.d * 0.24 * Math.exp(-(d - 1) * (d - 1) * 20);    // 环形隆起坑缘
+    const ejecta = cr.d * 0.05 * Math.exp(-(d - 1.45) * (d - 1.45) * 5); // 喷发物缓丘
+    h += bowl + rim + ejecta;
+  }
+  return h;
+}
+
+// 月面高度场（米）。大尺度起伏 + 细微波纹 + 陨石坑
+const H0 = (() => {
+  const base = fbm(7.3, -2.1, 5) * 5 + fbm(-9.7, 4.2, 4) * 0.8 + fbm(0, 0, 3) * 0.18 + craterContribution(0, 0);
+  return base;
+})();
+function heightAt(x, z) {
+  const macro = fbm(x * 0.011 + 7.3, z * 0.011 - 2.1, 5) * 5;
+  const mid = fbm(x * 0.045 - 9.7, z * 0.045 + 4.2, 4) * 0.8;
+  const fine = fbm(x * 0.22, z * 0.22, 3) * 0.18;
+  return macro + mid + fine + craterContribution(x, z) - H0;
+}
+// 数值法线（供车轮接地、车身姿态采样）
+const _n = new THREE.Vector3();
+function normalAt(x, z, out = _n) {
+  const e = 0.35;
+  const hL = heightAt(x - e, z), hR = heightAt(x + e, z);
+  const hD = heightAt(x, z - e), hU = heightAt(x, z + e);
+  out.set(hL - hR, 2 * e, hD - hU).normalize();
+  return out;
+}
+
+/* ===== 3. 程序化纹理（月壤 / 金箔 / 太阳翼 / 筛网轮） ===== */
+const MAX_ANISO = renderer.capabilities.getMaxAnisotropy();
+function makeCanvas(size = 512, h = size) {
+  const cv = document.createElement('canvas');
+  cv.width = size; cv.height = h;
+  return [cv, cv.getContext('2d')];
+}
+function toTexture(cv, srgb = true, repeatX = 1, repeatY = 1) {
+  const t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(repeatX, repeatY);
+  t.anisotropy = Math.min(MAX_ANISO, 8);
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+// ---- 月壤：颜色 / 凹凸 / 粗糙度（三通道同源，凹处积灰更粗糙） ----
+function makeRegolithTextures() {
+  const S = 512;
+  const [cAlb, ctxA] = makeCanvas(S), [cBump, ctxB] = makeCanvas(S), [cRgh, ctxR] = makeCanvas(S);
+  const imgA = ctxA.createImageData(S, S), imgB = ctxB.createImageData(S, S), imgR = ctxR.createImageData(S, S);
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+    const n1 = valueNoise(x * 0.06, y * 0.06), n2 = valueNoise(x * 0.31 + 40, y * 0.31 - 12);
+    const grain = hash2(x, y) - 0.5;
+    const v = n1 * 0.62 + n2 * 0.26 + grain * 0.12;           // -1..1
+    const g = 106 + v * 26;                                     // 月壤低反照率中灰
+    const i = (y * S + x) * 4;
+    imgA.data[i] = g + 6; imgA.data[i + 1] = g + 4; imgA.data[i + 2] = g; imgA.data[i + 3] = 255;
+    const b = 128 + v * 46;
+    imgB.data[i] = imgB.data[i + 1] = imgB.data[i + 2] = b; imgB.data[i + 3] = 255;
+    const r = 236 - v * 12;                                     // 凹处略粗糙
+    imgR.data[i] = imgR.data[i + 1] = imgR.data[i + 2] = r; imgR.data[i + 3] = 255;
+  }
+  ctxA.putImageData(imgA, 0, 0); ctxB.putImageData(imgB, 0, 0); ctxR.putImageData(imgR, 0, 0);
+
+  // 微型撞击坑：暗盆 + 迎光亮缘（光源在画面左上）
+  let seed = 771;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  for (let k = 0; k < 17; k++) {
+    const cx = rnd() * S, cy = rnd() * S, r = 2.5 + rnd() * 8;
+    const grad = ctxA.createRadialGradient(cx, cy, 0, cx, cy, r);
+    grad.addColorStop(0, 'rgba(58,56,52,.85)');
+    grad.addColorStop(0.55, 'rgba(96,93,88,.45)');
+    grad.addColorStop(0.82, 'rgba(178,174,166,.5)');
+    grad.addColorStop(1, 'rgba(132,130,126,0)');
+    ctxA.fillStyle = grad; ctxA.beginPath(); ctxA.arc(cx, cy, r, 0, 7); ctxA.fill();
+    const gb = ctxB.createRadialGradient(cx, cy, 0, cx, cy, r);
+    gb.addColorStop(0, 'rgb(46,46,46)'); gb.addColorStop(0.6, 'rgb(96,96,96)');
+    gb.addColorStop(0.85, 'rgb(190,190,190)'); gb.addColorStop(1, 'rgb(128,128,128)');
+    ctxB.fillStyle = gb; ctxB.beginPath(); ctxB.arc(cx, cy, r, 0, 7); ctxB.fill();
+  }
+  // 散砾石
+  for (let k = 0; k < 680; k++) {
+    const x = rnd() * S, y = rnd() * S, r = 0.4 + rnd() * 1.3;
+    const sh = rnd() > 0.5 ? 1 : -1;
+    ctxA.fillStyle = sh > 0 ? 'rgba(178,174,166,.38)' : 'rgba(74,72,68,.45)';
+    ctxA.beginPath(); ctxA.arc(x, y, r, 0, 7); ctxA.fill();
+    ctxB.fillStyle = sh > 0 ? 'rgba(198,198,198,.45)' : 'rgba(70,70,70,.5)';
+    ctxB.beginPath(); ctxB.arc(x, y, r, 0, 7); ctxB.fill();
+  }
+  return {
+    albedo: toTexture(cAlb, true, 26, 26),
+    bump: toTexture(cBump, false, 26, 26),
+    rough: toTexture(cRgh, false, 26, 26)
+  };
+}
+
+// ---- 褶皱金箔多层隔热材料 ----
+function makeFoilTextures() {
+  const S = 256;
+  const [cAlb, ctxA] = makeCanvas(S), [cBump, ctxB] = makeCanvas(S);
+  ctxA.fillStyle = '#b8913f'; ctxA.fillRect(0, 0, S, S);
+  ctxB.fillStyle = '#808080'; ctxB.fillRect(0, 0, S, S);
+  let seed = 9021;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  for (let k = 0; k < 520; k++) {
+    const x = rnd() * S, y = rnd() * S, s = 4 + rnd() * 15;
+    const l = 46 + rnd() * 30; // 褶皱明度差
+    const col = new THREE.Color(0xc29a4c);
+    col.offsetHSL((rnd() - .5) * .03, (rnd() - .5) * .12, (l - 60) / 100 * .35);
+    ctxA.fillStyle = `#${col.getHexString()}`;
+    ctxB.fillStyle = `rgb(${100 + (l - 60)},${100 + (l - 60)},${100 + (l - 60)})`;
+    ctxA.beginPath(); ctxB.beginPath();
+    ctxA.moveTo(x, y); ctxB.moveTo(x, y);
+    const n = 3 + Math.floor(rnd() * 3);
+    for (let j = 0; j < n; j++) {
+      const px = x + (rnd() - .5) * s * 2, py = y + (rnd() - .5) * s * 2;
+      ctxA.lineTo(px, py); ctxB.lineTo(px, py);
+    }
+    ctxA.closePath(); ctxB.closePath(); ctxA.fill(); ctxB.fill();
+  }
+  for (let k = 0; k < 90; k++) { // 折痕亮线
+    ctxA.strokeStyle = `rgba(240,214,150,${.12 + rnd() * .2})`;
+    ctxB.strokeStyle = `rgba(225,225,225,${.2 + rnd() * .3})`;
+    ctxA.lineWidth = ctxB.lineWidth = .6 + rnd() * 1.1;
+    ctxA.beginPath(); ctxB.beginPath();
+    const x = rnd() * S, y = rnd() * S;
+    ctxA.moveTo(x, y); ctxB.moveTo(x, y);
+    ctxA.lineTo(x + (rnd() - .5) * 60, y + (rnd() - .5) * 60);
+    ctxB.lineTo(x + (rnd() - .5) * 60, y + (rnd() - .5) * 60);
+    ctxA.stroke(); ctxB.stroke();
+  }
+  return { albedo: toTexture(cAlb, true, 3, 3), bump: toTexture(cBump, false, 3, 3) };
+}
+
+// ---- 太阳翼电池片 ----
+function makeSolarTexture() {
+  const S = 256;
+  const [cv, ctx] = makeCanvas(S);
+  ctx.fillStyle = '#101c33'; ctx.fillRect(0, 0, S, S);
+  const cols = 8, rows = 5, cw = S / cols, ch = S / rows;
+  let seed = 551;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const b = 26 + rnd() * 14;
+    ctx.fillStyle = `rgb(${10 + rnd() * 6},${20 + rnd() * 8},${b})`;
+    ctx.fillRect(c * cw + 1.5, r * ch + 1.5, cw - 3, ch - 3);
+  }
+  ctx.strokeStyle = 'rgba(150,180,220,.35)'; ctx.lineWidth = 1;
+  for (let c = 1; c < cols; c++) { ctx.beginPath(); ctx.moveTo(c * cw, 0); ctx.lineTo(c * cw, S); ctx.stroke(); }
+  for (let r = 1; r < rows; r++) { ctx.beginPath(); ctx.moveTo(0, r * ch); ctx.lineTo(S, r * ch); ctx.stroke(); }
+  ctx.strokeStyle = 'rgba(190,210,240,.18)'; ctx.lineWidth = .5; // 细密栅线
+  for (let c = 0; c < cols; c++) for (let g = 1; g < 5; g++) {
+    const x = c * cw + (g * cw / 5);
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, S); ctx.stroke();
+  }
+  return toTexture(cv, true, 1, 1);
+}
+
+// ---- 钛合金筛网轮面 ----
+function makeWheelMeshTexture() {
+  const S = 256;
+  const [cv, ctx] = makeCanvas(S, 128);
+  ctx.fillStyle = '#8d8b82'; ctx.fillRect(0, 0, S, 128);
+  ctx.strokeStyle = 'rgba(46,45,42,.85)'; ctx.lineWidth = 1.4;
+  for (let i = -128; i < S + 128; i += 9) {
+    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + 128, 128); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(i + 128, 0); ctx.lineTo(i, 128); ctx.stroke();
+  }
+  ctx.strokeStyle = 'rgba(210,206,194,.4)'; ctx.lineWidth = .7;
+  for (let i = -128; i < S + 128; i += 9) {
+    ctx.beginPath(); ctx.moveTo(i + 3, 0); ctx.lineTo(i + 131, 128); ctx.stroke();
+  }
+  const t = toTexture(cv, true, 6, 1);
+  return t;
+}
+
+const regoTex = makeRegolithTextures();
+const foilTex = makeFoilTextures();
+const solarTex = makeSolarTexture();
+const wheelTex = makeWheelMeshTexture();
+
+/* ===== 4. 月球地形、岩石与车辙 ===== */
+// ---- 闭合考察路线（俯视航点，Catmull-Rom 平滑） ----
+const WAYPTS = [[0, 0], [26, -14], [45, 3], [31, 27], [-3, 41], [-33, 27], [-46, -1], [-27, -30], [7, -37], [-14, 8]];
+const routePts = WAYPTS.map(([x, z]) => new THREE.Vector3(x, 0, z));
+const routeCurve = new THREE.CatmullRomCurve3(routePts, true, 'catmullrom', 0.45);
+const ROUTE_LEN = routeCurve.getLength();
+const ROUTE_SAMPLES = 1500;
+const routeTable = []; // {p, t, side}
+for (let i = 0; i <= ROUTE_SAMPLES; i++) {
+  const u = i / ROUTE_SAMPLES;
+  const p = routeCurve.getPointAt(u);
+  const t = routeCurve.getTangentAt(u);
+  p.y = heightAt(p.x, p.z);
+  routeTable.push({ p, t, side: new THREE.Vector3(t.z, 0, -t.x).normalize() });
+}
+
+// ---- 月面地形 ----
+const TERRAIN_SIZE = 430, TERRAIN_SEG = 256;
+const terrainGeo = new THREE.PlaneGeometry(TERRAIN_SIZE, TERRAIN_SIZE, TERRAIN_SEG, TERRAIN_SEG);
+terrainGeo.rotateX(-Math.PI / 2);
+{
+  const pos = terrainGeo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    pos.setY(i, heightAt(x, z));
+  }
+  terrainGeo.computeVertexNormals();
+  const nrm = terrainGeo.attributes.normal;
+  const colors = new Float32Array(pos.count * 3);
+  const c = new THREE.Color();
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const slope = nrm.getY(i);
+    const crater = craterContribution(x, z);
+    let shade = 0.86 + slope * 0.16;                       // 陡坡坑壁偏暗
+    shade += (valueNoise(x * 0.018 + 3, z * 0.018) - .5) * .12; // 大尺度反照率斑块
+    shade += Math.min(crater * -0.012, 0.06) - Math.max(crater * 0.02, 0) * 0.4; // 坑盆暗、坑缘亮
+    shade = THREE.MathUtils.clamp(shade, 0.62, 1.12);
+    c.setRGB(0.87 * shade, 0.855 * shade, 0.82 * shade);
+    colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+  }
+  terrainGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+}
+const terrainMat = new THREE.MeshStandardMaterial({
+  map: regoTex.albedo, bumpMap: regoTex.bump, bumpScale: 0.38,
+  roughnessMap: regoTex.rough, roughness: 1.0, metalness: 0.0,
+  vertexColors: true
+});
+const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+terrain.receiveShadow = true;
+scene.add(terrain);
+
+// ---- 散布岩石（实例化，避让行驶路线） ----
+function makeRockGeometry(seed) {
+  const g = new THREE.DodecahedronGeometry(1, 1);
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+    const h = hash2(i + seed * 31, seed * 91);
+    const s = 0.72 + h * 0.5;
+    p.setXYZ(i, x * s * (0.85 + hash2(i, seed) * .3), y * s * (0.7 + h * .5), z * s * (0.85 + hash2(seed, i) * .3));
+  }
+  g.computeVertexNormals();
+  return g;
+}
+const rockMat = new THREE.MeshStandardMaterial({ color: 0x9b9890, roughness: .97, metalness: 0, bumpMap: regoTex.bump, bumpScale: .25 });
+function distToRoute(x, z) {
+  let best = 1e9;
+  for (let i = 0; i < ROUTE_SAMPLES; i += 10) {
+    const q = routeTable[i].p;
+    const d = (q.x - x) * (q.x - x) + (q.z - z) * (q.z - z);
+    if (d < best) best = d;
+  }
+  return Math.sqrt(best);
+}
+{
+  let seed = 4242;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  const dummy = new THREE.Object3D();
+  for (let variant = 0; variant < 2; variant++) {
+    const COUNT = isMobile ? 90 : 140;
+    const mesh = new THREE.InstancedMesh(makeRockGeometry(variant + 7), rockMat, COUNT);
+    let placed = 0, guard = 0;
+    while (placed < COUNT && guard++ < COUNT * 12) {
+      const ang = rnd() * Math.PI * 2, rad = 4 + rnd() * 185;
+      const x = Math.cos(ang) * rad, z = Math.sin(ang) * rad;
+      if (distToRoute(x, z) < 6.5) continue;
+      const s = 0.12 + Math.pow(rnd(), 2.2) * 0.95;
+      const h = heightAt(x, z);
+      dummy.position.set(x, h + s * 0.12, z);
+      dummy.rotation.set(rnd() * .5, rnd() * Math.PI * 2, rnd() * .5);
+      dummy.scale.set(s * (0.8 + rnd() * .5), s * (0.55 + rnd() * .6), s * (0.8 + rnd() * .5));
+      dummy.updateMatrix();
+      mesh.setMatrixAt(placed++, dummy.matrix);
+    }
+    mesh.count = placed;
+    mesh.castShadow = true; mesh.receiveShadow = true;
+    mesh.instanceMatrix.needsUpdate = true;
+    scene.add(mesh);
+  }
+}
+
+// ---- 车辙：两条随行驶进度逐段显现的暗色浅槽 ribbon ----
+const TRACK_OFFSET = 0.56, TRACK_HALF_W = 0.11;
+function buildTrackRibbon(sideSign) {
+  const positions = [], indices = [];
+  const N = ROUTE_SAMPLES;
+  for (let i = 0; i <= N; i++) {
+    const { p, side } = routeTable[i];
+    const cx = p.x + side.x * TRACK_OFFSET * sideSign, cz = p.z + side.z * TRACK_OFFSET * sideSign;
+    const ch = heightAt(cx, cz);
+    // 截面三顶点：外缘 / 槽底 / 内缘（微凸于地表，深色模拟轮下压实月壤）
+    for (let q = 0; q < 3; q++) {
+      const f = q - 1; // -1 外, 0 中, 1 内
+      const dip = q === 1 ? 0.004 : 0.016;
+      positions.push(cx + side.x * f * TRACK_HALF_W, ch + dip, cz + side.z * f * TRACK_HALF_W);
+    }
+  }
+  for (let i = 0; i < N; i++) {
+    for (let q = 0; q < 2; q++) {
+      const a = i * 3 + q, b = (i + 1) * 3 + q, c = (i + 1) * 3 + q + 1, d = i * 3 + q + 1;
+      indices.push(a, b, d, b, c, d);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  g.setIndex(indices);
+  g.setDrawRange(0, 0); // 初始不渲染，随行驶逐段显现
+  const m = new THREE.MeshBasicMaterial({ color: 0x53504a, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+  const mesh = new THREE.Mesh(g, m);
+  mesh.frustumCulled = false;
+  scene.add(mesh);
+  return { mesh, revealed: 0 };
+}
+const tracks = [buildTrackRibbon(-1), buildTrackRibbon(1)];
+function updateTracks(progress) { // progress: 已行驶弧长比例（0..1 循环，绕回后车辙保持全显）
+  const total = ROUTE_SAMPLES;
+  const target = Math.min(total, Math.floor((progress % 1) * total) + 2);
+  for (const tr of tracks) {
+    if (target <= tr.revealed) continue; // 绕回后保持已显现状态
+    tr.revealed = target;
+    tr.mesh.geometry.setDrawRange(0, target * 12); // 每段 4 三角形 × 3 索引
+  }
+}
+
+/* ===== 5. 星空、银河、地球与太阳 ===== */
+const EARTH_DIR = new THREE.Vector3(0.52, 0.30, 0.80).normalize();
+const SKY_R = 950;
+
+function makeGlowTexture() { // 太阳柔光
+  const [cv, ctx] = makeCanvas(256);
+  const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, 'rgba(255,252,240,1)');
+  g.addColorStop(0.12, 'rgba(255,244,214,.9)');
+  g.addColorStop(0.32, 'rgba(255,226,170,.28)');
+  g.addColorStop(1, 'rgba(255,220,150,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+  return new THREE.CanvasTexture(cv);
+}
+function makeStarTexture() { // 亮星十字光芒
+  const [cv, ctx] = makeCanvas(128);
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 60);
+  g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(255,255,255,.5)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 128, 128);
+  ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(4, 64); ctx.lineTo(124, 64); ctx.moveTo(64, 4); ctx.lineTo(64, 124); ctx.stroke();
+  return new THREE.CanvasTexture(cv);
+}
+function makeMilkyWayTexture() {
+  const W = 2048, H = 1024;
+  const [cv, ctx] = makeCanvas(W, H);
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  let seed = 31337;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  const bandV = u => 0.52 + 0.15 * Math.sin(u * Math.PI * 2 * 1.1 + 0.6) + 0.06 * Math.sin(u * Math.PI * 6);
+  // 银河亮带：大而柔的低透明云团，多层叠加
+  for (let i = 0; i < 620; i++) {
+    const u = rnd();
+    const v = bandV(u) + (rnd() + rnd() + rnd() - 1.5) * 0.12;
+    const x = u * W, y = v * H, r = 14 + rnd() * 52;
+    const warm = rnd();
+    const col = warm > .78 ? '255,238,214' : warm > .42 ? '224,231,255' : '255,255,255';
+    const a = 0.012 + rnd() * 0.028;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `rgba(${col},${a})`);
+    g.addColorStop(.55, `rgba(${col},${a * .4})`);
+    g.addColorStop(1, `rgba(${col},0)`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  }
+  // 暗尘带（银河中线的裂隙）
+  for (let i = 0; i < 260; i++) {
+    const u = rnd();
+    const v = bandV(u) + (rnd() - .5) * 0.045;
+    const x = u * W, y = v * H, r = 10 + rnd() * 30;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, 'rgba(0,0,0,.55)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  }
+  // 银河区内密集星点
+  for (let i = 0; i < 9000; i++) {
+    const u = rnd();
+    const v = bandV(u) + (rnd() + rnd() - 1) * 0.16;
+    const a = 0.22 + rnd() * 0.55, s = rnd() > .96 ? 1.8 : 1;
+    ctx.fillStyle = `rgba(${230 + rnd() * 25},${232 + rnd() * 23},${238 + rnd() * 17},${a})`;
+    ctx.fillRect(u * W, v * H, s, s);
+  }
+  // 整体高斯模糊柔化云团边界，再轻微压暗
+  const [cv2, ctx2] = makeCanvas(W, H);
+  ctx2.filter = 'blur(7px)';
+  ctx2.drawImage(cv, 0, 0);
+  ctx2.filter = 'none';
+  ctx2.fillStyle = 'rgba(0,0,0,.28)';
+  ctx2.fillRect(0, 0, W, H);
+  const t = new THREE.CanvasTexture(cv2);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+function makeEarthTexture() {
+  const W = 512, H = 256;
+  const [cv, ctx] = makeCanvas(W, H);
+  const img = ctx.createImageData(W, H);
+  const cloud = document.createElement('canvas'); cloud.width = W; cloud.height = H;
+  const cctx = cloud.getContext('2d');
+  const cimg = cctx.createImageData(W, H);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const lon = (x / W) * Math.PI * 2, lat = Math.PI / 2 - (y / H) * Math.PI;
+    const nx = Math.cos(lat) * Math.cos(lon), ny = Math.sin(lat), nz = Math.cos(lat) * Math.sin(lon);
+    // 扭曲球面坐标采样大陆噪声
+    const land = fbm(nx * 1.6 + 10, nz * 1.6 - ny * 0.7, 6) + fbm(nz * 3.2 - 4, ny * 3.2 + nx * 1.4, 4) * 0.4;
+    const cl = fbm(nx * 2.4 + 30, nz * 2.4 + ny * 2, 5);
+    const i = (y * W + x) * 4;
+    const polar = Math.abs(ny);
+    if (land > 0.06 || polar > .82) {
+      const green = land > .22;
+      let r = green ? 58 + land * 40 : 122 + land * 60;
+      let g = green ? 92 + land * 46 : 104 + land * 40;
+      let b = green ? 48 + land * 26 : 72 + land * 30;
+      if (polar > .82) { const k = THREE.MathUtils.clamp((polar - .82) / .16, 0, 1); r = r * (1 - k) + 236 * k; g = g * (1 - k) + 240 * k; b = b * (1 - k) + 246 * k; }
+      img.data[i] = r; img.data[i + 1] = g; img.data[i + 2] = b;
+    } else {
+      const depth = THREE.MathUtils.clamp(-land / .5, 0, 1);
+      img.data[i] = 12 + depth * 8; img.data[i + 1] = 46 + depth * 22; img.data[i + 2] = 88 + depth * 34;
+    }
+    img.data[i + 3] = 255;
+    const ca = cl > .18 ? THREE.MathUtils.clamp((cl - .18) * 2.2, 0, .85) : 0;
+    cimg.data[i] = 255; cimg.data[i + 1] = 255; cimg.data[i + 2] = 255; cimg.data[i + 3] = ca * 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  cctx.putImageData(cimg, 0, 0);
+  ctx.drawImage(cloud, 0, 0);
+  const t = new THREE.CanvasTexture(cv);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+function buildSky(targetScene) {
+  // 银河天幕
+  const sky = new THREE.Mesh(
+    new THREE.SphereGeometry(SKY_R, 48, 32),
+    new THREE.MeshBasicMaterial({ map: makeMilkyWayTexture(), side: THREE.BackSide, depthWrite: false, fog: false })
+  );
+  sky.renderOrder = -10;
+  targetScene.add(sky);
+
+  // 三层星点
+  let seed = 8080;
+  const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+  const layers = [
+    { n: 7000, size: 1.1, bright: .5 },
+    { n: 2400, size: 1.7, bright: .75 },
+    { n: 260, size: 2.6, bright: 1 }
+  ];
+  const starCols = [new THREE.Color(0xffffff), new THREE.Color(0xcddcff), new THREE.Color(0xffe9c8), new THREE.Color(0xffd9c0)];
+  for (const L of layers) {
+    const pos = new Float32Array(L.n * 3), col = new Float32Array(L.n * 3);
+    for (let i = 0; i < L.n; i++) {
+      const u = rnd(), v = rnd();
+      const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1);
+      const r = SKY_R * .92;
+      pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+      pos[i * 3 + 1] = r * Math.cos(ph);
+      pos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+      const c = starCols[Math.floor(rnd() * starCols.length)].clone();
+      const k = L.bright * (0.55 + rnd() * .45);
+      col[i * 3] = c.r * k; col[i * 3 + 1] = c.g * k; col[i * 3 + 2] = c.b * k;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    const m = new THREE.PointsMaterial({ size: L.size, sizeAttenuation: false, vertexColors: true, transparent: true, depthWrite: false, fog: false });
+    targetScene.add(new THREE.Points(g, m));
+  }
+  // 亮星十字光芒
+  const starTex = makeStarTexture();
+  for (let i = 0; i < 36; i++) {
+    const u = rnd(), v = rnd();
+    const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1), r = SKY_R * .9;
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: starTex, transparent: true, depthWrite: false, fog: false, opacity: .5 + rnd() * .5 }));
+    sp.position.set(r * Math.sin(ph) * Math.cos(th), r * Math.cos(ph), r * Math.sin(ph) * Math.sin(th));
+    const s = 14 + rnd() * 26;
+    sp.scale.set(s, s, 1);
+    targetScene.add(sp);
+  }
+  // 地球
+  const earthGroup = new THREE.Group();
+  earthGroup.position.copy(EARTH_DIR).multiplyScalar(640);
+  const earth = new THREE.Mesh(
+    new THREE.SphereGeometry(13.5, 48, 32),
+    new THREE.MeshStandardMaterial({ map: makeEarthTexture(), roughness: .92, metalness: 0, fog: false })
+  );
+  earthGroup.add(earth);
+  const atmo = new THREE.Mesh(
+    new THREE.SphereGeometry(14.1, 48, 32),
+    new THREE.ShaderMaterial({
+      side: THREE.BackSide, transparent: true, depthWrite: false, fog: false,
+      blending: THREE.AdditiveBlending,
+      vertexShader: `varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);} `,
+      fragmentShader: `varying vec3 vN; void main(){ float i = pow(0.72 - dot(vN, vec3(0.,0.,1.)), 3.2); gl_FragColor = vec4(0.35,0.58,1.0,1.0) * i * 1.25;} `
+    })
+  );
+  earthGroup.add(atmo);
+  targetScene.add(earthGroup);
+  // 太阳盘面与光晕
+  const sunPos = SUN_DIR.clone().multiplyScalar(760);
+  const sunCore = new THREE.Mesh(new THREE.SphereGeometry(11, 24, 16), new THREE.MeshBasicMaterial({ color: 0xfff7e6, fog: false }));
+  sunCore.position.copy(sunPos);
+  targetScene.add(sunCore);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: makeGlowTexture(), transparent: true, depthWrite: false, fog: false, blending: THREE.AdditiveBlending }));
+  glow.position.copy(sunPos); glow.scale.set(150, 150, 1);
+  targetScene.add(glow);
+  return { earth, sky };
+}
+const skyMain = buildSky(scene);
+const skyEnvScene = new THREE.Scene();
+buildSky(skyEnvScene);
+
+/* ===== 6. 光照与环境反射 ===== */
+// 用真实天空（星空 / 地球 / 太阳）生成环境反射，金属与金箔的高光来源与画面一致
+const pmrem = new THREE.PMREMGenerator(renderer);
+const envRT = pmrem.fromScene(skyEnvScene, 0.04);
+scene.environment = envRT.texture;
+pmrem.dispose();
+
+// 太阳主光：投影，位置每帧跟随巡视器以保证阴影精度
+const sunLight = new THREE.DirectionalLight(0xfff5ea, 2.6);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(isMobile ? 1024 : 2048, isMobile ? 1024 : 2048);
+sunLight.shadow.camera.near = 1;
+sunLight.shadow.camera.far = 320;
+sunLight.shadow.camera.left = -32;
+sunLight.shadow.camera.right = 32;
+sunLight.shadow.camera.top = 32;
+sunLight.shadow.camera.bottom = -32;
+sunLight.shadow.bias = -0.0006;
+sunLight.shadow.normalBias = 0.04;
+scene.add(sunLight, sunLight.target);
+
+// 地球反照：冷蓝弱补光，让背阳面勉强可读（月面真实暗部光源）
+const earthLight = new THREE.DirectionalLight(0x9fbcff, 0.3);
+earthLight.position.copy(EARTH_DIR);
+scene.add(earthLight);
+// 星空天光补底
+const hemi = new THREE.HemisphereLight(0x1b2436, 0x0c0b09, 0.16);
+scene.add(hemi);
+
+/* ===== 7. 巡视器高精度建模 ===== */
+// ---- 材质 ----
+const matWhite = new THREE.MeshStandardMaterial({ color: 0xe2dfd8, roughness: .48, metalness: .22, envMapIntensity: .85 });
+const matFoil = new THREE.MeshStandardMaterial({
+  map: foilTex.albedo, bumpMap: foilTex.bump, bumpScale: .04,
+  color: 0xfff2d8, metalness: .72, roughness: .46, envMapIntensity: 1.3
+});
+const matTi = new THREE.MeshStandardMaterial({ color: 0xb9b5ab, metalness: .92, roughness: .4, envMapIntensity: 1.1 });
+const matDarkMetal = new THREE.MeshStandardMaterial({ color: 0x3c3b38, metalness: .82, roughness: .55, envMapIntensity: .8 });
+const matBlack = new THREE.MeshStandardMaterial({ color: 0x141416, roughness: .82, metalness: .15 });
+const matSolar = new THREE.MeshStandardMaterial({ map: solarTex, color: 0xffffff, metalness: .35, roughness: .28, envMapIntensity: .7 });
+const matLens = new THREE.MeshStandardMaterial({ color: 0x0b1020, metalness: .4, roughness: .08, envMapIntensity: 1.8 });
+const matWheel = new THREE.MeshStandardMaterial({ map: wheelTex, color: 0xffffff, metalness: .55, roughness: .62, envMapIntensity: 1.05 });
+const matRed = new THREE.MeshStandardMaterial({ color: 0x8c3b2e, roughness: .5, metalness: .3 });
+
+const _up = new THREE.Vector3(0, 1, 0);
+function makeTube(a, b, r, mat, radial = 8) {
+  const dir = new THREE.Vector3().subVectors(b, a);
+  const len = dir.length();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, radial), mat);
+  m.position.copy(a).addScaledVector(dir, .5);
+  m.quaternion.setFromUnitVectors(_up, dir.normalize());
+  m.castShadow = true;
+  return m;
+}
+function updateTube(m, a, b) {
+  const dir = new THREE.Vector3().subVectors(b, a);
+  const len = dir.length();
+  m.position.copy(a).addScaledVector(dir, .5);
+  m.quaternion.setFromUnitVectors(_up, dir.normalize());
+  m.scale.set(1, len / m.userData.baseLen, 1);
+}
+function box(w, h, d, mat, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+function cyl(rt, rb, h, seg, mat, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), mat);
+  m.position.set(x, y, z); m.castShadow = true;
+  return m;
+}
+
+// ---- 筛网轮（轮面 + 轮缘 + 24 轮齿 + 轮毂辐条） ----
+const WHEEL_R = .18, WHEEL_W = .15;
+function buildWheel() {
+  const g = new THREE.Group();
+  const spin = new THREE.Group();
+  g.add(spin);
+  const tread = new THREE.Mesh(new THREE.CylinderGeometry(WHEEL_R, WHEEL_R, WHEEL_W, 36, 1, true), matWheel);
+  tread.rotation.z = Math.PI / 2;
+  tread.castShadow = true; spin.add(tread);
+  // 两侧轮缘
+  for (const sx of [-1, 1]) {
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(WHEEL_R, .017, 8, 36), matTi);
+    rim.rotation.y = Math.PI / 2; rim.position.x = sx * WHEEL_W / 2;
+    rim.castShadow = true; spin.add(rim);
+    // 辐条盘
+    const disc = new THREE.Mesh(new THREE.CylinderGeometry(.11, .11, .012, 18), matDarkMetal);
+    disc.rotation.z = Math.PI / 2; disc.position.x = sx * WHEEL_W / 2;
+    spin.add(disc);
+  }
+  const hub = new THREE.Mesh(new THREE.CylinderGeometry(.045, .045, WHEEL_W + .05, 16), matTi);
+  hub.rotation.z = Math.PI / 2; hub.castShadow = true; spin.add(hub);
+  // 三辐条
+  for (let k = 0; k < 3; k++) {
+    const ang = k * Math.PI * 2 / 3;
+    const sp = box(.02, .025, .17, matDarkMetal);
+    sp.rotation.x = ang;
+    sp.position.set(0, Math.cos(ang) * .055, Math.sin(ang) * .055);
+    spin.add(sp);
+  }
+  // 轮齿
+  const toothGeo = new THREE.BoxGeometry(WHEEL_W + .02, .022, .035);
+  for (let k = 0; k < 24; k++) {
+    const th = k * Math.PI * 2 / 24;
+    const t = new THREE.Mesh(toothGeo, matTi);
+    t.position.set(0, Math.cos(th) * (WHEEL_R + .008), Math.sin(th) * (WHEEL_R + .008));
+    t.rotation.x = -th;
+    t.castShadow = true; spin.add(t);
+  }
+  g.userData.spin = spin;
+  return g;
+}
+
+// ---- 整车 ----
+const rover = new THREE.Group();
+scene.add(rover);
+const bodyGroup = new THREE.Group();
+rover.add(bodyGroup);
+
+const WHEEL_X = .58, WHEEL_Z = [-.72, 0, .72];
+const wheels = [];
+for (const sx of [-1, 1]) for (let k = 0; k < 3; k++) {
+  const w = buildWheel();
+  w.position.set(sx * WHEEL_X, WHEEL_R, WHEEL_Z[k]);
+  rover.add(w);
+  wheels.push({ mesh: w, spin: w.userData.spin, x: sx * WHEEL_X, z: WHEEL_Z[k], side: sx, spinAngle: 0 });
+}
+
+// 摇臂悬挂连杆（每侧三根，每帧随轮地形变）
+const rockerTubes = [];
+let tubeWheelIdx = 0;
+for (const sx of [-1, 1]) {
+  const pivot = new THREE.Vector3(sx * .42, .46, 0);
+  for (const z of WHEEL_Z) {
+    const end = new THREE.Vector3(sx * WHEEL_X, WHEEL_R, z);
+    const tube = makeTube(pivot, end, .026, matTi);
+    tube.userData.baseLen = pivot.distanceTo(end);
+    rover.add(tube);
+    rockerTubes.push({ mesh: tube, z, side: sx, wheelIdx: tubeWheelIdx++ });
+  }
+  // 横向差速杆
+  const cross = makeTube(new THREE.Vector3(sx * .42, .46, 0), new THREE.Vector3(sx * .2, .52, 0), .02, matDarkMetal);
+  cross.userData.baseLen = .17;
+  rover.add(cross);
+  rockerTubes.push({ mesh: cross, side: sx, cross: true });
+}
+
+// ---- 车体 ----
+bodyGroup.add(box(1.02, .08, 1.42, matDarkMetal, 0, .5, 0));          // 底盘
+bodyGroup.add(box(.9, .34, 1.06, matWhite, 0, .72, 0));               // 主设备箱
+bodyGroup.add(box(.82, .26, .5, matFoil, 0, .86, .3));               // 顶部金箔仪器舱
+bodyGroup.add(box(.7, .2, .34, matFoil, 0, .74, -.42));              // 前部金箔舱
+// 前斜面面板
+const nose = box(.78, .05, .3, matWhite, 0, .58, -.62);
+nose.rotation.x = -.32; bodyGroup.add(nose);
+// 侧面金箔板
+for (const sx of [-1, 1]) {
+  const sp = box(.02, .3, .8, matFoil, sx * .46, .72, .05);
+  bodyGroup.add(sp);
+}
+// 顶部小设备盒
+bodyGroup.add(box(.22, .12, .2, matWhite, -.24, 1.02, .28));
+bodyGroup.add(box(.16, .1, .16, matDarkMetal, .2, 1.0, .32));
+// 螺栓点缀
+for (let sx = -1; sx <= 1; sx += 2) for (let z = -.4; z <= .4; z += .2) {
+  const b = cyl(.012, .012, .012, 8, matTi, sx * .36, .9, z);
+  bodyGroup.add(b);
+}
+// 前部双目避障相机
+for (const sx of [-1, 1]) {
+  const cam = new THREE.Mesh(new THREE.CylinderGeometry(.035, .035, .07, 16), matDarkMetal);
+  cam.rotation.x = Math.PI / 2; cam.position.set(sx * .27, .8, -.56);
+  cam.castShadow = true; bodyGroup.add(cam);
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(.026, .026, .012, 16), matLens);
+  glass.rotation.x = Math.PI / 2; glass.position.set(sx * .27, .8, -.6);
+  bodyGroup.add(glass);
+}
+// 侧扶手
+for (const sx of [-1, 1]) {
+  const rail = makeTube(new THREE.Vector3(sx * .5, .86, -.35), new THREE.Vector3(sx * .5, .86, .4), .012, matTi, 6);
+  bodyGroup.add(rail);
+  bodyGroup.add(makeTube(new THREE.Vector3(sx * .5, .74, -.3), new THREE.Vector3(sx * .5, .86, -.3), .01, matTi, 6));
+  bodyGroup.add(makeTube(new THREE.Vector3(sx * .5, .74, .35), new THREE.Vector3(sx * .5, .86, .35), .01, matTi, 6));
+}
+// 底盘测月雷达天线板
+for (const sx of [-1, 1]) {
+  const radar = box(.1, .012, .42, matDarkMetal, sx * .3, .38, .1);
+  radar.rotation.x = .12;
+  bodyGroup.add(radar);
+}
+
+// ---- 太阳翼 ----
+function buildSolarWing(sx) {
+  const g = new THREE.Group();
+  const panel = box(.82, .014, .96, matSolar);
+  g.add(panel);
+  // 边框与桁条
+  g.add(box(.86, .02, .02, matDarkMetal, 0, .002, -.49));
+  g.add(box(.86, .02, .02, matDarkMetal, 0, .002, .49));
+  g.add(box(.02, .02, .98, matDarkMetal, -.42, .002, 0));
+  g.add(box(.02, .02, .98, matDarkMetal, .42, .002, 0));
+  g.add(box(.015, .02, .96, matDarkMetal, 0, .002, 0));
+  // 铰链支架
+  g.add(makeTube(new THREE.Vector3(-sx * .42, -.01, 0), new THREE.Vector3(-sx * .52, -.12, 0), .018, matDarkMetal, 6));
+  g.position.set(sx * .98, .98, 0);
+  g.rotation.z = -sx * .07;
+  return g;
+}
+bodyGroup.add(buildSolarWing(-1));
+bodyGroup.add(buildSolarWing(1));
+for (const sx of [-1, 1]) {
+  bodyGroup.add(makeTube(new THREE.Vector3(sx * .46, .9, 0), new THREE.Vector3(sx * .62, .96, 0), .022, matDarkMetal, 8));
+}
+
+// ---- 桅杆（全景/导航相机 + 定向天线） ----
+const mast = new THREE.Group();
+mast.position.set(.18, .9, -.32);
+mast.add(cyl(.022, .026, .5, 12, matTi, 0, .25, 0));
+const mastJoint = new THREE.Mesh(new THREE.SphereGeometry(.04, 16, 12), matDarkMetal);
+mastJoint.position.y = .52; mastJoint.castShadow = true; mast.add(mastJoint);
+mast.add(cyl(.016, .02, .46, 12, matTi, 0, .76, 0));
+mast.add(box(.2, .1, .14, matWhite, 0, 1.02, 0));
+// 双目全景相机
+for (const sx of [-1, 1]) {
+  const c = new THREE.Mesh(new THREE.CylinderGeometry(.04, .04, .09, 18), matWhite);
+  c.rotation.x = Math.PI / 2; c.position.set(sx * .07, 1.05, -.08); c.castShadow = true; mast.add(c);
+  const gl = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, .014, 18), matLens);
+  gl.rotation.x = Math.PI / 2; gl.position.set(sx * .07, 1.05, -.135); mast.add(gl);
+  const hood = box(.1, .03, .04, matBlack, sx * .07, 1.1, -.12); mast.add(hood);
+}
+// 导航相机（更低的一对小镜头）
+for (const sx of [-1, 1]) {
+  const c = new THREE.Mesh(new THREE.CylinderGeometry(.026, .026, .06, 14), matDarkMetal);
+  c.rotation.x = Math.PI / 2; c.position.set(sx * .05, .9, -.06); mast.add(c);
+}
+// 定向天线锅（Lathe 抛物面）
+{
+  const pts = [];
+  for (let i = 0; i <= 10; i++) {
+    const r = .15 * i / 10;
+    pts.push(new THREE.Vector2(r, -.11 * (r / .15) * (r / .15)));
+  }
+  const dish = new THREE.Mesh(new THREE.LatheGeometry(pts, 28), new THREE.MeshStandardMaterial({ color: 0xe8e4da, metalness: .35, roughness: .5, side: THREE.DoubleSide }));
+  dish.position.set(-.16, 1.06, .06);
+  dish.rotation.z = .5; dish.rotation.x = -.5;
+  dish.castShadow = true; mast.add(dish);
+  const feed = new THREE.Mesh(new THREE.SphereGeometry(.014, 10, 8), matDarkMetal);
+  feed.position.set(-.2, 1.12, .0); mast.add(feed);
+}
+// 太阳敏感器小筒
+{
+  const ss = cyl(.02, .02, .12, 12, matDarkMetal, .12, 1.12, .08);
+  ss.rotation.z = .3; mast.add(ss);
+}
+bodyGroup.add(mast);
+
+// ---- 前部机械臂（三节折叠 + 末端仪器） ----
+{
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(.05, .06, .08, 16), matDarkMetal);
+  base.position.set(0, .68, -.5); base.castShadow = true; bodyGroup.add(base);
+  const p0 = new THREE.Vector3(0, .7, -.52);
+  const p1 = new THREE.Vector3(0, .52, -.82);
+  const p2 = new THREE.Vector3(0, .4, -1.12);
+  bodyGroup.add(makeTube(p0, p1, .02, matTi, 10));
+  bodyGroup.add(makeTube(p1, p2, .017, matTi, 10));
+  for (const p of [p1, p2]) {
+    const j = new THREE.Mesh(new THREE.SphereGeometry(.032, 14, 10), matDarkMetal);
+    j.position.copy(p); j.castShadow = true; bodyGroup.add(j);
+  }
+  const tool = box(.14, .1, .12, matWhite, 0, .38, -1.2);
+  tool.rotation.x = .2; bodyGroup.add(tool);
+  const lens = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, .02, 14), matLens);
+  lens.rotation.x = Math.PI / 2; lens.position.set(0, .36, -1.27); bodyGroup.add(lens);
+}
+
+// ---- UHF 全向天线 ----
+{
+  const a0 = new THREE.Vector3(.32, .92, .5);
+  const a1 = new THREE.Vector3(.42, 1.5, .68);
+  bodyGroup.add(makeTube(a0, a1, .008, matDarkMetal, 6));
+  const tip = new THREE.Mesh(new THREE.SphereGeometry(.022, 10, 8), matRed);
+  tip.position.copy(a1); bodyGroup.add(tip);
+}
+// 螺旋天线
+{
+  const helixPts = [];
+  for (let i = 0; i <= 60; i++) {
+    const t = i / 60, ang = t * Math.PI * 8;
+    helixPts.push(new THREE.Vector3(-.32 + Math.cos(ang) * .025, .96 + t * .22, .42 + Math.sin(ang) * .025));
+  }
+  const helix = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(helixPts), 80, .004, 5), matDarkMetal);
+  helix.castShadow = true; bodyGroup.add(helix);
+}
+
+rover.traverse(o => { if (o.isMesh) { o.castShadow = true; } });
+
+/* ===== 8. 行驶路径、悬挂姿态与扬尘 ===== */
+const drive = { u: 0.006, speed: 1.05, paused: REDUCED_MOTION, distance: 0, yaw: 0 };
+const _p0 = new THREE.Vector3(), _p1 = new THREE.Vector3(), _t0 = new THREE.Vector3(), _t1 = new THREE.Vector3();
+const _cur = new THREE.Vector3(), _tan = new THREE.Vector3();
+const bodyAtt = { y: 0, pitch: 0, roll: 0 };
+
+function routeAt(u, pOut, tOut) {
+  u = ((u % 1) + 1) % 1;
+  const fi = u * ROUTE_SAMPLES, i0 = Math.floor(fi), f = fi - i0;
+  const A = routeTable[i0], B = routeTable[(i0 + 1) % ROUTE_SAMPLES];
+  pOut.copy(A.p).lerp(B.p, f);
+  tOut.copy(A.t).lerp(B.t, f).normalize();
+}
+
+// ---- 扬尘粒子（真空中弹道抛射，月球重力 1.62） ----
+const DUST_N = 200;
+const dustPos = new Float32Array(DUST_N * 3);
+const dustAlpha = new Float32Array(DUST_N);
+const dustSize = new Float32Array(DUST_N);
+const dust = [];
+for (let i = 0; i < DUST_N; i++) {
+  dust.push({ life: 2, max: 1, vx: 0, vy: 0, vz: 0 }); // life>=max 即休眠
+  dustPos[i * 3 + 1] = -999;
+}
+function makeDustTexture() {
+  const [cv, ctx] = makeCanvas(64);
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(150,146,138,.85)'); g.addColorStop(.6, 'rgba(128,124,116,.35)'); g.addColorStop(1, 'rgba(120,116,108,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(cv);
+}
+const dustGeo = new THREE.BufferGeometry();
+dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+dustGeo.setAttribute('aAlpha', new THREE.BufferAttribute(dustAlpha, 1));
+dustGeo.setAttribute('aSize', new THREE.BufferAttribute(dustSize, 1));
+const dustMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, uniforms: { uTex: { value: makeDustTexture() } },
+  vertexShader: `
+    attribute float aAlpha; attribute float aSize; varying float vAlpha;
+    void main(){ vAlpha = aAlpha; vec4 mv = modelViewMatrix * vec4(position,1.0);
+      gl_PointSize = aSize * (160.0 / -mv.z); gl_Position = projectionMatrix * mv; }`,
+  fragmentShader: `
+    uniform sampler2D uTex; varying float vAlpha;
+    void main(){ vec4 t = texture2D(uTex, gl_PointCoord); gl_FragColor = vec4(t.rgb, t.a * vAlpha); }`
+});
+const dustPoints = new THREE.Points(dustGeo, dustMat);
+dustPoints.frustumCulled = false;
+scene.add(dustPoints);
+let dustCursor = 0, dustAccum = 0;
+function emitDust(x, y, z, tx, tz, side) {
+  const p = dust[dustCursor];
+  dustCursor = (dustCursor + 1) % DUST_N;
+  p.life = 0; p.max = .45 + Math.random() * .45; // 真空弹道颗粒，快速落回
+  const back = .18 + Math.random() * .3, sideK = (Math.random() - .5) * .22;
+  p.vx = -tx * back + tz * sideK * side + (Math.random() - .5) * .08;
+  p.vz = -tz * back - tx * sideK * side + (Math.random() - .5) * .08;
+  p.vy = .12 + Math.random() * .3;
+  dustPos[dustCursor * 3] = x; dustPos[dustCursor * 3 + 1] = y; dustPos[dustCursor * 3 + 2] = z;
+  dustAlpha[dustCursor] = .32; dustSize[dustCursor] = .03 + Math.random() * .04;
+}
+function updateDust(dt) {
+  for (let i = 0; i < DUST_N; i++) {
+    const p = dust[i];
+    if (p.life >= p.max) { dustAlpha[i] = 0; dustPos[i * 3 + 1] = -999; continue; }
+    p.life += dt;
+    p.vy -= 1.62 * dt;
+    let x = dustPos[i * 3] + p.vx * dt;
+    let y = dustPos[i * 3 + 1] + p.vy * dt;
+    let z = dustPos[i * 3 + 2] + p.vz * dt;
+    const ground = heightAt(x, z) + .02;
+    if (y < ground) { y = ground; p.vy = 0; p.vx *= .7; p.vz *= .7; p.life += dt * 2.2; }
+    dustPos[i * 3] = x; dustPos[i * 3 + 1] = y; dustPos[i * 3 + 2] = z;
+    const k = 1 - p.life / p.max;
+    dustAlpha[i] = Math.max(0, k) * .34;
+  }
+  dustGeo.attributes.position.needsUpdate = true;
+  dustGeo.attributes.aAlpha.needsUpdate = true;
+  dustGeo.attributes.aSize.needsUpdate = true;
+}
+
+// ---- 每帧行驶更新 ----
+const wheelWorld = new THREE.Vector3();
+function localToWorldXZ(lx, lz, yaw, px, pz, out) {
+  out.set(px + lx * Math.cos(yaw) + lz * Math.sin(yaw), 0, pz - lx * Math.sin(yaw) + lz * Math.cos(yaw));
+}
+function updateDrive(dt) {
+  if (!drive.paused) {
+    drive.u = (drive.u + drive.speed * dt / ROUTE_LEN) % 1;
+    drive.distance += drive.speed * dt;
+  }
+  routeAt(drive.u, _cur, _tan);
+  const px = _cur.x, pz = _cur.z;
+  drive.yaw = Math.atan2(-_tan.x, -_tan.z);
+  rover.position.set(px, 0, pz);
+  rover.rotation.y = drive.yaw;
+
+  // 六轮独立接地
+  const heights = [];
+  for (const w of wheels) {
+    localToWorldXZ(w.x, w.z, drive.yaw, px, pz, wheelWorld);
+    const h = heightAt(wheelWorld.x, wheelWorld.z);
+    heights.push(h);
+    w.mesh.position.y = h + WHEEL_R;
+    w.mesh.position.x = w.x; w.mesh.position.z = w.z;
+    if (!drive.paused) w.spinAngle -= drive.speed * dt / WHEEL_R;
+    w.spin.rotation.x = w.spinAngle;
+  }
+  // 车身高度 / 俯仰 / 横滚
+  const hFL = heights[0], hML = heights[1], hRL = heights[2];
+  const hFR = heights[3], hMR = heights[4], hRR = heights[5];
+  const avg = (hFL + hML + hRL + hFR + hMR + hRR) / 6;
+  const hF = (hFL + hFR) / 2, hR = (hRL + hRR) / 2;
+  const hL = (hFL + hML + hRL) / 3, hS = (hFR + hMR + hRR) / 3;
+  const targetY = avg + .5;
+  const targetPitch = Math.atan2(hF - hR, 1.44);
+  const targetRoll = Math.atan2(hS - hL, 1.16);
+  const k = 1 - Math.exp(-dt * 6);
+  bodyAtt.y += (targetY - bodyAtt.y) * k;
+  bodyAtt.pitch += (targetPitch - bodyAtt.pitch) * k;
+  bodyAtt.roll += (targetRoll - bodyAtt.roll) * k;
+  bodyGroup.position.y = bodyAtt.y;
+  bodyGroup.rotation.x = bodyAtt.pitch;
+  bodyGroup.rotation.z = bodyAtt.roll;
+
+  // 摇臂连杆随动
+  for (const t of rockerTubes) {
+    const A = new THREE.Vector3(t.side * .42, bodyAtt.y - .05, 0);
+    let B;
+    if (t.cross) B = new THREE.Vector3(t.side * .2, bodyAtt.y + .02, 0);
+    else B = new THREE.Vector3(t.side * WHEEL_X, heights[t.wheelIdx] + WHEEL_R, t.z);
+    updateTube(t.mesh, A, B);
+  }
+
+  // 太阳阴影跟随
+  sunLight.position.set(px + SUN_DIR.x * 140, heightAt(px, pz) + 60 + SUN_DIR.y * 80, pz + SUN_DIR.z * 140);
+  sunLight.target.position.set(px, heightAt(px, pz), pz);
+
+  // 车辙
+  updateTracks(drive.u);
+
+  // 扬尘（两后轮）
+  if (!drive.paused) {
+    dustAccum += dt;
+    while (dustAccum > .025) {
+      dustAccum -= .025;
+      for (const w of wheels) {
+        if (w.z !== WHEEL_Z[2]) continue;
+        localToWorldXZ(w.x, w.z + .05, drive.yaw, px, pz, wheelWorld);
+        emitDust(wheelWorld.x, heightAt(wheelWorld.x, wheelWorld.z) + .08, wheelWorld.z, _tan.x, _tan.z, w.side);
+      }
+    }
+  }
+  updateDust(dt);
+
+  rover.userData.cur = _cur.clone();
+  rover.userData.tan = _tan.clone();
+  rover.userData.bodyY = bodyAtt.y;
+  rover.userData.att = { pitch: bodyAtt.pitch, roll: bodyAtt.roll };
+}
+
+/* ===== 9. HUD 交互与主循环 ===== */
+const $ = id => document.getElementById(id);
+let follow = true;
+const lastAnchor = new THREE.Vector3();
+let initialized = false;
+
+function resetView() {
+  const c = rover.userData.cur, bodyY = rover.userData.bodyY;
+  const t = rover.userData.tan;
+  camera.position.set(c.x - t.x * 8.6, bodyY + 4.1, c.z - t.z * 8.6);
+  controls.target.set(c.x, bodyY + 0.85, c.z);
+  lastAnchor.set(c.x, bodyY, c.z);
+  follow = true;
+  $('btn-follow').classList.add('on');
+  $('btn-follow').setAttribute('aria-pressed', 'true');
+  $('follow-label').textContent = '跟随视角';
+}
+
+// 初始定位
+updateDrive(0);
+resetView();
+controls.update();
+renderer.render(scene, camera);
+window.__SCENE_READY__ = true;
+
+// ---- 按钮 ----
+$('btn-follow').addEventListener('click', () => {
+  follow = !follow;
+  const btn = $('btn-follow');
+  btn.classList.toggle('on', follow);
+  btn.setAttribute('aria-pressed', String(follow));
+  $('follow-label').textContent = follow ? '跟随视角' : '自由浏览';
+  if (follow) {
+    const c = rover.userData.cur;
+    lastAnchor.set(c.x, rover.userData.bodyY, c.z);
+  }
+});
+const ICON_PAUSE = '<rect x="7" y="5" width="3.2" height="14"/><rect x="13.8" y="5" width="3.2" height="14"/>';
+const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+function syncPauseUI() {
+  const btn = $('btn-pause');
+  btn.classList.toggle('on', drive.paused);
+  btn.setAttribute('aria-pressed', String(drive.paused));
+  $('pause-icon').innerHTML = drive.paused ? ICON_PLAY : ICON_PAUSE;
+  $('pause-label').textContent = drive.paused ? '继续行驶' : '暂停行驶';
+  $('t-mode').textContent = drive.paused ? '已暂停' : '行驶中';
+  $('t-mode').className = drive.paused ? 'st-pause' : 'st-run';
+}
+$('btn-pause').addEventListener('click', () => { drive.paused = !drive.paused; syncPauseUI(); });
+syncPauseUI();
+$('btn-reset').addEventListener('click', resetView);
+
+// ---- 遥测 ----
+let hudTick = 0;
+function updateHUD() {
+  const c = rover.userData.cur, att = rover.userData.att;
+  $('t-speed').innerHTML = (drive.paused ? '0.00' : drive.speed.toFixed(2)) + '<span class="unit">m/s</span>';
+  $('t-dist').innerHTML = drive.distance.toFixed(1) + '<span class="unit">m</span>';
+  $('t-pos').textContent = `${c.x.toFixed(1)} / ${c.z.toFixed(1)}`;
+  $('t-att').textContent = `${(att.pitch * 180 / Math.PI).toFixed(1)}° / ${(att.roll * 180 / Math.PI).toFixed(1)}°`;
+}
+
+// ---- 自适应 ----
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ---- 主循环 ----
+const clock = new THREE.Clock();
+let running = true;
+document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) { clock.getDelta(); loop(); } });
+
+function loop() {
+  if (!running) return;
+  requestAnimationFrame(loop);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  updateDrive(dt);
+  const c = rover.userData.cur, bodyY = rover.userData.bodyY;
+
+  if (follow) {
+    camera.position.x += c.x - lastAnchor.x;
+    camera.position.z += c.z - lastAnchor.z;
+    controls.target.lerp(new THREE.Vector3(c.x, bodyY + 1.0, c.z), 1 - Math.exp(-dt * 3.5));
+  }
+  lastAnchor.set(c.x, bodyY, c.z);
+
+  // 限位：禁止穿入月面、禁止驶离地形边缘
+  const gh = heightAt(camera.position.x, camera.position.z);
+  if (camera.position.y < gh + 1.0) camera.position.y = gh + 1.0;
+  const r = Math.hypot(camera.position.x, camera.position.z);
+  if (r > 175) {
+    camera.position.x *= 175 / r; camera.position.z *= 175 / r;
+  }
+  controls.update();
+
+  // 地球缓慢自转
+  skyMain.earth.rotation.y += dt * 0.006;
+
+  if ((hudTick++ % 6) === 0) updateHUD();
+  renderer.render(scene, camera);
+}
+
+// 首帧已同步渲染，启动循环并淡出加载层
+requestAnimationFrame(() => {
+  $('loader').classList.add('done');
+});
+loop();
+</script>
+</body>
+</html>

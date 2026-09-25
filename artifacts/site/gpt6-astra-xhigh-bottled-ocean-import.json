@@ -1,0 +1,66 @@
+{
+  "source": "/Users/apm30/Documents/project/测试环境 2/bottle-ocean.html",
+  "sourcePreserved": true,
+  "model": "GPT6-Astra-xhigh",
+  "modelEvidence": "User explicitly confirmed for this bottled ocean result",
+  "promptVersionId": "bottled-ocean-v1",
+  "originalSha256": "25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94",
+  "archivedSha256": "25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94",
+  "entrySha256": "25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94",
+  "publishedSha256": "25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94",
+  "cover": {
+    "source": "/Users/apm30/Documents/project/测试环境 2/artifacts/bottle-ocean-desktop.png",
+    "sha256": "e0deebaf3e4cb6548943b77299752a0ca901271b220655f69a80a767f2d176ba"
+  },
+  "sourceArtifacts": [
+    {
+      "name": "bottle-ocean-checks.json",
+      "sha256": "0ed52f37e87af2af7811784c74f1cb20bf18a047a4cd34f0486ccdec00a913b6",
+      "bytes": 1928
+    },
+    {
+      "name": "bottle-ocean-desktop.png",
+      "sha256": "e0deebaf3e4cb6548943b77299752a0ca901271b220655f69a80a767f2d176ba",
+      "bytes": 1075194
+    },
+    {
+      "name": "bottle-ocean-dusk.png",
+      "sha256": "97ccf64b3bfa30a4e643b76cb3910d2be4a166af25951f9c70237437d42ac473",
+      "bytes": 3172657
+    },
+    {
+      "name": "bottle-ocean-mobile.png",
+      "sha256": "54ab6db24a00549531da0435a8e67fd2489db033d423e9e4d2caaca84442bfcc",
+      "bytes": 254037
+    },
+    {
+      "name": "bottle-ocean-night.png",
+      "sha256": "4848670b977d481e0152c1eb4dd074f63b4327f0e30659023a7b628586a652b1",
+      "bytes": 923599
+    },
+    {
+      "name": "bottle-ocean-storm.png",
+      "sha256": "5d98cdf8efb39cddd480b4ec022dd31b380b67efc774efcde8bc08983869e5b6",
+      "bytes": 2780074
+    }
+  ],
+  "independentBrowserCheck": {
+    "entry": "http://127.0.0.1:8776/works/bottled-ocean/gpt6-astra-xhigh/import-01/index.html",
+    "homepageCardOpened": true,
+    "title": "瓶中沧海 · A Sea of One's Own",
+    "webglCanvas": [
+      1280,
+      720
+    ],
+    "threeRevision": "160",
+    "cdnStatus": 200,
+    "waterVoxels": 2514,
+    "gulls": 6,
+    "speed12AdvancedSimulation": true,
+    "pauseHeldSimulation": true,
+    "stormButtonPressAndRelease": true,
+    "scriptExceptions": [],
+    "failedRequests": []
+  },
+  "note": "Browser smoke test checks loading and selected interactions, not every scene feature or sustained 60 FPS."
+}

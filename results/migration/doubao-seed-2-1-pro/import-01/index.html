@@ -1,0 +1,2318 @@
+<thinking>
+We need need provide single file HTML. 
+
+The single-file HTML will be procedurally generated with WebAudio to create two non-repeating music themes, fully meeting all requirements without external dependencies. The final output will include Chinese content and code with explanatory notes.
+
+I'm currently working out the architecture for the infinite world project. I've confirmed it uses a 2D canvas with 3D projection, and clarified the style segmentation, transition and sampling rules to support smooth scene switching.
+
+I’ve finalized the specific calculation logic for style segment boundaries and style index sampling, with non-uniform style front layouts and jagged transition effects built in.
+
+I've completed the design of the style sampling function, which can accurately locate corresponding style segments and blending parameters based on input coordinates.
+
+I've finalized the color interpolation rules for all specified palettes, and confirmed the 3D projection calculation logic for the camera, including the coordinate system definition and right-hand rule adjustment for the canvas coordinate system.
+
+I've completed the full derivation and verification of the camera's right vector and up vector calculation logic, confirming the correctness of the coordinate system adjustment rules.
+
+I've finalized the perspective projection calculation logic, and clarified the camera's pitch adjustment rules, shot parameter specifications, and position calculation methods for different viewing scenarios.
+
+I've identified issues with the original camera position calculation logic, including the inability to handle underground scenarios and inaccurate camera altitude for top-down shots. I've decided to add a minimum camera z constraint to adjust the calculation logic, and I'm currently verifying the mapping between pitch angle and the z-axis component of the forward vector, having set the initial pitch adjustment to -π/2.
+
+I've adjusted the camera position calculation formula to fit downward shooting scenarios, confirmed pitch angle conventions and target position tracking rules for the camera. I've finalized the drawing order, and decided to render scene chunks using tile strips along the x-axis around the camera, with a chunk size of 180 units and 20 chunks in total.
+
+I've clarified the vertical shooting range, river and field generation specifications, confirmed the drawing order of sky and ground planes, and decided to sort and draw all depth-sorted objects by distance.
+
+I've confirmed the overall polygon count is manageable, with clear specifications for house and tree distribution along the river. I've finalized the rendering order for the sky and ground planes, decided to use horizon-based ground rendering logic with fog fade-out at the horizon, and clarified the calculation rules for the vanishing point of infinitely distant ground points.
+
+I've finalized the horizon line calculation logic, confirming the screen y-coordinate of the horizon for top-down shots and clarifying the vertical position of the horizon for level ground scenes.
+
+I've confirmed the pitch threshold for full-screen ground filling is 60 degrees, with fog gradient applied near the horizon. I'll only draw projected cells with all depth exceeding the near plane to avoid holes, and fields use 4-vertex polygons with color hashing and style sampling. Rivers will be rendered as strips along the centerline with sampled bank data.
+
+I've confirmed the drawing order of fields, clarified the water color specifications, and finalized the generation rules for European old town houses along the river, including their size, distribution, rendering requirements and special elements like church spires.
+
+I've confirmed the distribution specifications for backscattered houses, chimneys and trees, finalized the depth sorting rule for buildings, clarified the basic 3D modeling parameters and facade drawing logic for European old town houses, and confirmed the 3D polygon drawing support. I've also confirmed that building gable walls share side walls along the x-axis.
+
+I've adjusted the 3D modeling parameters for European old town riverfront terraced houses, clarifying their width, depth, roof structure and shared wall rules.
+
+I've finalized the roof and facade drawing logic for European old town riverfront terraced houses, and clarified the placement rules and parameter ranges for their specific dimensions.
+
+I've confirmed the y-position calculation rule for house centers, finalized the drawing logic for church spires and simple back houses, and clarified the 3D modeling and rendering specifications for deciduous and conifer trees.
+
+I've finalized the bird flock rendering specifications, including their count, migration rules, movement constraints, and the boid separation rule for flock behavior.
+
+I've confirmed the bird courage follows a power law distribution, finalized the forward dash offset calculation rule, clarified the velocity and offset update logic, and worked out the 3D boid separation rule and soft left boundary push logic.
+
+I've clarified the specific implementation details of the left-side soft boundary, including the two-stage push rule and edge-strengthened attenuation effect. I've also confirmed the camera adjustment scheme to keep the flock centered in the left area of the screen.
+
+I've finalized the camera frame bias offset calculation logic, and confirmed the anchor position calculation rules for bird physics.
+
+I've finalized the bird physics rules, confirming only separation springs are needed for flocking, with additional wind, damping and altitude adjustment logic. I've also confirmed the bird rendering scheme uses simple triangles, with 3D orientation derived from velocity for projection onto the 2D canvas.
+
+I've finalized the local coordinate point definitions for the bird's 3D model, including key features like the nose, tail, keel and wings, confirmed the use of triangle polygons for rendering, and set the bird's total span to 22 units with a total size range of 8-14 units.
+
+I've finalized the bird ground projection and tinted color sampling rules. I've also confirmed the 5-type particle scheme (dust, mist, petals, snow, fireflies), with specifications for particle count, spawning area, depth sorting and drift logic.
+
+I've confirmed the particle type assignment and rendering style rules, finalized the transparent object sorting logic, clarified the rendering order of layers, and noted there are 16 named camera shots.
+
+I've finalized the Chinese naming for all 16 camera shots, and confirmed the total cycle length is about 96 seconds with 5 shots per cycle, which fits the required 16-19 second duration per shot.
+
+I've settled on 5 shots per 96-second cycle, each set to 19.2 seconds. I've mapped each of the 5 phases to multiple eligible camera shots, and added constraints to ensure varied altitude, distance and yaw angles between adjacent shots.
+
+I've confirmed the finale alternates between front and back views per cycle, sorted out initial pitch, distance and yaw parameter specifications for all 5 camera shots, and opted for a simpler yaw evolution solution instead of complex orbit logic to meet adjacent angle difference requirements.
+
+I've finalized the in-shot camera transition logic: each shot segment keeps parameters for the first 9.5 seconds, then smoothly interpolates to the next shot's parameters in the second half. I've also confirmed camera smoothing rules, and adjusted the target point for low-water-level shots to shift toward the river with a lower z-axis value.
+
+I've finalized the multi-dimensional target look calculation logic for the camera, set a minimum z-axis position constraint of 12, and confirmed the camera altitude calculation formula based on pitch angle.
+
+I've finalized the frame bias shift rule and user zoom adjustment logic. For the camera control mode, I'll add a UI toggle to switch between auto and manual modes, with clear operation rules for mouse, touch and pen input devices.
+
+I've confirmed the wheel operation rules for both auto and manual modes, added screen orientation adaptation logic with proper dimension handling, and finalized the audio startup requirements, including a 2.4s gap between the two alternating non-loop music themes and 5s fade time.
+
+I've finalized the environmental layer noise processing rules, the music toggle button function, and confirmed that the two embedded base64 music clips contradict the all-procedural generation requirement, so I'll use a zero-dependency generative solution instead.
+
+I've adjusted the music scheme to prioritize non-repeating generation over literal base64 compliance. I've finalized the UI design, including 5 style options, start position setting, and adaptive ink color for different scenarios, plus controls for music, poetry and camera mode.
+
+I've confirmed large screens will use media queries to adjust the root font size for proper scaling, with shot names and variable values displayed in the top-left corner, and no loading assets prompt for now. The total code output is projected to exceed 2000 lines, fitting within the 64k token budget. I've designed the UI layout for the start overlay, HUD and poetry display area, sorted out handling logic for portrait orientation adaptation and pointer coordinate mapping, and finalized a set of core utility functions including basic mathematical operations and pseudo-random number generation.
+
+I've finalized the 2D hash noise function, value noise implementation, front jitter rule, river Y coordinate calculation, color parsing and palette mixing logic.
+
+I've finalized the full color palette configuration for the WARM preset, covering all required scene and effect color parameters.
+
+I've finished the full color palette configuration for the MIST preset, covering all required scene and effect color parameters.
+
+I've completed the full color palette configuration for the DUSK and SNOW presets, covering all required scene and effect color parameters for both schemes.
+
+I've completed the full color palette configuration for the NIGHT preset, covering all required scene and effect color parameters, and clarified the sample palette and style front determination rules.
+
+I've finalized the style sampling logic, which uses a style index lookup table, front jitter processing and modulo operation to get accurate style segment parameters. I've also confirmed the rule to show sun halo effects during style transitions involving DUSK or WARM presets when the transition parameter falls within the specified range.
+
+I've finalized the rendering logic for two additional special effects: a radial gradient sky glow aligned with the flock ahead at the horizon, and a warm pink ground light pool at the style boundary, with clear drawing order confirmed.
+
+I've finalized the rendering logic for night stars, night windows and snow roofs, and confirmed the depth-based aerial fog mixing rules with a dedicated utility function.
+
+I've finalized the bird flock center Y-axis calculation rule to align with the river's centerline, set the initial Z-axis to 360, and confirmed the camera's look target smoothing logic, as well as all autonomous parameter adjustment rules.
+
+I've finalized the full camera shot generation scheme. The total cycle duration is set to 95 seconds with each shot lasting 19 seconds, and shot numbers will increment per cycle with fixed high/low alternation and finale back/front rotation rules. I've sorted out all parameters for the 5 shot categories, including top-down, descent, middle, finale and other specified shooting scenarios, with clear pitch, distance and yaw angle configurations for each type.
+
+I've finalized the full parameter specifications for the recovery camera category, confirmed the yaw value selection rules (all multiples of π/4, with minimum 30° difference between adjacent shots), and clarified the near/mid/far distance configuration logic based on shot type and altitude level.
+
+I've finalized the shot object structure and cycle-based RNG seeding rule for shot naming. I've also sorted out the time-based shot switching logic and target parameter interpolation rules, with a clear plan for the real-time shot name display.
+
+I've finalized the shot name and VAR display rules, with VAR updated per cycle boundaries. I've also confirmed the camera manual button toggles between modes, and pointer drag has no effect in auto mode while mouse wind still works.
+
+I've finalized the camera operation rules for both auto and manual modes, including wheel, drag, pinch and single-touch wind controls, and sorted out the wind force calculation logic.
+
+I've finalized the cursor speed filtering rules with a 1€ filter and specified edge force nonlinear effects, and sorted out the wind offset calculation logic. I've also confirmed the bird offset update scheme, boundary force rules, power law courage calculation method, and z-layer based angle and hash generation logic.
+
+I've finalized the bird physics calculation logic, including spring stiffness, damping coefficient, separation force, boundary force parameters and velocity update rules, and confirmed to use spherical linear interpolation for smooth bird heading adjustment.
+
+I've finalized the p-p previous heading smoothing logic, confirmed the bird flap phase and wing angle calculation rule, and worked out the bird drawing logic including heading-based transformation and bank angle calculation.
+
+I've finalized the calculation logic for the bird's local coordinate basis, wing right vector and up vector, and confirmed the roll rotation and local point transformation rules, with a uniform size scale set for now.
+
+I've confirmed the specific 3D vertex coordinates for key bird model parts, finalized the drawing logic for bird facets, feather shading and ground shadow effects. I've also sorted out the construction and depth sorting rules for building rendering.
+
+I've finalized the building rendering item structure and polygon estimation: around 2000 polygons fit well, with total items around 1200.
+
+I've confirmed 240 particle items and 300 bird facets make up the full 2000 polygon count, which is feasible to sort per frame on modern devices. I've finalized the polygon pushing structure, with immediate projection and screen point storage during drawing to avoid frame freezing, plus dedicated handling for gradient special items and style-based color mixing rules. I've also confirmed river strips use x-axis traversal with vertex generation logic and optional center lines adjusted by season and time of day.
+
+I've confirmed the river color for the SNOW preset is steely, set the vertical field drawing range to ±1200 units, finalized the river drawing rules, and sorted out the European old town house generation logic.
+
+I've finalized the specific generation parameters for European old town houses, including church spire rules, back house specifications and tree placement logic, with no overlap issues confirmed.
+
+I've finalized the tree generation rules, including deciduous and conifer specifications, plus chimney and snow roof rendering logic, with all relevant items sorted by depth for proper sorting.
+
+I've finalized the drawing logic for night windows and church spires, confirmed 5-type particle assignment rules and individual particle switching logic during style transitions, and sorted out the basic movement specifications for all particle types.
+
+I've confirmed the drawing specifications for snow and all particle items, finalized the gradient-based sky rendering logic applicable for all shooting scenarios, and clarified the rules for generating 220 stars and sun halo effects during style transitions.
+
+I've finalized the star rendering logic, specifying warm pink color mixing rules and a 40-50% minimum screen radius for star halos. I've also confirmed the radial gradient ground light pool drawing rules for dusk scenarios, and decided not to add a moon disk. Additionally, I've sorted out the complete poem carousel scheme, including 13 15-30 character poems set to a 24s display interval, with corresponding DOM structure and style adjustment rules.
+
+I've finalized the UI line expansion rule, ink color adjustment logic for the start interface, and start page configuration. I've also sorted out the audio engine implementation details, including two alternating generative music themes with a 2.4s gap, non-repeating scheduled playback, and three supporting sound types.
+
+I've adjusted the generative music scheme: the two themes use C major pentatonic and A minor pentatonic scales respectively, with tempo, note counts and instrument arrangements finalized, and no duplicate playback will be ensured via random note generation.
+
+I've finalized the remaining audio parameter configurations, and clarified the dynamic adjustment logic for environmental effects, target following rules and music muting when the music is toggled.
+
+I've confirmed screen locking, fullscreen and screen orientation locking APIs. For portrait mode with coarse pointer, I'll rotate the app 90 degrees and adjust position with translation.
+
+I've finalized the rotation and translation scheme for portrait-to-landscape adaptation, set the canvas to fill the container, and added a fixed top-left offset for the app element to avoid position deviation after rotation.
+
+I've confirmed the start overlay adaptation rule for rotated apps, set the minimum canvas DPR to 2 with a DPR cap of 1.5 for high-resolution screens, finalized the projection focal length, adjusted the world drawing range, and set the drawing cell step size.
+
+I've confirmed the drawing area and polygon count are feasible, finalized the ground background filling logic based on pitch angle, and clarified the rendering item sorting priority.
+
+I've finalized the rendering item sorting priority, confirming special effects are drawn before buildings and all items are rendered after the background. I've also confirmed the 400 noise cost per cell is acceptable, and sorted out the rendering and fog calculation logic for all relevant effects.
+
+I've finalized the style-related rendering rules for ground cells, sky, and ground gradient fills, as well as the geometric and rendering specifications for rivers, including optional night and dusk/warm tone special effects.
+
+I've finalized the 3D modeling and rendering specifications for European old town houses, covering coordinate calculation, front wall polygon structure and side gable wall drawing rules.
+
+I've clarified the drawing logic for the back rectangle, roof planes, and chimney for European old town houses, with all relevant rendering specifications confirmed.
+
+I've finalized the rendering specifications for snow-covered roofs, front gable windows and church spires, including polygon structure, color and drawing logic.
+
+I've confirmed church can replace a single house with simplified parameters, finalized the generation rules for back houses, and sorted out the specific implementation logic for the tree generation function.
+
+I've finalized the rendering specifications for coniferous trees, added support for custom item drawing and ground shadow ellipses, confirmed bird shadow drawing logic, set fog exclusion rules for close bird facets, and clarified bird tinting and night rendering specifications.
+
+I've finalized the stroke rendering rules, custom drawing specifications for all particle types, and the full animation loop execution logic. I've also confirmed the camera processing order and boundary handling requirements.
+
+I've confirmed the animation loop execution order, clarified the centroid processing rule, camera look target smoothing parameters, and the target screen x-coordinate bias for frame shift in auto mode.
+
+I've finalized the calculation logic for auto mode frame shift and zoom adjustment rules, and set a minimum camera z-axis constraint of 8.
+
+I've finalized the pitch adjustment rule for manual zoom, confirmed persistent user zoom settings, sorted out the angle interpolation function, and clarified the RNG seed rule for shot naming with yaw generation logic for all shot categories.
+
+I've finalized the yaw parameter backtracking generation scheme for all 5 shot categories, and sorted out the near/mid/far distance configuration logic for each category, covering different shooting scenarios and parameter ranges.
+
+I've finalized the near and far distance parameter ranges for all 5 shot categories, clarified the pitch value specifications for each shot type, and confirmed the lowFactor parameter mapping rules for adjusting the target's Y and Z coordinates. I've also sorted out the remaining shot naming logic, added support for the descent shot type's choice between dive and oblique tracking modes, and worked out the yaw generation and filtering requirements for cross-cycle shot transitions to ensure adjacent shots meet the angle difference rules.
+
+I've finalized the yaw inter-cycle transition scheme, clarified the function structure for cycle building, confirmed the VAR display rule, sorted out the default auto mode setting and user operation logic, and defined the global pointer variable specifications.
+
+I've finalized the full pointer event processing logic, covering drag, pinch, wheel operations and wind control rules, as well as the 1€ filter configuration for pointer speed processing.
+
+I've confirmed the microjitter deadzone rule, set the global star vector generation function, finalized the sun halo's horizontal range limit, and sorted out the poetry display function logic.
+
+I've finalized the poetry display cycle and phase rules, confirmed the crossfade-free HUD text update logic, sorted out the A/B cycle switching scheme for shot labels, and added support for style selection on the start page. I'll write the code next, with a projected total of around 1800 lines fitting the token budget. I've finalized the HTML, CSS and JS initialization structure, with clear CSS rules for root, app container, start page and HUD, and JS order for constants, canvas, state and color functions.
+
+I've finalized the hash function, value noise implementation, front jitter rule and river Y coordinate calculation logic. I've also finished the style sampling function, with boundary processing rules clarified and a fallback mechanism added.
+
+I've finalized the palette mixing logic, particle type definition, camera projection parameters and rendering item processing rules, including vertex projection, depth checks and item sorting.
+
+I've sorted out the basic ground drawing function framework and finalized the background drawing logic. I've verified the accuracy of the horizon calculation formula, corrected the previous sign error, and confirmed the formula works properly for both upward and downward shooting scenarios.
+
+I've confirmed the gradient filling rule for ground areas below the horizon, sorted out the drawing logic for special effects including sky, stars, sun halos and ground light pools, finalized the field generation and drawing specifications, and confirmed the river point sampling and width configuration.
+
+I've finalized the quad drawing specifications for rivers, including vertex layout and style sampling rules, and confirmed no additional center line is required. I've sorted out the complete structure and rendering logic for house drawing functions, with clear processing rules for windows and church spires, and clarified the window lighting judgment logic based on hash value and style parameters.
+
+I've finalized the quad structure and color parameters for the ground effect, added specifications for upper gable windows, snow-covered roof drawing rules, and sorted out the basic parameters for church spire rendering.
+
+I've finalized the European old town block generation logic, which covers building distribution, setback rules, special church settings, and style-adaptive house parameters. It also specifies block drawing range and external block generation rules.
+
+I've finalized the generation and rendering logic for back houses and trees, covering their distribution rules, parameter settings, and relevant style sampling requirements.
+
+I've finalized the billboard tree rendering specifications, covering center point calculation, projection checks, scaling logic, drawing order and snow adaptation rules. I've also confirmed the total bird count, initial bird parameters, and full update logic for position, velocity, boundary forces, heading adjustment and bank angle calculation.
+
+I've finalized the full bird animation and rendering logic, covering yaw smoothing, flap animation, shadow drawing, and 3D local coordinate transformation rules for birds.
+
+I'm defining the structure of bird facet arrays, sorting out key local geometric parameters and corresponding triangular facet configurations, and verifying the geometric rationality of the scheme.
+
+I've finalized all remaining rendering rules, including color mixing parameters, UI stroke settings, ground shadow specifications, conditional fog logic, bird orientation fallback, particle array initialization and wrapping rules.
+
+I've finalized the particle spatial wrap rules, movement specifications for each particle type, and wind control logic. I've also confirmed the no-flicker threshold mechanism for particle rendering, and sorted out the global item sorting and basic drawing specifications.
+
+I've finalized the halo rendering logic, confirming it is drawn before the ground, with specific parameters for gradient range, color mixing and no moon disk added.
+
+I've confirmed the ground light pool drawing rule for style boundaries, finalized the UI style mapping for the camera, sorted out the complete implementation logic for the camera cycle generation function, and clarified the yaw parameter selection rules for the two shot slots with required angle difference constraints.
+
+I've finalized the yaw value selection rules for all 5 camera shot slots, with specific candidate value ranges and adjacent shot angle difference constraints confirmed. I've also clarified the recursion breaking logic for the slot0 building function to avoid infinite recursion during runtime.
+
+I've optimized the recursion breaking logic for the slot0 building function to avoid infinite recursion during runtime. I've also clarified the structure of the shot object, confirmed the implementation plan for the B-type transition of slot4, sorted out the camera parameter interpolation rules, and verified that the 16 named camera mirror requirements can be met by adding the missing types in eligible middle slots.
+
+I've completed the classification of all 16 camera shots, assigning specific functions to each type. I've also confirmed the yaw sweep parameters for the special 环绕 shot, which sweeps across 19.2 seconds with a fixed base yaw range to ensure smooth transitions between adjacent shots.
+
+I've confirmed the specific parameter ranges for all 16 camera shots, with the 环绕 shot set to a fixed lateral offset instead of dynamic orbit to avoid blending anomalies. I've also finalized the Y-axis target position calculation rule for low camera settings.
+
+I've confirmed the low camera's Z-axis target is 18, with other target axes set to align with the river and flock center. I've finalized the zoom interpolation rule, auto mode parameter smoothing logic, and manual mode yaw, pitch and distance adjustment rules.
+
+I've clarified pinch zoom applies to manual mode only, with two-finger rotation restricted to manual mode. I've confirmed the auto/manual button text and UI ink color mapping rules, finalized the start page fullscreen and orientation locking logic, and sorted out the time loop, pause handling, poetry color and autoplay requirements.
+
+I've finalized the audio routing and mixing logic, including wind effect processing and multi-band filter configurations. I've also sorted out the full implementation of the music scheduling system, covering the 200ms tick interval, theme switching rules, and 0.1s entry threshold for the first 5 notes, with a 0.18s linear ramp for the first 5 notes' volume fade-in.
+
+I've finalized the music muting logic, and sorted out the specific configuration for the two generative themes, including their root notes, scales, playing rules and instrument arrangements to ensure non-repeating playback.
+
+I've finalized the pluck envelope parameters, river proximity, bird gain and wind control logic, and confirmed the wind base value is 0.05 with direct adjustments for river and bird-related parameters.
+
+I've confirmed the music master volume is set to 0.8, sorted out a negative number modulo correction rule, verified noise and trigonometric function support for negative values, confirmed the river's Y coordinate wandering range, finalized the style front jag generation logic, set the star visibility threshold to the night factor of 0.2, and defined the complete structure of the style configuration object. I've also clarified the Y parameter values for different scenarios, confirmed the star visibility rule, and sorted out all warm and dusk transition schemes that require sun halo effects.
+
+I've confirmed the color of the ground light pool for dusk and warm style transitions, clarified the placement of camera labels in the top-left corner, and sorted out all 13 preselected poems for the carousel. I've also confirmed the scene selection button configuration for the start overlay, and finalized the parameter specifications and optional style support for the global rendering polygon drawing function, including the fog mixing rule.
+
+I've finalized the rendering parameter specifications for the global polygon drawing function, and sorted out the 5-vertex side wall structure and corresponding 3D vertex layout rules for European old town houses.
+
+I've clarified the specific generation rules for European old town houses, including chimney placement, drawing specifications, window positioning, as well as the basic 3D modeling parameters for church spires.
+
+I've confirmed the specific vertex layout and drawing order for the house roof, opted to use a tetrahedral pyramid structure for the roof to avoid snow accumulation, set no limit on the number of church spires, and finalized the rendering specifications for custom tree items including shadow ellipses, trunk lines and conifer drawing logic with snow stroke support.
+
+I've finalized the drawing logic for custom particle items, bird shadow items, bird color tinting rules, and facet shading and night stroke specifications.
+
+I've confirmed 3D boid separation logic, finalized core bird physics parameters, clarified camera preprocessing order, sorted out the global rendering layer execution sequence, and confirmed the drawing order of special effects including the ground light pool.
+
+I've confirmed all world generation runs in a deterministic loop, and clarified the response output rule: first present solution steps, then include the full Markdown-formatted final answer with architecture notes and code. I'm now drafting the HTML section, with the CSS style sheet structure already sorted out and base font size set to 16px for large screen UI scaling.
+
+I've confirmed the scene button selection logic, audio functions will take a ctx parameter, and the buildCycle cache object for camera cycle building. I've finalized the Mulberry32 pseudo-random number generator implementation, sorted out the full yaw parameter configuration rules for the 5 camera slot categories, with the angle difference constraint applied between adjacent slots in the same cycle.
+
+I've finalized the distance level mapping logic, shot scheduling function and transition rules, with clear VAR display specifications and no crossfade logic for text currently planned.
+
+I've finalized the core camera update logic, covering position calculation, target interpolation, yaw and pitch smoothing, distance adjustment, z-axis clamping and frame shift rules. I've also sorted out initialization procedures for birds and particles, as well as the wind control logic including deadzone processing, pointer speed filtering and cursor fallback rules.
+
+I've finalized the wind edge strengthening and microjitter rules, sorted out the touch and mouse operation handling logic, and confirmed the poem carousel's update and rendering specifications. I've also clarified the audio scheduling rules to ensure non-repeating theme playback.
+
+I've finalized the pluck, harmony, bass and pad sound generation rules for the two generative music themes, confirmed non-repeating playback via random note generation, set stereo panner and 9 pad oscillators as optional features, and sorted out the environmental gain, wind LFO and music muting update logic.
+
+I've finalized the LFO audio parameter connection rule, river gain scheduling logic, and confirmed the first selected style is indexed 0. I've sorted out CSS portrait rotation and orientation lock fallback rules, DPR resize processing logic, and confirmed no canvas text rendering is needed. I've designed the global world polygon drawing function, fog mixing rule, custom item adding interface and depth sorting logic.
+
+I've confirmed the sky drawing logic uses linear gradients with additive rendering, with no sun disk added. I've also sorted out the ground filling rules and the issue of separate alpha settings for fill and stroke.
+
+I've confirmed separate alpha and stroke alpha configurations for all rendering items, finalized global alpha reset rules, and will now write the final code.</thinking>
+## 实现说明
+
+这是一个零依赖、单文件 HTML5 Canvas 作品。为满足“永不循环重复”与“全部程序化生成”的核心要求，两首配乐也改为 **WebAudio 实时生成的两套可变奏主题**：暖调五声调式与冷调小调五声交替，旋律、低音与铺底每次都重新生成，因此不会出现完全重复的循环。
+
+主要包含：
+
+- 无限程序化地理：田野、双正弦河流、临河联排屋、教堂、散屋、烟囱、树木
+- 五种气候风格与参差不齐的长过渡带，颜色全程插值
+- 金角螺旋分布的纸鸟群、独立弹簧、分离力、幂律胆量与地面投影
+- 16 镜位自动运镜系统，固定叙事骨架但每圈重新变奏
+- 鼠标风场、反向速度滤波、触摸风眼、双指缩放、强制横屏
+- WebAudio 三层环境声与两套程序化音乐
+- 13 段诗句逐字淡入
+- 全屏、锁屏、防息屏、DPR 适配与大屏 UI 缩放
+
+保存为 `migration.html`，用现代浏览器打开即可。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>候鸟 · MIGRATION</title>
+<style>
+  :root{
+    --paper:#f6f2e9;
+    --ink:#3a362c;
+    --muted:rgba(58,54,44,.62);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);font-family:Georgia,"Songti SC","Noto Serif SC",serif;}
+  #app{position:fixed;inset:0;overflow:hidden;background:var(--paper);touch-action:none;}
+  canvas{display:block;width:100%;height:100%;}
+
+  /* 开场 */
+  #start{
+    position:absolute;inset:0;z-index:30;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255,255,255,.56), transparent 42%),
+      linear-gradient(180deg,#fbf7ee,#ece4d3);
+    color:var(--ink);
+  }
+  .card{
+    width:min(680px,92vw);
+    padding:34px 34px 30px;
+    border:1px solid rgba(58,54,44,.16);
+    background:rgba(246,242,233,.82);
+    box-shadow:0 26px 70px rgba(70,55,35,.16);
+    backdrop-filter:blur(8px);
+  }
+  .kicker{font-size:.78rem;letter-spacing:.34em;opacity:.56;margin-bottom:12px;}
+  h1{font-size:clamp(2.2rem,6vw,4.8rem);line-height:1;margin:0 0 10px;font-weight:400;letter-spacing:.08em;}
+  h1 small{display:block;font-size:.8rem;letter-spacing:.42em;margin-top:14px;opacity:.56;}
+  .desc{margin:18px 0 24px;line-height:1.8;color:var(--muted);font-size:.98rem;}
+  .label{font-size:.78rem;letter-spacing:.22em;margin:18px 0 10px;opacity:.62;}
+  .scenes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px;}
+  .scenes button,.ui-btn{
+    appearance:none;border:1px solid rgba(58,54,44,.22);
+    background:rgba(255,255,255,.32);color:var(--ink);
+    padding:11px 8px;font:inherit;font-size:.86rem;cursor:pointer;
+    transition:.2s ease;
+  }
+  .scenes button:hover,.ui-btn:hover{background:rgba(255,255,255,.62);}
+  .scenes button.selected{
+    background:var(--ink);color:var(--paper);border-color:var(--ink);
+  }
+  #begin{
+    width:100%;padding:16px;border:1px solid var(--ink);
+    background:var(--ink);color:var(--paper);font:inherit;font-size:1.05rem;
+    letter-spacing:.18em;cursor:pointer;transition:.25s ease;
+  }
+  #begin:hover{background:transparent;color:var(--ink);}
+  .hint{margin-top:14px;text-align:center;font-size:.76rem;color:var(--muted);line-height:1.7;}
+
+  /* HUD */
+  #hud{
+    position:absolute;left:18px;top:16px;z-index:12;
+    color:var(--ink);pointer-events:none;
+    text-shadow:0 1px 10px rgba(255,255,255,.35);
+  }
+  #shotName{font-size:1.05rem;letter-spacing:.16em;}
+  #varNo{font-size:.72rem;letter-spacing:.24em;opacity:.62;margin-top:5px;}
+  #controls{
+    position:absolute;right:14px;top:14px;z-index:14;
+    display:flex;gap:8px;
+  }
+  .ui-btn{padding:9px 12px;font-size:.78rem;background:rgba(246,242,233,.72);backdrop-filter:blur(6px);}
+  .ui-btn.active{background:var(--ink);color:var(--paper);}
+
+  /* 诗句 */
+  #poem{
+    position:absolute;left:50%;bottom:7vh;z-index:12;
+    transform:translateX(-50%);
+    width:min(720px,82vw);
+    text-align:center;color:var(--ink);
+    pointer-events:none;
+    transition:opacity .8s ease;
+  }
+  #poemLine{
+    height:1px;width:0;margin:0 auto 16px;
+    background:currentColor;opacity:.52;
+  }
+  #poemText{
+    font-size:clamp(1rem,2.1vw,1.35rem);
+    line-height:2;letter-spacing:.12em;
+    min-height:3.2em;
+  }
+  #poemText span{opacity:0;}
+  #rotateTip{
+    display:none;position:absolute;left:50%;top:14px;transform:translateX(-50%);
+    z-index:15;font-size:.78rem;color:var(--ink);opacity:.7;
+  }
+
+  /* 大屏适配 */
+  @media (min-width:2200px){
+    html{font-size:24px;}
+    #hud{left:28px;top:26px;}
+    #controls{right:24px;top:24px;}
+  }
+  @media (min-width:3200px){
+    html{font-size:32px;}
+  }
+
+  /* 移动端竖持强制横向视觉 */
+  @media (orientation:portrait) and (pointer:coarse){
+    #app{
+      width:100vh;height:100vw;
+      transform:rotate(90deg) translateY(-100vw);
+      transform-origin:top left;
+      inset:auto;top:0;left:0;
+    }
+    #rotateTip{display:block;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="canvas"></canvas>
+
+  <div id="hud">
+    <div id="shotName">正俯视</div>
+    <div id="varNo">VAR 01</div>
+  </div>
+
+  <div id="controls">
+    <button class="ui-btn" id="cameraBtn">镜头自动</button>
+    <button class="ui-btn active" id="musicBtn">音乐开</button>
+    <button class="ui-btn active" id="poemBtn">诗句开</button>
+  </div>
+
+  <div id="poem">
+    <div id="poemLine"></div>
+    <div id="poemText"></div>
+  </div>
+
+  <div id="rotateTip">已为你旋转为横向视野</div>
+
+  <div id="start">
+    <div class="card">
+      <div class="kicker">A PROCEDURAL PAPER JOURNEY</div>
+      <h1>候鸟
+        <small>MIGRATION</small>
+      </h1>
+      <div class="desc">
+        一群纸质感几何候鸟沿着无限河流迁徙。田野、老城、风雪、夜色与风皆由程序实时生成，每一次振翅和每一个镜位都不会完全重复。
+      </div>
+
+      <div class="label">选择起飞地点</div>
+      <div class="scenes">
+        <button class="selected" data-style="0">暖纸</button>
+        <button data-style="2">暮粉</button>
+        <button data-style="4">夜航</button>
+        <button data-style="1">雾境</button>
+        <button data-style="3">雪境</button>
+      </div>
+
+      <button id="begin">开始迁徙 →</button>
+      <div class="hint">
+        鼠标位置是风；触屏移动即风眼。<br>
+        自主镜头模式下可拖拽转向，滚轮或双指捏合缩放。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   基础工具
+============================================================ */
+const TAU = Math.PI * 2;
+const SEG = 8600;
+const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp = (a,b,t)=>a+(b-a)*t;
+const smooth = t=>t*t*(3-2*t);
+const smoothstep = (a,b,x)=>{
+  const t=clamp((x-a)/(b-a),0,1);
+  return t*t*(3-2*t);
+};
+const mod5 = n=>((n%5)+5)%5;
+
+function hash(a=0,b=0,c=0){
+  let n = Math.sin(a*127.1 + b*311.7 + c*74.7) * 43758.5453123;
+  return n - Math.floor(n);
+}
+function vnoise(x,y){
+  const ix=Math.floor(x), iy=Math.floor(y);
+  const fx=x-ix, fy=y-iy;
+  const ux=fx*fx*(3-2*fx), uy=fy*fy*(3-2*fy);
+  const a=hash(ix,iy), b=hash(ix+1,iy), c=hash(ix,iy+1), d=hash(ix+1,iy+1);
+  return lerp(lerp(a,b,ux), lerp(c,d,ux), uy);
+}
+
+function mixColor(a,b,t){
+  return [
+    lerp(a[0],b[0],t),
+    lerp(a[1],b[1],t),
+    lerp(a[2],b[2],t)
+  ];
+}
+function css(c,a=1){
+  return `rgba(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])},${a})`;
+}
+function angleDiff(a,b){
+  return Math.abs(Math.atan2(Math.sin(a-b),Math.cos(a-b)));
+}
+function lerpAngle(a,b,t){
+  let d=((b-a)%TAU+TAU)%TAU;
+  if(d>Math.PI) d-=TAU;
+  return a+d*t;
+}
+
+/* ============================================================
+   五种地理风格
+============================================================ */
+const STYLES = [
+  {
+    name:'暖纸',
+    skyTop:[226,214,188], skyHor:[250,226,184],
+    ground:[210,194,158], fieldA:[198,180,138], fieldB:[226,210,172],
+    river:[122,160,174], roof:[154,82,66], wall:[224,210,188],
+    tree:[88,118,82], fog:[238,224,196], bird:[252,250,244],
+    particle:[186,158,108], ui:[58,54,44],
+    night:0, snow:0, fogD:.12
+  },
+  {
+    name:'雾境',
+    skyTop:[198,206,210], skyHor:[226,228,226],
+    ground:[176,184,178], fieldA:[162,172,166], fieldB:[198,200,192],
+    river:[124,148,158], roof:[96,104,108], wall:[190,190,184],
+    tree:[88,104,96], fog:[216,220,220], bird:[246,248,248],
+    particle:[222,228,230], ui:[50,52,50],
+    night:.03, snow:.04, fogD:.48
+  },
+  {
+    name:'暮粉',
+    skyTop:[96,82,128], skyHor:[246,166,168],
+    ground:[178,128,136], fieldA:[160,112,126], fieldB:[202,144,150],
+    river:[126,100,150], roof:[106,66,86], wall:[218,166,164],
+    tree:[64,70,90], fog:[238,170,174], bird:[255,242,236],
+    particle:[255,174,192], ui:[74,48,58],
+    night:.22, snow:0, fogD:.18
+  },
+  {
+    name:'雪境',
+    skyTop:[188,206,224], skyHor:[232,238,244],
+    ground:[232,238,240], fieldA:[220,228,232], fieldB:[248,248,246],
+    river:[132,164,182], roof:[112,124,138], wall:[216,222,224],
+    tree:[44,72,64], fog:[238,244,248], bird:[252,253,253],
+    particle:[250,252,255], ui:[42,52,58],
+    night:.05, snow:1, fogD:.22
+  },
+  {
+    name:'夜航',
+    skyTop:[8,14,30], skyHor:[32,42,70],
+    ground:[22,28,42], fieldA:[20,26,40], fieldB:[34,40,58],
+    river:[20,32,54], roof:[30,34,50], wall:[54,58,74],
+    tree:[16,26,34], fog:[28,36,56], bird:[184,198,220],
+    particle:[255,214,138], ui:[236,238,232],
+    night:1, snow:.08, fogD:.26
+  }
+];
+
+const KIND_BY_STYLE = [0,1,2,3,4]; // 尘絮 / 雾 / 花瓣 / 雪 / 萤火
+
+/* 参差不齐的风格锋面 */
+function frontJag(i,y){
+  return (vnoise(i*0.53+17.4, y*0.0022+3.1)-.5) * 1900;
+}
+function styleAt(x,y=0){
+  const k=Math.floor(x/SEG);
+  for(let i=k-1;i<=k+1;i++){
+    const boundary=(i+1)*SEG + frontJag(i,y);
+    const t=smoothstep((x-boundary)/1650 + .5);
+    if(t>=0 && t<=1){
+      return {
+        a:mod5(i), b:mod5(i+1), t,
+        raw:i, boundary
+      };
+    }
+  }
+  return {a:mod5(k), b:mod5(k), t:0, raw:k, boundary:k*SEG};
+}
+function palKey(st,key){
+  return mixColor(STYLES[st.a][key], STYLES[st.b][key], st.t);
+}
+function palNum(st,key){
+  return lerp(STYLES[st.a][key], STYLES[st.b][key], st.t);
+}
+function withFog(color,d,st){
+  const density=palNum(st,'fogD');
+  const t=smoothstep(480,1850,d)*(.55+density*.72);
+  return mixColor(color,palKey(st,'fog'),clamp(t,0,.92));
+}
+
+/* ============================================================
+   Canvas 与尺寸
+============================================================ */
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+let W=0,H=0,DPR=1;
+
+function resize(){
+  const app=document.getElementById('app');
+  W=app.clientWidth || window.innerWidth;
+  H=app.clientHeight || window.innerHeight;
+  DPR=Math.min(window.devicePixelRatio||1, W>2600?1.5:2);
+  canvas.width=Math.round(W*DPR);
+  canvas.height=Math.round(H*DPR);
+  canvas.style.width=W+'px';
+  canvas.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(camera) camera.focal=Math.min(W,H)*.92;
+}
+window.addEventListener('resize',resize);
+
+/* ============================================================
+   世界河流
+============================================================ */
+function riverY(x){
+  return 270*Math.sin(x*0.00215+1.7)
+       + 96*Math.sin(x*0.0072+0.4)
+       + 28*Math.sin(x*0.017+2.2);
+}
+
+/* ============================================================
+   相机 / 透视
+============================================================ */
+const camera={
+  pos:{x:0,y:0,z:300},
+  f:{x:1,y:0,z:0},
+  r:{x:0,y:-1,z:0},
+  u:{x:0,y:0,z:1},
+  pitch:-.2,
+  yaw:0,
+  dist:300,
+  focal:800
+};
+
+function project(x,y,z){
+  const dx=x-camera.pos.x;
+  const dy=y-camera.pos.y;
+  const dz=z-camera.pos.z;
+
+  const d=dx*camera.f.x + dy*camera.f.y + dz*camera.f.z;
+  if(d<1) return null;
+
+  const rx=dx*camera.r.x + dy*camera.r.y + dz*camera.r.z;
+  const ry=dx*camera.u.x + dy*camera.u.y + dz*camera.u.z;
+
+  return {
+    x:W/2 + camera.focal*rx/d,
+    y:H/2 - camera.focal*ry/d,
+    d,
+    scale:camera.focal/d
+  };
+}
+
+/* ============================================================
+   16 镜位与每圈变奏
+============================================================ */
+const shotCache={};
+function rngFactory(a){
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    let t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+function pickYaw(list,need,diff=0.6){
+  for(let i=0;i<40;i++){
+    const y=list[Math.floor(Math.random()*list.length)];
+    if(angleDiff(y,need)>=diff) return y;
+  }
+  return need + diff;
+}
+
+function buildCycle(c){
+  if(shotCache[c]) return shotCache[c];
+
+  const rng=rngFactory(9173+c*197);
+  const high=c%2===0;
+  const finaleYaw=c%2===0 ? 0 : Math.PI;
+
+  const middleNames=[
+    '沿河前推','侧向轨道','低空宽景','翼侧平行',
+    '对岸远眺','贴河掠水','环绕'
+  ];
+  const recoveryNames=['高空漂移','云层俯瞰','缓升回望','拉远揭示'];
+
+  const mName=middleNames[Math.floor(rng()*middleNames.length)];
+  const rName=recoveryNames[Math.floor(rng()*recoveryNames.length)];
+
+  let y2Candidates=[-.7,0,.7];
+  if(mName==='沿河前推'||mName==='贴河掠水') y2Candidates=[-.28,0,.28];
+  if(mName==='侧向轨道'||mName==='翼侧平行') y2Candidates=[-1.8,-1.57,1.57,1.8];
+  if(mName==='环绕') y2Candidates=[-2.3,-1.2,0,1.2,2.3];
+  if(mName==='对岸远眺') y2Candidates=[-2.7,-2.2,2.2,2.7];
+
+  const y2=pickYaw(y2Candidates,finaleYaw,.62);
+  const y1=pickYaw([-.92,-.46,0,.46,.92],y2,.62);
+
+  let y0=pickYaw([-1.3,-.72,0,.72,1.3],y1,.62);
+  if(c>0){
+    const prev=buildCycle(c-1).slots[4];
+    if(angleDiff(y0,prev.yaw)<.6){
+      y0=pickYaw([-1.3,-.72,0,.72,1.3],prev.yaw,.62);
+    }
+  }
+
+  const y4=pickYaw([-2.55,-1.8,-1.57,1.57,1.8,2.55],finaleYaw,.62);
+
+  const level=()=>{
+    const r=rng();
+    return r<.33?'near':r<.66?'mid':'far';
+  };
+  const distance=(near,mid,far)=>{
+    const l=level();
+    return l==='near'?near:l==='mid'?mid:far;
+  };
+
+  const slots=[
+    {
+      c,slot:0,name:'正俯视',
+      pitch:-1.42,
+      dist:high?distance(430,570,730):distance(310,410,540),
+      yaw:y0,low:.04
+    },
+    {
+      c,slot:1,
+      name:rng()<.5?'俯冲':'斜俯追踪',
+      pitch:high?-.72:-.92,
+      dist:high?distance(340,480,620):distance(210,300,430),
+      yaw:y1,low:.34
+    },
+    {
+      c,slot:2,name:mName,
+      pitch:
+        mName==='贴河掠水'?-.055:
+        mName==='沿河前推'?-.18:
+        mName==='翼侧平行'?-.16:
+        mName==='环绕'?-.34:
+        mName==='侧向轨道'?-.31:
+        mName==='对岸远眺'?-.44:-.38,
+      dist:
+        mName==='贴河掠水'?distance(85,145,230):
+        mName==='环绕'?distance(180,300,470):
+        distance(150,270,460),
+      yaw:y2,
+      low:
+        mName==='贴河掠水'?.96:
+        mName==='环绕'?.62:
+        mName==='对岸远眺'?.42:.64
+    },
+    {
+      c,slot:3,
+      name:c%2===0?'正背面':'迎面',
+      pitch:c%2===0?-.075:-.045,
+      dist:high?distance(220,350,520):distance(85,165,270),
+      yaw:finaleYaw,low:.88
+    },
+    {
+      c,slot:4,name:rName,
+      pitch:
+        rName==='高空漂移'?-.68:
+        rName==='云层俯瞰'?-1.12:
+        rName==='缓升回望'?-.52:-.82,
+      dist:
+        rName==='拉远揭示'?distance(620,820,1050):
+        high?distance(470,630,830):distance(330,450,620),
+      yaw:y4,low:.16
+    }
+  ];
+
+  shotCache[c]={c,high,slots};
+  return shotCache[c];
+}
+function shotAt(c,s){
+  if(s<5) return buildCycle(c).slots[s];
+  return buildCycle(c+1).slots[0];
+}
+
+/* ============================================================
+   渲染队列
+============================================================ */
+let items=[];
+function addItem(d,draw){
+  items.push({d,draw});
+}
+function addWorldPoly(world,fill,stroke,lw=1,alpha=1,strokeAlpha=alpha,st=null){
+  const pts=[];
+  let d=0;
+  for(const q of world){
+    const p=project(q[0],q[1],q[2]);
+    if(!p) return;
+    pts.push(p);
+    d+=p.d;
+  }
+  d/=world.length;
+  let f=fill,s=stroke;
+  if(st){
+    f=withFog(fill,d,st);
+    if(s) s=withFog(s,d,st);
+  }
+  items.push({
+    type:'poly',d,pts,fill:f,stroke:s,lw,alpha,strokeAlpha
+  });
+}
+function drawItems(){
+  items.sort((a,b)=>b.d-a.d);
+  for(const it of items){
+    if(it.type==='poly'){
+      ctx.beginPath();
+      ctx.moveTo(it.pts[0].x,it.pts[0].y);
+      for(let i=1;i<it.pts.length;i++) ctx.lineTo(it.pts[i].x,it.pts[i].y);
+      ctx.closePath();
+
+      ctx.globalAlpha=it.alpha;
+      ctx.fillStyle=css(it.fill);
+      ctx.fill();
+
+      if(it.stroke){
+        ctx.globalAlpha=it.strokeAlpha;
+        ctx.strokeStyle=css(it.stroke);
+        ctx.lineWidth=it.lw;
+        ctx.stroke();
+      }
+    }else if(it.draw){
+      ctx.globalAlpha=1;
+      it.draw();
+    }
+  }
+  ctx.globalAlpha=1;
+}
+
+/* ============================================================
+   天空、星、太阳光晕
+============================================================ */
+function drawSky(st){
+  const top=palKey(st,'skyTop');
+  const hor=palKey(st,'skyHor');
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,css(top));
+  g.addColorStop(.62,css(hor));
+  g.addColorStop(1,css(palKey(st,'fog')));
+  ctx.fillStyle=g;
+  ctx.fillRect(0,0,W,H);
+
+  const night=palNum(st,'night');
+  if(night>.04) drawStars(night);
+  drawSunHalo(st);
+}
+
+function drawStars(night){
+  const count=230;
+  for(let i=0;i<count;i++){
+    const z=hash(i,3)*2-1;
+    const a=hash(i,7)*TAU;
+    const r=Math.sqrt(1-z*z);
+    const v={x:r*Math.cos(a),y:r*Math.sin(a),z};
+
+    const d=v.x*camera.f.x+v.y*camera.f.y+v.z*camera.f.z;
+    if(d<=.05) continue;
+
+    const rx=v.x*camera.r.x+v.y*camera.r.y+v.z*camera.r.z;
+    const ry=v.x*camera.u.x+v.y*camera.u.y+v.z*camera.u.z;
+    const sx=W/2+camera.focal*rx/d;
+    const sy=H/2-camera.focal*ry/d;
+
+    const tw=.45+.55*Math.sin(worldTime*1.4+hash(i,11)*TAU);
+    ctx.fillStyle=`rgba(240,244,255,${night*tw*(.25+.55*hash(i,5))})`;
+    const size=.7+hash(i,9)*1.5;
+    ctx.fillRect(sx,sy,size,size);
+  }
+}
+
+function drawSunHalo(st){
+  const involvesWarm = st.a===0||st.b===0;
+  const involvesDusk = st.a===2||st.b===2;
+  if(!(involvesWarm||involvesDusk)) return;
+  if(st.t<.12||st.t>.88) return;
+
+  const sign=st.boundary>camera.pos.x?1:-1;
+  const v={x:sign,y:0,z:0};
+  const d=v.x*camera.f.x+v.y*camera.f.y+v.z*camera.f.z;
+  if(d<=.05) return;
+
+  const rx=v.x*camera.r.x+v.y*camera.r.y+v.z*camera.r.z;
+  const ry=v.x*camera.u.x+v.y*camera.u.y+v.z*camera.u.z;
+  const sx=W/2+camera.focal*rx/d;
+  const sy=H/2-camera.focal*ry/d;
+
+  const warm=[255,212,150];
+  const pink=[255,148,164];
+  const col=involvesDusk?mixColor(warm,pink,st.t):warm;
+  const radius=Math.max(W,H)*.52;
+  const g=ctx.createRadialGradient(sx,sy,0,sx,sy,radius);
+  g.addColorStop(0,css(col,.38));
+  g.addColorStop(.34,css(col,.14));
+  g.addColorStop(1,css(col,0));
+  ctx.fillStyle=g;
+  ctx.fillRect(0,0,W,H);
+}
+
+/* ============================================================
+   地面
+============================================================ */
+function drawGroundBase(st){
+  const pitch=camera.pitch;
+
+  if(pitch<-.95){
+    const g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,css(palKey(st,'fog')));
+    g.addColorStop(.55,css(mixColor(palKey(st,'ground'),palKey(st,'fieldA'),.45)));
+    g.addColorStop(1,css(palKey(st,'ground')));
+    ctx.fillStyle=g;
+    ctx.fillRect(0,0,W,H);
+    return;
+  }
+
+  const sp=Math.sin(pitch), cp=Math.cos(pitch);
+  const horizonY=H/2 + camera.focal*sp*cp;
+
+  const g=ctx.createLinearGradient(0,horizonY,0,H);
+  g.addColorStop(0,css(palKey(st,'fog')));
+  g.addColorStop(.38,css(mixColor(palKey(st,'ground'),palKey(st,'fieldA'),.35)));
+  g.addColorStop(1,css(palKey(st,'ground')));
+
+  ctx.fillStyle=g;
+  ctx.fillRect(0,horizonY,W,H-horizonY+2);
+}
+
+function drawFields(center){
+  const x0=Math.floor((center.x-1750)/150);
+  const x1=Math.ceil((center.x+1750)/150);
+
+  for(let ix=x0;ix<=x1;ix++){
+    for(let y=-1120;y<=1120;y+=145){
+      const wx=ix*150;
+      const mx=wx+75, my=y+72;
+      const st=styleAt(mx,my);
+      const base=hash(ix,y)<.52?'fieldA':'fieldB';
+      const col=mixColor(palKey(st,base),palKey(st,'ground'),.12+hash(ix,y,2)*.12);
+      const ui=palKey(st,'ui');
+
+      addWorldPoly([
+        [wx,y,0],
+        [wx+150,y,0],
+        [wx+150,y+145,0],
+        [wx,y+145,0]
+      ],col,ui,1,1,.065,st);
+    }
+  }
+}
+
+/* ============================================================
+   河流
+============================================================ */
+function drawRiver(center){
+  const step=56;
+  const sx=Math.floor((center.x-1800)/step)*step;
+  const ex=center.x+1800;
+
+  for(let x=sx;x<ex;x+=step){
+    const x2=x+step;
+    const y0=riverY(x);
+    const y1=riverY(x2);
+    const midX=(x+x2)/2;
+    const midY=(y0+y1)/2;
+    const st=styleAt(midX,midY);
+    const width=66 + vnoise(midX*.001,4)*10;
+    const water=palKey(st,'river');
+    const night=palNum(st,'night');
+
+    addWorldPoly([
+      [x,y0-width/2,0],
+      [x2,y1-width/2,0],
+      [x2,y1+width/2,0],
+      [x,y0+width/2,0]
+    ],water,palKey(st,'ui'),1,1,.08,st);
+
+    if(night<.55){
+      const sheen=mixColor([255,244,218],water,.3);
+      addWorldPoly([
+        [x,y0-2,0.2],
+        [x2,y1-2,0.2],
+        [x2,y1+2,0.2],
+        [x,y0+2,0.2]
+      ],sheen,null,1,.16,0,st);
+    }
+  }
+}
+
+/* ============================================================
+   建筑
+============================================================ */
+function addHouse(x,w,d,h,rh,side,setback,st,church=false){
+  const yc=riverY(x+w/2)+side*(setback+d/2);
+  const x0=x, x1=x+w;
+  const yF=yc-side*d/2;
+  const yB=yc+side*d/2;
+  const xm=(x0+x1)/2;
+  const ym=(yF+yB)/2;
+
+  const wall=palKey(st,'wall');
+  const wallShade=mixColor(wall,[70,66,62],.12);
+  const roof=palKey(st,'roof');
+  const roofShade=mixColor(roof,[20,22,26],.18);
+  const ui=palKey(st,'ui');
+
+  // 临河正面：山墙三角
+  addWorldPoly([
+    [x0,yF,0],
+    [x1,yF,0],
+    [x1,yF,h],
+    [xm,yF,h+rh],
+    [x0,yF,h]
+  ],wall,ui,1,1,.08,st);
+
+  // 背面
+  addWorldPoly([
+    [x0,yB,0],
+    [x1,yB,0],
+    [x1,yB,h],
+    [x0,yB,h]
+  ],wallShade,ui,1,1,.05,st);
+
+  // 两侧共用山墙
+  addWorldPoly([
+    [x0,yF,0],
+    [x0,yB,0],
+    [x0,yB,h],
+    [x0,ym,h+rh],
+    [x0,yF,h]
+  ],wallShade,null,1,1,0,st);
+
+  addWorldPoly([
+    [x1,yF,0],
+    [x1,yB,0],
+    [x1,yB,h],
+    [x1,ym,h+rh],
+    [x1,yF,h]
+  ],mixColor(wall,[80,74,70],.08),null,1,1,0,st);
+
+  // 两片屋顶
+  addWorldPoly([
+    [x0,yF,h],
+    [x0,yB,h],
+    [xm,yB,h+rh],
+    [xm,yF,h+rh]
+  ],roof,null,1,1,0,st);
+
+  addWorldPoly([
+    [xm,yF,h+rh],
+    [xm,yB,h+rh],
+    [x1,yB,h],
+    [x1,yF,h]
+  ],roofShade,null,1,1,0,st);
+
+  // 屋脊积雪
+  const snow=palNum(st,'snow');
+  if(snow>.05){
+    addWorldPoly([
+      [x0,yF,h+.55],
+      [x0,yB,h+.55],
+      [xm,yB,h+rh+.55],
+      [xm,yF,h+rh+.55]
+    ],[255,255,255],null,1,.78*snow,0,null);
+
+    addWorldPoly([
+      [xm,yF,h+rh+.55],
+      [xm,yB,h+rh+.55],
+      [x1,yB,h+.55],
+      [x1,yF,h+.55]
+    ],[246,248,250],null,1,.62*snow,0,null);
+  }
+
+  // 烟囱
+  const cx=xm+(hash(x,side,'chim')-.5)*w*.28;
+  const cyy=yF+(0.32+hash(x,side,'cy')* .42)*d;
+  const zBase=h+rh-2;
+  addWorldPoly([
+    [cx-1.6,cyy-1.6,zBase],
+    [cx+1.6,cyy-1.6,zBase],
+    [cx+1.6,cyy-1.6,zBase+10],
+    [cx-1.6,cyy-1.6,zBase+10]
+  ],roofShade,null,1,1,0,st);
+  addWorldPoly([
+    [cx-1.6,cyy+1.6,zBase],
+    [cx+1.6,cyy+1.6,zBase],
+    [cx+1.6,cyy+1.6,zBase+10],
+    [cx-1.6,cyy+1.6,zBase+10]
+  ],roof,null,1,1,0,st);
+
+  // 夜航窗户
+  const night=palNum(st,'night');
+  if(night>.08){
+    const outY=yF-side*.35;
+    for(let wx=x0+5;wx<x1-3;wx+=8){
+      for(let z=5;z<h-2;z+=9){
+        if(hash(Math.round(wx),Math.round(z),x)<.72){
+          addWorldPoly([
+            [wx,outY,z],
+            [wx+3.4,outY,z],
+            [wx+3.4,outY,z+4.2],
+            [wx,outY,z+4.2]
+          ],[255,190,96],null,1,.92*night,0,null);
+        }
+      }
+    }
+  }
+
+  // 教堂尖塔
+  if(church){
+    const zBase=h+rh;
+    const apex=[xm,ym,zBase+38];
+    const b1=[xm-9,ym-9,zBase];
+    const b2=[xm+9,ym-9,zBase];
+    const b3=[xm+9,ym+9,zBase];
+    const b4=[xm-9,ym+9,zBase];
+    addWorldPoly([b1,b2,apex],roof,null,1,1,0,st);
+    addWorldPoly([b2,b3,apex],roofShade,null,1,1,0,st);
+    addWorldPoly([b3,b4,apex],roof,null,1,1,0,st);
+    addWorldPoly([b4,b1,apex],roofShade,null,1,1,0,st);
+  }
+}
+
+function drawTowns(center){
+  const first=Math.floor((center.x-1750)/340);
+  const last=Math.ceil((center.x+1750)/340);
+
+  for(let b=first;b<=last;b++){
+    for(const side of [-1,1]){
+      if(hash(b,'town',side)>=.62) continue;
+
+      let x=b*340+28;
+      const n=5+Math.floor(hash(b,side,'n')*5);
+      for(let j=0;j<n;j++){
+        const church=j===2 && hash(b,'church',side)<.16;
+        let w=24+hash(b,j,side)*12;
+        let d=32+hash(b,j,'d')*13;
+        let h=15+hash(b,j,'h')*22;
+        let rh=7+hash(b,j,'r')*10;
+
+        if(church){ w=46; d=46; h=42; rh=24; }
+
+        const setback=72+hash(b,side,'set')*42;
+        const yc=riverY(x+w/2)+side*(setback+d/2);
+        const st=styleAt(x+w/2,yc);
+        addHouse(x,w,d,h,rh,side,setback,st,church);
+        x+=w;
+      }
+    }
+  }
+}
+
+function drawBackHouses(center){
+  const first=Math.floor((center.x-1700)/90);
+  const last=Math.ceil((center.x+1700)/90);
+  for(let i=first;i<=last;i++){
+    if(hash(i,'back')>=.17) continue;
+    const side=hash(i,'side')<.5?-1:1;
+    const x=i*90+hash(i)*30;
+    const setback=250+hash(i,'y')*520;
+    const w=22+hash(i,'w')*14;
+    const d=26+hash(i,'d')*13;
+    const h=12+hash(i,'h')*14;
+    const rh=6+hash(i,'r')*7;
+    const yc=riverY(x+w/2)+side*(setback+d/2);
+    const st=styleAt(x+w/2,yc);
+    addHouse(x,w,d,h,rh,side,setback,st,false);
+  }
+}
+
+/* ============================================================
+   树木
+============================================================ */
+function addTree(x,y,scale,st){
+  const z=20*scale;
+  const p=project(x,y,z);
+  const base=project(x,y,0);
+  if(!p||!base) return;
+
+  const tree=palKey(st,'tree');
+  const fog=palKey(st,'fog');
+  const col=mixColor(tree,fog,smoothstep(500,1600,p.d)*.45);
+  const dark=mixColor(col,[20,24,22],.22);
+  const snow=palNum(st,'snow');
+  const conifer=snow>.52;
+  const s=p.scale;
+
+  addItem(p.d,()=>{
+    // 阴影
+    ctx.fillStyle='rgba(40,36,28,.13)';
+    ctx.beginPath();
+    ctx.ellipse(base.x,base.y,11*s,4*s,0,0,TAU);
+    ctx.fill();
+
+    // 树干
+    ctx.strokeStyle=css(dark,.75);
+    ctx.lineWidth=Math.max(1,2*s);
+    ctx.beginPath();
+    ctx.moveTo(base.x,base.y);
+    ctx.lineTo(p.x,p.y+2*s);
+    ctx.stroke();
+
+    if(conifer){
+      for(let k=0;k<4;k++){
+        const w=(17-k*3.4)*scale*s;
+        const h=17*scale*s;
+        const cy=p.y+k*10*scale*s;
+        ctx.fillStyle=css(k%2?col:dark,.96);
+        ctx.beginPath();
+        ctx.moveTo(p.x,cy-h);
+        ctx.lineTo(p.x-w,cy+h*.55);
+        ctx.lineTo(p.x+w,cy+h*.55);
+        ctx.closePath();
+        ctx.fill();
+
+        if(snow>.65){
+          ctx.strokeStyle=`rgba(255,255,255,${.38*snow})`;
+          ctx.lineWidth=1;
+          ctx.beginPath();
+          ctx.moveTo(p.x,cy-h);
+          ctx.lineTo(p.x-w,cy+h*.55);
+          ctx.moveTo(p.x,cy-h);
+          ctx.lineTo(p.x+w,cy+h*.55);
+          ctx.stroke();
+        }
+      }
+    }else{
+      ctx.fillStyle=css(col,.94);
+      ctx.strokeStyle=css(dark,.42);
+      ctx.lineWidth=1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,14*scale*s,0,TAU);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle=css(mixColor(col,[255,250,220],.18),.5);
+      ctx.beginPath();
+      ctx.arc(p.x-4*s,p.y-4*s,7*scale*s,0,TAU);
+      ctx.fill();
+    }
+  });
+}
+
+function drawTrees(center){
+  const first=Math.floor((center.x-1700)/55);
+  const last=Math.ceil((center.x+1700)/55);
+  for(let i=first;i<=last;i++){
+    for(let k=0;k<3;k++){
+      if(hash(i,k,'tree')>=.48) continue;
+      const side=hash(i,k,'side')<.5?-1:1;
+      const x=i*55+18+hash(i,k)*20;
+      const y=riverY(x)+side*(125+hash(i,k,'y')*700);
+      const scale=.75+hash(i,k,'sc')*1.15;
+      const st=styleAt(x,y);
+      addTree(x,y,scale,st);
+    }
+  }
+}
+
+/* ============================================================
+   鸟群
+============================================================ */
+const isTouch = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+const BIRD_COUNT = isTouch ? 22 : 30;
+const center={x:0,y:0,z:360};
+let birds=[];
+
+function initBirds(){
+  birds=[];
+  center.y=riverY(center.x);
+
+  for(let i=0;i<BIRD_COUNT;i++){
+    const angle=i*2.399963;
+    const rr=Math.sqrt((i+.5)/BIRD_COUNT);
+    const courage=Math.pow(hash(i,'courage'),2.7);
+
+    const local={
+      x:Math.cos(angle)*rr*150 + courage*180,
+      y:Math.sin(angle)*rr*112,
+      z:(hash(i,'z')-.5)*110
+    };
+
+    birds.push({
+      i,
+      p:{
+        x:center.x+local.x,
+        y:center.y+local.y,
+        z:center.z+local.z
+      },
+      v:{x:24,y:0,z:0},
+      local,
+      courage,
+      stiffness:.42+hash(i,'stiff')*.58,
+      phase:hash(i,'phase')*TAU,
+      freq:6.6+hash(i,'freq')*4.8,
+      boundaryPhase:hash(i,'bphase')*TAU,
+      yaw:0,
+      pitch:0,
+      bank:0,
+      lastYaw:0
+    });
+  }
+}
+
+function updateBirds(dt,t){
+  center.y=riverY(center.x);
+  center.z=360;
+
+  for(const b of birds){
+    const anchor={
+      x:center.x+b.local.x + Math.sin(t*.23+b.phase)*18,
+      y:center.y+b.local.y + Math.sin(t*.31+b.phase)*14,
+      z:center.z+b.local.z + Math.sin(t*.55+b.phase)*8
+    };
+
+    const ax=(anchor.x-b.p.x)*b.stiffness*2.15;
+    const ay=(anchor.y-b.p.y)*b.stiffness*2.15;
+    const az=(anchor.z-b.p.z)*b.stiffness*2.4;
+
+    // 风
+    let fx=wind.x*62;
+    let fy=wind.y*62;
+    let fz=0;
+
+    // Boids 分离
+    for(const o of birds){
+      if(o===b) continue;
+      let dx=b.p.x-o.p.x;
+      let dy=b.p.y-o.p.y;
+      let dz=b.p.z-o.p.z;
+      const dist2=dx*dx+dy*dy+dz*dz;
+      if(dist2<2100 && dist2>.01){
+        const dist=Math.sqrt(dist2);
+        let force=2600/(dist2+18);
+        force=Math.min(force,92);
+        dx/=dist; dy/=dist; dz/=dist;
+        fx+=dx*force;
+        fy+=dy*force;
+        fz+=dz*force*.75;
+
+        // 相对速度阻尼，让鸟滑开而不是弹开
+        const rvx=b.v.x-o.v.x, rvy=b.v.y-o.v.y, rvz=b.v.z-o.v.z;
+        const rn=rvx*dx+rvy*dy+rvz*dz;
+        if(rn>0){
+          fx-=dx*rn*.72;
+          fy-=dy*rn*.72;
+          fz-=dz*rn*.55;
+        }
+      }
+    }
+
+    // 左侧 60% 软边界
+    const sp=project(b.p.x,b.p.y,b.p.z);
+    if(sp){
+      const nx=sp.x/W;
+      const breath=.75+.25*Math.sin(t*.9+b.boundaryPhase);
+      if(nx<.13){
+        const m=Math.pow((.13-nx)/.13,2)*150*breath;
+        fx+=camera.r.x*m;
+        fy+=camera.r.y*m;
+        fz+=camera.r.z*m;
+      }
+      if(nx>.6){
+        const m=Math.pow((nx-.6)/.4,2)*205*breath;
+        fx-=camera.r.x*m;
+        fy-=camera.r.y*m;
+        fz-=camera.r.z*m;
+      }
+    }
+
+    b.v.x+=(ax+fx)*dt;
+    b.v.y+=(ay+fy)*dt;
+    b.v.z+=(az+fz)*dt;
+
+    const damp=Math.exp(-1.28*dt);
+    b.v.x*=damp; b.v.y*=damp; b.v.z*=damp;
+
+    // 保持基础迁徙速度
+    b.v.x+=24*dt*.18;
+
+    b.p.x+=b.v.x*dt;
+    b.p.y+=b.v.y*dt;
+    b.p.z+=b.v.z*dt;
+
+    // 朝向
+    const speed=Math.hypot(b.v.x,b.v.y,b.v.z);
+    let targetYaw=0,targetPitch=0;
+    if(speed>4){
+      targetYaw=Math.atan2(b.v.y,b.v.x);
+      targetPitch=Math.asin(clamp(b.v.z/speed,-1,1));
+    }
+    b.yaw=lerpAngle(b.yaw,targetYaw,1-Math.exp(-4*dt));
+    b.pitch=lerp(b.pitch,targetPitch,1-Math.exp(-4*dt));
+
+    let yawDelta=b.yaw-b.lastYaw;
+    if(yawDelta>Math.PI) yawDelta-=TAU;
+    if(yawDelta<-Math.PI) yawDelta+=TAU;
+    const targetBank=clamp(-yawDelta/Math.max(dt,.001)*.55,-.7,.7);
+    b.bank=lerp(b.bank,targetBank,1-Math.exp(-3*dt));
+    b.lastYaw=b.yaw;
+  }
+}
+
+function birdWorld(b,lx,ly,lz,right0,up0,fwd,size){
+  const bank=b.bank;
+  const right={
+    x:right0.x*Math.cos(bank)+up0.x*Math.sin(bank),
+    y:right0.y*Math.cos(bank)+up0.y*Math.sin(bank),
+    z:right0.z*Math.cos(bank)+up0.z*Math.sin(bank)
+  };
+  const up={
+    x:-right0.x*Math.sin(bank)+up0.x*Math.cos(bank),
+    y:-right0.y*Math.sin(bank)+up0.y*Math.cos(bank),
+    z:-right0.z*Math.sin(bank)+up0.z*Math.cos(bank)
+  };
+  return [
+    b.p.x + fwd.x*lx*size + right.x*ly*size + up.x*lz*size,
+    b.p.y + fwd.y*lx*size + right.y*ly*size + up.y*lz*size,
+    b.p.z + fwd.z*lx*size + right.z*ly*size + up.z*lz*size
+  ];
+}
+
+function drawBird(b,t){
+  const yaw=b.yaw, pitch=b.pitch;
+  const fwd={
+    x:Math.cos(pitch)*Math.cos(yaw),
+    y:Math.cos(pitch)*Math.sin(yaw),
+    z:Math.sin(pitch)
+  };
+  const right0={x:-Math.sin(yaw),y:Math.cos(yaw),z:0};
+  const up0={
+    x:-Math.cos(yaw)*Math.sin(pitch),
+    y:-Math.sin(yaw)*Math.sin(pitch),
+    z:Math.cos(pitch)
+  };
+
+  const st=styleAt(b.p.x,b.p.y);
+  let paper=palKey(st,'bird');
+  paper=mixColor(paper,palKey(st,'skyHor'),.08+.12*hash(b.i,'tint'));
+
+  const size=.9+b.courage*.38;
+  const speed=Math.hypot(b.v.x,b.v.y,b.v.z);
+  const flap=Math.sin(t*b.freq+b.phase)*(.55+.35*Math.min(speed/24,1));
+
+  const head=[8,0,1];
+  const tail=[-9,0,0];
+  const rootR=[1,2,1], rootL=[1,-2,1];
+  const tipR=[-3,15,3+flap*7];
+  const tipL=[-3,-15,3+flap*7];
+  const tailR=[-9,5,0], tailL=[-9,-5,0];
+  const keel=[0,0,-3];
+
+  const bw=(pts,col,alpha=.98,strokeAlpha=.18)=>{
+    const world=pts.map(p=>birdWorld(b,p[0],p[1],p[2],right0,up0,fwd,size));
+    addWorldPoly(
+      world,col,palKey(st,'ui'),
+      1,alpha,strokeAlpha,st
+    );
+  };
+
+  // 地面投影
+  const gp=project(b.p.x,b.p.y,0);
+  if(gp){
+    const shadowAlpha=.17*(1-clamp(b.p.z/720,0,.82));
+    addItem(gp.d,()=>{
+      ctx.fillStyle=`rgba(42,38,32,${shadowAlpha})`;
+      ctx.beginPath();
+      ctx.ellipse(gp.x,gp.y,10*gp.scale,4*gp.scale,0,0,TAU);
+      ctx.fill();
+    });
+  }
+
+  const light=mixColor(paper,[255,255,255],.08);
+  const shade=mixColor(paper,[58,60,70],.14);
+  const dark=mixColor(paper,[42,44,56],.22);
+
+  bw([head,rootR,rootL],light);
+  bw([head,tipR,rootR],flap>0?light:shade);
+  bw([rootR,tipR,tail],shade,.96,.14);
+  bw([head,rootL,tipL],flap>0?light:shade);
+  bw([rootL,tail,tipL],shade,.96,.14);
+  bw([tail,tailR,tailL],shade);
+  bw([head,tail,keel],dark,.9,.12);
+}
+
+/* ============================================================
+   粒子
+============================================================ */
+const MAX_PARTICLES=240;
+let particles=[];
+
+function particleKind(p,seed){
+  const st=styleAt(p.x,p.y);
+  const a=KIND_BY_STYLE[st.a];
+  const b=KIND_BY_STYLE[st.b];
+  const threshold=.08+hash(seed,'threshold')*.84;
+  return st.t>threshold ? b : a;
+}
+
+function initParticles(){
+  particles=[];
+  for(let i=0;i<MAX_PARTICLES;i++){
+    const p={
+      x:center.x+(hash(i,'x')-.5)*3400,
+      y:center.y+(hash(i,'y')-.5)*2200,
+      z:20+hash(i,'z')*880
+    };
+    particles.push({
+      seed:i,
+      p,
+      phase:hash(i,'ph')*TAU,
+      size:.7+hash(i,'size')*2.4,
+      kind:particleKind(p,i)
+    });
+  }
+}
+
+function updateParticles(dt,t){
+  for(const q of particles){
+    const p=q.p;
+
+    if(p.x<center.x-1750) p.x+=3500;
+    if(p.x>center.x+1750) p.x-=3500;
+    if(p.y<center.y-1200) p.y+=2400;
+    if(p.y>center.y+1200) p.y-=2400;
+
+    q.kind=particleKind(p,q.seed);
+
+    const sway=Math.sin(t*.8+q.phase);
+
+    if(q.kind===0){ // 尘絮
+      p.x+=(16+wind.x*34)*dt;
+      p.y+=(4*sway+wind.y*24)*dt;
+      p.z+=2*Math.sin(t+q.phase)*dt;
+    }else if(q.kind===1){ // 雾
+      p.x+=(5+wind.x*12)*dt;
+      p.y+=(3*sway+wind.y*12)*dt;
+    }else if(q.kind===2){ // 花瓣
+      p.x+=(8+wind.x*28)*dt;
+      p.z-=(10+4*Math.sin(t*1.4+q.phase))*dt;
+      p.y+=(8*sway+wind.y*24)*dt;
+    }else if(q.kind===3){ // 雪
+      p.z-=(14+5*Math.sin(t*.7+q.phase))*dt;
+      p.x+=(5*sway+wind.x*18)*dt;
+      p.y+=(3*sway+wind.y*14)*dt;
+    }else{ // 萤火
+      p.x+=3*Math.sin(t*.35+q.phase)*dt;
+      p.y+=3*Math.cos(t*.42+q.phase)*dt;
+      p.z+=4*Math.sin(t*.5+q.phase)*dt;
+    }
+
+    if(p.z<8){
+      p.z=900;
+      p.x=center.x+(hash(q.seed,'rx')-.5)*3200;
+      p.y=center.y+(hash(q.seed,'ry')-.5)*2000;
+    }
+    if(p.z>920) p.z=20;
+  }
+}
+
+function drawParticles(t){
+  for(const q of particles){
+    const p=q.p;
+    const sp=project(p.x,p.y,p.z);
+    if(!sp) continue;
+
+    const st=styleAt(p.x,p.y);
+    let col=palKey(st,'particle');
+    col=mixColor(col,palKey(st,'fog'),smoothstep(500,1500,sp.d)*.42);
+
+    const size=q.size*sp.scale*8;
+
+    addItem(sp.d,()=>{
+      if(q.kind===0){
+        ctx.strokeStyle=css(col,.28);
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(sp.x,sp.y);
+        ctx.lineTo(sp.x-size*2.2,sp.y+size*.4);
+        ctx.stroke();
+      }else if(q.kind===1){
+        const g=ctx.createRadialGradient(sp.x,sp.y,0,sp.x,sp.y,size*5);
+        g.addColorStop(0,css(col,.13));
+        g.addColorStop(1,css(col,0));
+        ctx.fillStyle=g;
+        ctx.beginPath();
+        ctx.arc(sp.x,sp.y,size*5,0,TAU);
+        ctx.fill();
+      }else if(q.kind===2){
+        ctx.save();
+        ctx.translate(sp.x,sp.y);
+        ctx.rotate(t*.9+q.phase);
+        ctx.fillStyle=css(col,.72);
+        ctx.beginPath();
+        ctx.ellipse(0,0,size*1.8,size*.9,0,0,TAU);
+        ctx.fill();
+        ctx.restore();
+      }else if(q.kind===3){
+        ctx.fillStyle=css(col,.82);
+        ctx.beginPath();
+        ctx.arc(sp.x,sp.y,size*.72,0,TAU);
+        ctx.fill();
+      }else{
+        const glow=.55+.45*Math.sin(t*2.3+q.phase);
+        const g=ctx.createRadialGradient(sp.x,sp.y,0,sp.x,sp.y,size*4.2);
+        g.addColorStop(0,css(col,.88*glow));
+        g.addColorStop(.28,css(col,.28*glow));
+        g.addColorStop(1,css(col,0));
+        ctx.fillStyle=g;
+        ctx.beginPath();
+        ctx.arc(sp.x,sp.y,size*4.2,0,TAU);
+        ctx.fill();
+      }
+    });
+  }
+}
+
+/* ============================================================
+   风与交互
+============================================================ */
+const wind={x:0,y:0};
+const rawWind={x:0,y:0};
+let pointerSpeed=0;
+let lastPointerPos=null;
+let lastPointerTime=0;
+let windPointerActive=false;
+
+const pointers=new Map();
+let pinchStartDist=0;
+let pinchMid=null;
+
+let cameraMode='auto';
+let userPitch=0,userYaw=0,userZoom=1;
+let obsPitch=0,obsZoom=1,lastWheelTime=0;
+
+function updateWind(dt){
+  const mag=Math.hypot(rawWind.x,rawWind.y);
+  let target={x:0,y:0};
+
+  if(mag<.04){
+    target.x=0; target.y=0;
+  }else{
+    target.x=Math.sign(rawWind.x)*Math.pow(Math.abs(rawWind.x),1.28);
+    target.y=Math.sign(rawWind.y)*Math.pow(Math.abs(rawWind.y),1.28);
+    target.x+=(Math.random()-.5)*.012;
+    target.y+=(Math.random()-.5)*.012;
+  }
+
+  const beta=clamp(1/(1+pointerSpeed*.045),.07,.36);
+  wind.x=lerp(wind.x,target.x,beta);
+  wind.y=lerp(wind.y,target.y,beta);
+
+  if(!windPointerActive && !matchMedia('(pointer:fine)').matches){
+    wind.x*=Math.exp(-dt*.45);
+    wind.y*=Math.exp(-dt*.45);
+  }
+}
+
+function pointerNormal(e){
+  const r=canvas.getBoundingClientRect();
+  return {
+    x:(e.clientX-r.left)/r.width,
+    y:(e.clientY-r.top)/r.height
+  };
+}
+function updateRawFromEvent(e){
+  const n=pointerNormal(e);
+  rawWind.x=(n.x-.5)*2;
+  rawWind.y=(n.y-.5)*2;
+}
+
+canvas.addEventListener('pointerdown',e=>{
+  canvas.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  windPointerActive=true;
+  updateRawFromEvent(e);
+  lastPointerPos={x:e.clientX,y:e.clientY};
+  lastPointerTime=performance.now();
+
+  if(pointers.size===2){
+    const pts=[...pointers.values()];
+    pinchStartDist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+    pinchMid={x:(pts[0].x+pts[1].x)/2,y:(pts[0].y+pts[1].y)/2};
+  }
+});
+
+canvas.addEventListener('pointermove',e=>{
+  const now=performance.now();
+  const prev=pointers.get(e.pointerId);
+
+  if(pointers.size===2 && prev){
+    pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    const pts=[...pointers.values()];
+    const dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+    const mid={x:(pts[0].x+pts[1].x)/2,y:(pts[0].y+pts[1].y)/2};
+
+    if(pinchStartDist>0){
+      const scale=pinchStartDist/Math.max(dist,1);
+      userZoom=clamp(userZoom*scale,.35,2.4);
+    }
+
+    if(cameraMode==='manual' && pinchMid){
+      userYaw+=(mid.x-pinchMid.x)*.006;
+      userPitch=clamp(userPitch-(mid.y-pinchMid.y)*.006,-1.5,.12);
+    }
+
+    pinchStartDist=dist;
+    pinchMid=mid;
+  }else{
+    if(prev){
+      const dt=Math.max((now-lastPointerTime)/1000,.001);
+      pointerSpeed=Math.hypot(e.clientX-prev.x,e.clientY-prev.y)/dt;
+    }
+
+    if(cameraMode==='manual' && e.pointerType==='mouse' && (e.buttons&1)){
+      userYaw+=e.movementX*.005;
+      userPitch=clamp(userPitch-e.movementY*.005,-1.5,.12);
+    }
+
+    pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    updateRawFromEvent(e);
+  }
+
+  lastPointerTime=now;
+});
+
+function pointerEnd(e){
+  pointers.delete(e.pointerId);
+  if(pointers.size<2){
+    pinchStartDist=0;
+    pinchMid=null;
+  }
+  if(pointers.size===0){
+    windPointerActive=false;
+    rawWind.x=0; rawWind.y=0;
+    pointerSpeed=0;
+  }
+}
+canvas.addEventListener('pointerup',pointerEnd);
+canvas.addEventListener('pointercancel',pointerEnd);
+canvas.addEventListener('pointerleave',()=>{
+  if(!windPointerActive){
+    rawWind.x=0; rawWind.y=0;
+  }
+});
+
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  lastWheelTime=performance.now();
+
+  if(cameraMode==='manual'){
+    userZoom=clamp(userZoom*(1+e.deltaY*.0012),.35,2.4);
+  }else{
+    obsZoom=clamp(obsZoom*(1+e.deltaY*.0011),.55,1.8);
+    obsPitch=clamp(obsPitch - e.deltaY*.00045,-.5,.35);
+  }
+},{passive:false});
+
+/* ============================================================
+   相机更新
+============================================================ */
+const lookTarget={x:0,y:0,z:360};
+let actualPitch=-.2, actualYaw=0, actualDist=300;
+
+function updateCamera(dt,t){
+  // 镜头序列：每镜 19 秒，前半保持，后半滑动
+  const cycle=Math.floor(t/95);
+  const local=t%95;
+  const slot=Math.floor(local/19);
+  const u=(local%19)/19;
+
+  const A=shotAt(cycle,slot);
+  const B=shotAt(cycle,slot+1);
+
+  let pitch,dist,yaw,low,shown,variation;
+  if(u<.5){
+    pitch=A.pitch;
+    dist=A.dist;
+    yaw=A.yaw;
+    low=A.low;
+    shown=A;
+    variation=A.c+1;
+  }else{
+    const e=smooth((u-.5)*2);
+    pitch=lerp(A.pitch,B.pitch,e);
+    dist=lerp(A.dist,B.dist,e);
+    yaw=lerpAngle(A.yaw,B.yaw,e);
+    low=lerp(A.low,B.low,e);
+    shown=B;
+    variation=B.c+1;
+  }
+
+  document.getElementById('shotName').textContent=shown.name;
+  document.getElementById('varNo').textContent='VAR '+String(variation).padStart(2,'0');
+
+  // 镜头目标：低空镜头看向河面，高空看向鸟群
+  const desiredLook={
+    x:center.x,
+    y:riverY(center.x),
+    z:lerp(center.z,18,low)
+  };
+
+  lookTarget.x=lerp(lookTarget.x,desiredLook.x,1-Math.exp(-3.2*dt));
+  lookTarget.y=lerp(lookTarget.y,desiredLook.y,1-Math.exp(-3.2*dt));
+  lookTarget.z=lerp(lookTarget.z,desiredLook.z,1-Math.exp(-2.8*dt));
+
+  if(cameraMode==='auto'){
+    userPitch=lerp(userPitch,0,1-Math.exp(-1.9*dt));
+    userYaw=lerp(userYaw,0,1-Math.exp(-1.9*dt));
+    userZoom=lerp(userZoom,1,1-Math.exp(-1.7*dt));
+
+    if(performance.now()-lastWheelTime>2000){
+      obsPitch=lerp(obsPitch,0,1-Math.exp(-1.8*dt));
+      obsZoom=lerp(obsZoom,1,1-Math.exp(-1.8*dt));
+    }
+  }
+
+  const desiredPitch=pitch+userPitch+obsPitch;
+  const desiredYaw=yaw+userYaw;
+  const desiredDist=dist*userZoom*obsZoom;
+
+  actualPitch=lerp(actualPitch,desiredPitch,1-Math.exp(-3.8*dt));
+  actualYaw=lerpAngle(actualYaw,desiredYaw,1-Math.exp(-3.8*dt));
+  actualDist=lerp(actualDist,desiredDist,1-Math.exp(-4*dt));
+
+  camera.pitch=actualPitch;
+  camera.yaw=actualYaw;
+  camera.dist=actualDist;
+
+  const cp=Math.cos(actualPitch), sp=Math.sin(actualPitch);
+  camera.f={
+    x:cp*Math.cos(actualYaw),
+    y:cp*Math.sin(actualYaw),
+    z:sp
+  };
+  camera.r={
+    x:Math.sin(actualYaw),
+    y:-Math.cos(actualYaw),
+    z:0
+  };
+  camera.u={
+    x:-Math.cos(actualYaw)*sp,
+    y:-Math.sin(actualYaw)*sp,
+    z:cp
+  };
+
+  // 构图偏移：鸟群稳定落在屏幕约 38% 处
+  const desiredSx=.38*W;
+  const frameShift=(W/2-desiredSx)*actualDist/camera.focal;
+
+  camera.pos={
+    x:lookTarget.x - camera.f.x*actualDist + camera.r.x*frameShift,
+    y:lookTarget.y - camera.f.y*actualDist + camera.r.y*frameShift,
+    z:lookTarget.z - camera.f.z*actualDist + camera.r.z*frameShift
+  };
+  camera.pos.z=Math.max(8,camera.pos.z);
+}
+
+/* ============================================================
+   诗句
+============================================================ */
+const poems=[
+  '风翻开云层，像一封未写完的信。',
+  '翅膀记得的，地图从不知道。',
+  '河在大地上弯曲，像一句低声的安慰。',
+  '我们把影子投向田野，投向炊烟升起的地方。',
+  '没有一只鸟是孤岛，它们用风彼此相认。',
+  '黄昏把翅膀染成花瓣，继续向南。',
+  '雪落满屋脊，也落进行李般的羽翼。',
+  '夜航的星，是祖先留下的航灯。',
+  '飞过教堂尖塔时，钟声比风更轻。',
+  '春天不在身后，就在每一次振翅的前方。',
+  '河流蜿蜒，只为教迁徙不要太急。',
+  '纸做的鸟，也能穿越真实的雨。',
+  '当月光铺满航线，归乡与远方是同一个方向。'
+];
+let poemIndex=-1;
+let poemVisible=true;
+const poemEl=document.getElementById('poem');
+const poemText=document.getElementById('poemText');
+const poemLine=document.getElementById('poemLine');
+
+function buildPoem(i){
+  poemIndex=i;
+  poemText.textContent='';
+  const text=poems[i];
+  for(const ch of text){
+    const s=document.createElement('span');
+    s.textContent=ch;
+    poemText.appendChild(s);
+  }
+  poemLine.style.width='0px';
+}
+
+function updatePoem(t){
+  const cycle=Math.floor((t-3)/23);
+  if(cycle<0) return;
+  const i=((cycle%poems.length)+poems.length)%poems.length;
+  if(i!==poemIndex) buildPoem(i);
+
+  const phase=(t-3)%23;
+  const spans=poemText.children;
+  for(let k=0;k<spans.length;k++){
+    spans[k].style.opacity=clamp((phase-k*.11)/.8,0,1);
+  }
+  poemLine.style.width=Math.min(220,phase*180)+'px';
+
+  poemEl.style.opacity=phase>21?String(1-smoothstep(21,23,phase)):'1';
+
+  const st=styleAt(camera.pos.x,camera.pos.y);
+  poemEl.style.color=css(palKey(st,'ui'));
+}
+
+/* ============================================================
+   程序化声音
+============================================================ */
+class SoundEngine{
+  constructor(){
+    this.ctx=null;
+    this.master=null;
+    this.musicGain=null;
+    this.windGain=null;
+    this.riverGain=null;
+    this.paperGain=null;
+    this.track=0;
+    this.nextStart=0;
+    this.timer=null;
+    this.muted=false;
+  }
+
+  async start(){
+    if(this.ctx){
+      if(this.ctx.state==='suspended') await this.ctx.resume();
+      return;
+    }
+
+    const AC=window.AudioContext||window.webkitAudioContext;
+    this.ctx=new AC();
+
+    this.master=this.ctx.createGain();
+    this.master.gain.value=.82;
+    this.master.connect(this.ctx.destination);
+
+    this.musicGain=this.ctx.createGain();
+    this.musicGain.gain.value=0;
+    this.musicGain.connect(this.master);
+
+    const noiseBuffer=this.makeNoise();
+
+    // 风
+    const windSrc=this.ctx.createBufferSource();
+    windSrc.buffer=noiseBuffer;
+    windSrc.loop=true;
+    const windFilter=this.ctx.createBiquadFilter();
+    windFilter.type='lowpass';
+    windFilter.frequency.value=520;
+    this.windGain=this.ctx.createGain();
+    this.windGain.gain.value=.05;
+    windSrc.connect(windFilter).connect(this.windGain).connect(this.master);
+    windSrc.start();
+
+    const lfo=this.ctx.createOscillator();
+    lfo.frequency.value=.09;
+    const lfoGain=this.ctx.createGain();
+    lfoGain.gain.value=.035;
+    lfo.connect(lfoGain).connect(this.windGain.gain);
+    lfo.start();
+
+    // 河水
+    const riverSrc=this.ctx.createBufferSource();
+    riverSrc.buffer=noiseBuffer; riverSrc.loop=true;
+    const riverFilter=this.ctx.createBiquadFilter();
+    riverFilter.type='bandpass';
+    riverFilter.frequency.value=920;
+    riverFilter.Q.value=.75;
+    this.riverGain=this.ctx.createGain();
+    this.riverGain.gain.value=0;
+    riverSrc.connect(riverFilter).connect(this.riverGain).connect(this.master);
+    riverSrc.start();
+
+    // 纸翼
+    const paperSrc=this.ctx.createBufferSource();
+    paperSrc.buffer=noiseBuffer; paperSrc.loop=true;
+    const paperFilter=this.ctx.createBiquadFilter();
+    paperFilter.type='bandpass';
+    paperFilter.frequency.value=6800;
+    paperFilter.Q.value=.45;
+    this.paperGain=this.ctx.createGain();
+    this.paperGain.gain.value=0;
+    paperSrc.connect(paperFilter).connect(this.paperGain).connect(this.master);
+    paperSrc.start();
+
+    this.nextStart=this.ctx.currentTime+.2;
+    this.timer=setInterval(()=>this.scheduler(),200);
+
+    this.musicGain.gain.cancelScheduledValues(this.ctx.currentTime);
+    this.musicGain.gain.setValueAtTime(0,this.ctx.currentTime);
+    this.musicGain.gain.linearPassRamp?.call(
+      this.musicGain.gain,
+      this.muted?0:.17,
+      this.ctx.currentTime+5
+    );
+    if(!this.musicGain.gain.linearPassRamp){
+      this.musicGain.gain.linearRampToValueAtTime(this.muted?0:.17,this.ctx.currentTime+5);
+    }
+  }
+
+  makeNoise(){
+    const len=this.ctx.sampleRate*2;
+    const buffer=this.ctx.createBuffer(1,len,this.ctx.sampleRate);
+    const d=buffer.getChannelData(0);
+    let last=0;
+    for(let i=0;i<len;i++){
+      const white=Math.random()*2-1;
+      last=(last+.02*white)/1.02;
+      d[i]=white*.36+last*.64;
+    }
+    return buffer;
+  }
+
+  scheduler(){
+    while(this.nextStart < this.ctx.currentTime+.35){
+      const dur=this.scheduleTheme(this.nextStart,this.track);
+      this.nextStart += dur + 2.4;
+      this.track=1-this.track;
+    }
+  }
+
+  midi(n){
+    return 440*Math.pow(2,(n-69)/12);
+  }
+
+  pluck(time,midi,gain=.11,type='sine',dur=.5,pan=0){
+    const osc=this.ctx.createOscillator();
+    osc.type=type;
+    osc.frequency.value=this.midi(midi);
+
+    const g=this.ctx.createGain();
+    g.gain.setValueAtTime(0,time);
+    g.gain.linearRampToValueAtTime(gain,time+.018);
+    g.gain.exponentialRampToValueAtTime(.0001,time+dur);
+
+    let node=osc;
+    if(this.ctx.createStereoPanner){
+      const p=this.ctx.createStereoPanner();
+      p.pan.value=pan;
+      osc.connect(g).connect(p).connect(this.musicGain);
+      node=p;
+    }else{
+      osc.connect(g).connect(this.musicGain);
+    }
+
+    osc.start(time);
+    osc.stop(time+dur+.05);
+  }
+
+  pad(time,midi,dur,gain=.04){
+    const osc=this.ctx.createOscillator();
+    osc.type='triangle';
+    osc.frequency.value=this.midi(midi);
+
+    const osc2=this.ctx.createOscillator();
+    osc2.type='sine';
+    osc2.frequency.value=this.midi(midi)*1.004;
+
+    const g=this.ctx.createGain();
+    g.gain.setValueAtTime(0,time);
+    g.gain.linearRampToValueAtTime(gain,time+1.4);
+    g.gain.linearRampToValueAtTime(.0001,time+dur);
+
+    osc.connect(g); osc2.connect(g); g.connect(this.musicGain);
+    osc.start(time); osc2.start(time);
+    osc.stop(time+dur+.1); osc2.stop(time+dur+.1);
+  }
+
+  scheduleTheme(start,theme){
+    const tempo=theme===0?.48:.62;
+    const beats=theme===0?140:120;
+    const root=theme===0?48:45; // C3 / A2
+    const scale=theme===0
+      ?[0,2,4,7,9,12,16,19]
+      :[0,3,5,7,10,12,15,17];
+
+    let idx=3;
+
+    for(let b=0;b<beats;b++){
+      const time=start+b*tempo;
+
+      if(Math.random()<.78){
+        idx += Math.floor(Math.random()*5)-2;
+        idx=clamp(idx,0,scale.length-1);
+        const octave=Math.random()<.22?12:0;
+        const midi=root+12+scale[idx]+octave;
+        this.pluck(
+          time,midi,
+          .08+Math.random()*.055,
+          Math.random()<.25?'triangle':'sine',
+          tempo*.95,
+          (Math.random()-.5)*.7
+        );
+      }
+
+      if(Math.random()<.13){
+        const harmony=scale[clamp(idx+2,0,scale.length-1)];
+        this.pluck(time,root+12+harmony,.045,'sine',tempo*.8,(Math.random()-.5)*.8);
+      }
+
+      if(b%8===0){
+        const bassNote=root+scale[Math.floor(Math.random()*3)]-12;
+        this.pluck(time,bassNote,.095,'triangle',tempo*2.2,0);
+      }
+
+      if(b%16===0){
+        const chord=[0,2,4].map(k=>scale[(idx+k)%scale.length]);
+        for(const n of chord){
+          this.pad(time,root+12+n,tempo*10,.026);
+        }
+      }
+    }
+
+    return beats*tempo;
+  }
+
+  setMute(m){
+    this.muted=m;
+    if(!this.ctx) return;
+    this.musicGain.gain.cancelScheduledValues(this.ctx.currentTime);
+    this.musicGain.gain.linearRampToValueAtTime(
+      m?0:.17,
+      this.ctx.currentTime+.35
+    );
+  }
+
+  update(dt){
+    if(!this.ctx) return;
+
+    // 河水：相机低且贴近河
+    const rv=riverY(camera.pos.x);
+    const riverDist=Math.abs(camera.pos.y-rv);
+    let riverTarget=0;
+    if(camera.pos.z<120 && riverDist<180){
+      riverTarget=.09*(1-camera.pos.z/120)*(1-riverDist/180);
+    }
+    this.riverGain.gain.setTargetAtTime(riverTarget,this.ctx.currentTime,.25);
+
+    // 纸翼：靠近鸟才可闻
+    let nearest=Infinity;
+    for(const b of birds){
+      const dx=b.p.x-camera.pos.x;
+      const dy=b.p.y-camera.pos.y;
+      const dz=b.p.z-camera.pos.z;
+      nearest=Math.min(nearest,Math.hypot(dx,dy,dz));
+    }
+    const paperTarget=nearest<180 ? .018*(1-nearest/180):0;
+    this.paperGain.gain.setTargetAtTime(paperTarget,this.ctx.currentTime,.22);
+
+    this.windGain.gain.setTargetAtTime(.045,this.ctx.currentTime,.6);
+  }
+}
+const sound=new SoundEngine();
+
+/* ============================================================
+   UI
+============================================================ */
+let selectedStyle=0;
+document.querySelectorAll('.scenes button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.scenes button').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedStyle=Number(btn.dataset.style);
+  });
+});
+
+document.getElementById('cameraBtn').addEventListener('click',e=>{
+  cameraMode=cameraMode==='auto'?'manual':'auto';
+  e.currentTarget.textContent=cameraMode==='auto'?'镜头自动':'镜头自主';
+  e.currentTarget.classList.toggle('active',cameraMode==='manual');
+});
+
+document.getElementById('musicBtn').addEventListener('click',e=>{
+  const muted=!e.currentTarget.classList.contains('active');
+  e.currentTarget.classList.toggle('active',!muted);
+  e.currentTarget.textContent=muted?'音乐关':'音乐开';
+  sound.setMute(muted);
+});
+
+document.getElementById('poemBtn').addEventListener('click',e=>{
+  poemVisible=!poemVisible;
+  e.currentTarget.classList.toggle('active',poemVisible);
+  e.currentTarget.textContent=poemVisible?'诗句开':'诗句关';
+  poemEl.style.display=poemVisible?'block':'none';
+});
+
+async function requestWakeLock(){
+  try{
+    if(navigator.wakeLock){
+      let lock=await navigator.wakeLock.request('screen');
+      document.addEventListener('visibilitychange',async()=>{
+        if(lock.released && document.visibilityState==='visible'){
+          lock=await navigator.wakeLock.request('screen');
+        }
+      });
+    }
+  }catch(e){}
+}
+
+document.getElementById('begin').addEventListener('click',async()=>{
+  try{
+    if(!document.fullscreenElement && document.documentElement.requestFullscreen){
+      await document.documentElement.requestFullscreen();
+    }
+  }catch(e){}
+
+  try{
+    if(screen.orientation && screen.orientation.lock){
+      await screen.orientation.lock('landscape');
+    }
+  }catch(e){}
+
+  requestWakeLock();
+
+  center.x=selectedStyle*SEG + 1200;
+  center.y=riverY(center.x);
+
+  resize();
+  initBirds();
+  initParticles();
+
+  lookTarget.x=center.x;
+  lookTarget.y=center.y;
+  lookTarget.z=center.z;
+  camera.pos.x=center.x;
+  camera.pos.y=center.y;
+  camera.pos.z=center.z+260;
+
+  state.startTime=performance.now()/1000;
+  state.started=true;
+
+  document.getElementById('start').style.display='none';
+  sound.start();
+});
+
+/* ============================================================
+   主循环
+============================================================ */
+const state={
+  started:false,
+  startTime:0
+};
+let worldTime=0;
+let lastFrame=performance.now()/1000;
+
+function frame(nowMs){
+  requestAnimationFrame(frame);
+
+  const now=nowMs/1000;
+  let dt=Math.min(now-lastFrame,.05);
+  lastFrame=now;
+
+  if(!state.started) return;
+
+  worldTime=now-state.startTime;
+
+  // 鸟群中心先推进
+  center.x = selectedStyle*SEG + 1200 + worldTime*24;
+  center.y=riverY(center.x);
+
+  updateCamera(dt,worldTime);
+  updateWind(dt);
+  updateBirds(dt,worldTime);
+  updateParticles(dt,worldTime);
+
+  items=[];
+
+  const groundSt=styleAt(lookTarget.x,lookTarget.y);
+  drawSky(styleAt(camera.pos.x,0));
+  drawGroundBase(groundSt);
+
+  drawFields(center);
+  drawRiver(center);
+  drawTowns(center);
+  drawBackHouses(center);
+  drawTrees(center);
+
+  // 锋面地面光池
+  const skySt=styleAt(camera.pos.x,0);
+  if(
+    (skySt.a===0||skySt.b===0||skySt.a===2||skySt.b===2) &&
+    skySt.t>.16 && skySt.t<.84
+  ){
+    const lp=project(skySt.boundary,0,.1);
+    if(lp){
+      const warm=[255,210,150];
+      const pink=[255,150,165];
+      const col=(skySt.a===2||skySt.b===2)?mixColor(warm,pink,skySt.t):warm;
+      addItem(lp.d,()=>{
+        const radius=560*lp.scale;
+        const g=ctx.createRadialGradient(lp.x,lp.y,0,lp.x,lp.y,radius);
+        g.addColorStop(0,css(col,.22));
+        g.addColorStop(.55,css(col,.07));
+        g.addColorStop(1,css(col,0));
+        ctx.fillStyle=g;
+        ctx.beginPath();
+        ctx.arc(lp.x,lp.y,radius,0,TAU);
+        ctx.fill();
+      });
+    }
+  }
+
+  for(const b of birds) drawBird(b,worldTime);
+  drawParticles(worldTime);
+
+  drawItems();
+
+  updatePoem(worldTime);
+  sound.update(dt);
+
+  // UI 墨色随风格变化
+  const uiSt=styleAt(camera.pos.x,camera.pos.y);
+  const uiCol=palKey(uiSt,'ui');
+  document.documentElement.style.setProperty('--ink',css(uiCol));
+}
+
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
+```
+
+## 最终答案
+
+以上代码即为零依赖单文件交互作品《候鸟 · MIGRATION》。打开 HTML 文件，选择起飞地点并点击“开始迁徙”，即可进入程序化生成的无限迁徙航线。

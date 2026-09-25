@@ -1,0 +1,25 @@
+{
+  "importedAt": "2026-09-20T06:58:38.385550+00:00",
+  "originalSource": "/Users/apm30/Documents/project/测试环境/demo_Doubao-Seed-2.1-pro/候鸟.html",
+  "archive": "results/migration/doubao-seed-2-1-pro/import-01/index.html",
+  "originalFilename": "候鸟.html",
+  "bytes": 91939,
+  "sha256": "a86596a17d15a3ef94d1560376a834acb95e52a16ae73e61068477c9e91f6952",
+  "model": "Doubao-Seed-2.1-pro",
+  "method": "Move original file unchanged, rename entry to index.html.",
+  "availability": "broken",
+  "validation": "issues",
+  "review": "docs/doubao-migration-review.md",
+  "cover": {
+    "path": "results/migration/doubao-seed-2-1-pro/import-01/cover.jpg",
+    "source": "Actual browser screenshot of opening menu; flight scene fails to render.",
+    "sha256": "704ee77853b08f0eccc5e165aa59561bfe38ecdc8488a1b572233f4ee2a4eb8c"
+  },
+  "verification": {
+    "originalUnchanged": true,
+    "publishedCopyMatches": true,
+    "websiteTestsPassed": 9,
+    "zipFilesVerified": 46,
+    "deployedPublicly": false
+  }
+}

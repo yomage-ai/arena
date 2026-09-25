@@ -133,3 +133,103 @@
 - 从本机验证公网 HTTPS 证书可信、返回 200；经正式 HTTPS 域名核验全部 44 个文件 SHA-256 与本地发布清单一致，MIME 正确，缺失及未发布路径返回 404。9 项网站检查通过。
 - 浏览器访问正式域名，确认“月球车 · AI 试验场”、新标记、4 个项目、8 份作品、双模型卡片及封面正确显示；上线截图为 `artifacts/site/arena-live.jpg`。已保留正式网站标签页。
 - 正式地址为 `https://arena.yomage.com/`，详细配置和更新、回退步骤见 `deploy/README.md`；发布清单与状态见 `artifacts/site/deployment-arena.json`。以上上线状态替代此前历史记录中的“未发布公网”。
+
+
+## Doubao-Seed-2.1-pro 候鸟收录（2026-09-20）
+
+- 原始候鸟.html 移入 results/migration/doubao-seed-2-1-pro/import-01/index.html，91,939 字节，SHA-256 不变。新增模型与候鸟记录，全站 4 个项目、9 份结果。
+- 桌面浏览器检查暖纸和夜航：开场菜单显示正常，启动后只显示背景与按钮，控制台持续在 palKey 读取 wall 时报错；音乐按钮不能关闭。源码另确认字符串 hash 参数产生 NaN、气候过渡调用缺参、文件以 BackCompat 模式解析及配乐与提示词要求的差异。
+- 状态标记为运行异常 / 存在问题，保留原始入口；封面为开场实拍，未修改作品代码。详情见 docs/doubao-migration-review.md，控制台、异常画面与逻辑输出已保存。
+- 9 项网站检查通过；部署包与发布目录 46 个文件逐字节一致。原件与发布副本哈希一致，本次未部署公网或推送 Git。
+
+## Doubao-Seed-2.1-pro 高 · 鹈鹕骑自行车收录（2026-09-21）
+
+- 将 `测试环境/pelican-bike/pelican-bike.html` 原样迁入 `results/bicycle/doubao-seed-2-1-pro/import-01/index.html`；27,526 字节，SHA-256 为 `33602fad892c3ce921fb80492a9bd30506b9818aa5004996f3d1e109e0a28bd6`。
+- 沿用 Doubao-Seed-2.1-pro 模型，明确记录本次推理强度为“高”，关联鹈鹕原始提示词 `bicycle-v1`。全站现有 4 个项目、10 份作品。
+- 使用 1280 × 720 桌面浏览器实测：页面完整加载，车轮持续转动；暂停后车轮角度保持不变；恢复后继续运动；“快”档成功选中；未捕获脚本异常。
+- 从实际运行动画截取 `cover.jpg`，没有改写作品代码。迁入、哈希、封面来源与交互检查见 `doubao-high-bicycle-import.json`。
+- 首页实测显示鹈鹕项目的第三个 Doubao 模型卡片、真实封面和正确入口；生成记录展示“推理强度：高（用户确认）”。`npm run test:site` 9 项通过，部署包与发布目录全部 48 个文件逐字节一致。本次未部署公网或推送 Git。
+
+## Doubao 候鸟新版与月球车收录（2026-09-23）
+
+- 将测试目录 `候鸟-MIGRATION.html` 逐字节复制到 `results/migration/doubao-seed-2-1-pro/import-02/index.html`，保留原文件与此前 `import-01` 问题样本。新版大小 2,791,880 字节，SHA-256 为 `e5f1da15b5c280282ae5230d06a4f80932959f8600cf09413f7ade471b568e5f`。两份都归在 Doubao 模型卡片下，按收录日期区分，新版默认展示；具体生成日期及参数未知。
+- 新版候鸟在桌面浏览器中显示五个起飞场景并正常进入动画；两次截帧不同，镜头、音乐、诗句按钮状态均可切换，未捕获脚本异常。从实际迁徙画面保存 1280 × 720 JPEG 封面。未检查跨气候完整旅程和移动端。
+- 将测试目录 `月面探测车.html` 原样移入 `results/lunar-rover/doubao-seed-2-1-pro/import-01/index.html`，60,198 字节，SHA-256 为 `6dd6a30e54b12a658f86fbcf1eef4029f6c9c0af4af9d61bd1f81b1072896763`。原件运行时从在线 CDN 加载 Three.js 与字体；未改写 import map。
+- 在启用 WebGL 的桌面浏览器中，月球车三维场景加载完成，里程增长，暂停、恢复与自由浏览按钮有效；未捕获资源请求失败或脚本异常。从真实场景保存 1280 × 720 JPEG 封面。首次无头浏览器关闭 GPU 时无法创建 WebGL 上下文，启用 GPU 后正常；这不是作品代码错误。
+- 两份作品的来源、原件及封面哈希、基本交互检查分别见 `doubao-migration-import-02.json` 和 `doubao-lunar-rover-import.json`。
+- 首页确认候鸟项目仍为 3 组模型，Doubao 卡片可在新版与旧版间切换，封面、状态、入口随之更新；月球车项目有第三张 Doubao 卡片及真实封面。全站 4 个项目、12 份归档结果，其中 11 份可体验。
+- `npm run test:site` 的 9 项检查通过；原件与发布副本哈希一致，部署包与 `site/` 中的 52 个文件逐字节一致。本次未推送 Git 或部署公网。
+
+## 暂时隐藏 Doubao 模型（2026-09-23）
+
+- 在模型清单中设置 `hidden: true`，首页按可见模型生成卡片与计数；无脚本直达链接同步去掉 Doubao。归档的四份 Doubao 结果和原始 HTML 保留，改回 `false` 可重新显示。
+- 浏览器逐一确认候鸟、植物大战僵尸、鹈鹕骑自行车、月球车四个项目均只显示 GPT6 与 GPT5.6 两张卡片；各项目计数为 2，全站显示 8 份可体验作品，页面没有 Doubao 文本或链接。
+- `npm run test:site` 的 10 项检查通过，部署包已重新生成。隐藏只控制列表展示，已知的直接作品地址仍可访问；本次未发布公网。
+
+## Opus 5.5 · extra 鹈鹕骑自行车收录（2026-09-23）
+
+- 将 `测试环境/pelican-bike.html` 移至 `results/bicycle/opus-5-5/import-01/pelican-bike.html`，33,031 字节，SHA-256 保持 `b503c1db5a5f34e6dbfa7d7b7c5e0f49d7e7fa85622030f3e4e71e85739dbc9e`。原件没有标准 HTML 文档外壳，另生成仅补齐外壳的 `index.html` 作为网站入口；动画代码未改写。
+- 关联鹈鹕原始提示词 `bicycle-v1`，模型记录为 Opus 5.5、思考强度 extra。实际运行画面截图作为 `cover.jpg`；Google Fonts 是可选字体资源，断网时回退至本机字体。
+- 1280 × 720 Chrome 检查：画面加载，车轮与里程持续变化；暂停、继续、调速与按铃均有响应，未捕获脚本异常或失败请求。首页鹈鹕项目显示三张可见模型卡片，Opus 封面和入口正确，Doubao 仍隐藏；全站十三份归档作品，九份可见。
+- `npm run test:site` 的 11 项检查通过，部署包已重新生成。来源、原件与封面校验见 `opus-5-5-bicycle-import.json`。本次未发布公网或推送 Git。
+
+## GPT6-sol · max 鹈鹕骑自行车收录（2026-09-23）
+
+- 将 `测试环境 2/pelican-bicycle.html` 原样移至 `results/bicycle/gpt6-sol-max/import-01/index.html`，17,421 字节，SHA-256 为 `8f05c7b185c8299870812359a336458e12292896b47e54e5febad4c6e7e80796`。关联鹈鹕原始提示词 `bicycle-v1`，记录模型 GPT6-sol、思考强度 max。
+- 使用 1280 × 720 Chrome 检查页面和动画：SVG 场景正常加载，前后车轮和脚踏位置持续变化，无脚本异常与失败请求。封面来自实际运行画面；原作品代码未修改，也无外部资源依赖。
+- 鹈鹕项目现在有四张可见模型卡片，豆包保持隐藏；全站十四份归档结果，其中十份在网页展示。`npm run test:site` 的 12 项检查通过，部署包中的 57 个发布文件与 `site/` 逐字节一致。来源、原件与封面哈希见 `gpt6-sol-max-bicycle-import.json`。本次未发布公网或推送 Git。
+
+## GPT6-sol · max 月球车收录（2026-09-23）
+
+- 将 `测试环境 2/` 中月球车的 13 个原始文件原样迁入 `results/lunar-rover/gpt6-sol-max/import-01/`，保留 HTML、CSS、JavaScript、本地 Three.js、月壤纹理、许可证及 README 的目录结构。沿用用户对该目录的 GPT6-sol / max 说明，关联月球车提示词 `lunar-rover-v1`。原件及资源哈希见 `gpt6-sol-max-lunar-rover-import.json`。
+- 1280 × 720 Chrome 浏览器检查：WebGL 场景和本地资源正常加载，里程增长；暂停后里程不变、继续后增长；总览、近景、贴地视角切换正常。未捕获脚本异常、失败请求或 HTTP 错误。`cover.jpg` 从实际三维场景截取，原始作品代码未修改。
+- 本地月球车页面显示 GPT6-Astra、GPT6-sol、GPT5.6-sol 三张可见卡片；新卡片的封面及入口正常，Doubao 仍隐藏。全站十五份归档结果，十一份在网页展示。`npm run test:site` 的 13 项检查通过；原始 13 个文件的 SHA-256 与迁移前记录一致，部署包中的 71 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## 测试环境月球车收录（2026-09-23）
+
+- 将 `测试环境/lunar-rover/` 的九个文件原样迁入 `results/lunar-rover/opus-5-5/import-01/`。原 HTML 缺少标准文档外壳，逐字节保存在 `original.html`；网站入口 `index.html` 仅补齐外壳并加内嵌站点图标。八个场景模块未改。原件和入口哈希见 `opus-5-5-lunar-rover-import.json`。
+- 模型暂按同一测试环境先前的 Opus 5.5 / extra 结果记录，等待用户确认；关联月球车提示词 `lunar-rover-v1`。原件运行时从 jsDelivr 加载 Three.js 0.160.0，从 Google Fonts 加载字体；离线无法启动三维场景。
+- 1280 × 720 Chrome 浏览器检查：三维场景正常加载，里程增长；暂停后保持、继续后增长；俯视、车轮特写与倍速控制有效。封面来自实际场景截图。补齐入口图标后，复查未捕获脚本异常、资源请求失败或 HTTP 错误。
+- 本地月球车页面显示四张可见模型卡片，新卡片封面和入口正常，Doubao 仍隐藏。全站十六份归档结果，十二份在网页展示；`npm run test:site` 的 14 项检查通过，部署包中的 82 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## 两份候鸟迁徙收录与作品跳转修复（2026-09-23）
+
+- 将 `测试环境/migration.html` 和 `测试环境 2/index.html` 逐字节移入 `results/migration/opus-5-5/import-01/index.html`、`results/migration/gpt6-sol-max/import-01/index.html`；大小、哈希和实景封面见 `new-migration-imports.json`。第二份按用户此前对“测试环境 2”的 GPT6-sol / max 说明收录；第一份暂沿用“测试环境”的 Opus 5.5 / extra 信息，待确认。
+- 1280 × 720 Chrome 逐份运行：开场菜单和 Canvas 正常显示，启动后航程前进，镜头切换有效，没有捕获脚本异常或请求失败。封面均截自实际飞行画面。原始 HTML 未改写。
+- 网站原先强制作品链接打开新标签页，程序化点击时原页不跳转，也未产生可用的作品标签，与用户报告的空白体验一致。改为当前标签页跳转，并同步调整无脚本链接；点击月球车“打开作品”和候鸟封面后都能到达正确 URL，页面画布正常显示。浏览器后退可回到测评页。
+- 全站现在有十八份归档结果，其中十四份可见；Doubao 继续隐藏。`npm run test:site` 的 15 项检查通过，部署包中的 86 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## GPT6-sol-max 植物大战僵尸收录（2026-09-24）
+
+- 将 `测试环境 2/index.html` 原样复制到 `results/pvz/gpt6-sol-max/import-01/index.html`；SHA-256 为 `b761a39cacc42d774f216523708d6582181c7d94f05b46e20b452abec997a175`。原测试目录保留，完整工程的 13 个文件复制到 `source-projects/gpt6-sol-pvz/`，包括源码、构建脚本、测试脚本和截图；源码重新合成的 HTML 与原件逐字节一致。
+- 从原测试截图 `artifacts/desktop-playing.png` 复制封面，未改写作品 HTML。清单沿用用户此前对“测试环境 2”的 GPT6-sol / max 说明，关联原始提示词 `pvz-v1`；来源与逐文件哈希见 `gpt6-sol-max-pvz-import.json`。
+- 在本地 Chrome 从植物大战僵尸项目页点击 GPT6-sol 卡片的“打开作品”，正常进入《植物大战僵尸 · 草坪保卫战》；开场页和 1280 × 620 游戏画布显示，点击开始后进入第 1 / 5 波，无脚本异常。未重新运行原工程依赖 Playwright 的完整五波测试。
+- 全站现在有十九份归档结果，其中十五份可见；Doubao 继续隐藏。`npm run test:site` 的 16 项检查通过，部署包中的 88 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## 测试环境植物大战僵尸收录（2026-09-24）
+
+- 将 `测试环境/pvz/dist/植物大战僵尸.html` 原样复制到 `results/pvz/opus-5-5/import-01/index.html`；SHA-256 为 `ebcdb78af9636e87c9c0a78a6cc9ba4398b92117a3fc3db5202d37d7aae9310b`。50 个源码、构建脚本、中间文件和原始成品复制到 `source-projects/opus-5-5-pvz/`，逐文件哈希一致；原测试目录保留，`node_modules` 不进入归档。
+- 模型与思考强度暂按该测试环境此前的 Opus 5.5 / extra 记录归类，待用户确认。关联植物大战僵尸原始提示词 `pvz-v1`。真实主菜单截图作为 `cover.jpg`；原件与封面哈希、复制清单见 `opus-5-5-pvz-import.json`。
+- Chrome 实测标题页加载完毕、进入主菜单、切入 1-1 关卡，均有正常画面且无脚本异常。又从测评网页的 Opus 卡片点击进入，作品 URL、标题和画布正确。未完整通关或验证 README 所列全部模式。
+- 全站现在有二十份归档结果，其中十六份可见；Doubao 继续隐藏。`npm run test:site` 的 17 项检查通过，部署包中的 90 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## GPT6-sol-max 瓶中沧海收录（2026-09-24）
+
+- 新增“瓶中沧海”项目并录入用户本次提供的原始提示词 `bottled-ocean-v1`，保留原拼写和换行；模型沿用用户此前对“测试环境 2”的 GPT6-sol / max 说明。
+- 将 `测试环境 2/bottled-ocean.html` 原样复制到 `results/bottled-ocean/gpt6-sol-max/import-01/`；原文件名与网站入口 `index.html` 的 SHA-256 均为 `b63adca34a64b377a20fc9a324c10713348c1dde06ba5a2d2d9cecc20bb00e9f`。原测试文件仍保留；封面截自 1280 × 720 Chrome 的实际 WebGL 场景。
+- Chrome 实测 Three.js r160 和 OrbitControls 两个 CDN 模块均返回 200，瓶中三维画面正常。网页卡片可进入正确作品；×12 倍速推进时钟，暂停后时钟保持不变，按住及松开风暴按钮时状态相应切换。没有捕获脚本异常或失败请求。作品依赖在线 CDN，断网时无法加载三维场景；未验证全部场景细节或 60 FPS 目标。
+- 全站现在有五个项目、二十一份归档结果，其中十七份可见；Doubao 继续隐藏。`npm run test:site` 的 18 项检查通过，部署包中的 93 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。来源、封面和浏览器检查见 `gpt6-sol-max-bottled-ocean-import.json`。
+
+## 测试环境瓶中沧海收录（2026-09-24）
+
+- 将 `测试环境/ship-in-bottle/dist/瓶中沧海.html` 逐字节复制到 `results/bottled-ocean/opus-5-5/import-01/index.html`；SHA-256 为 `cb293f07716738dd968b65ef60cc615aa74a90ba969e9c03da9e976bc89255c2`。完整的 11 个工程文件复制到 `source-projects/opus-5-5-bottled-ocean/`，逐文件哈希一致；从复制的源码重新构建后成品哈希未变，原测试目录也保留。
+- 模型与思考强度暂沿用该测试环境此前的 Opus 5.5 / extra 记录，待用户确认。作品关联原始提示词 `bottled-ocean-v1`。封面从 1280 × 720 Chrome 的实际 WebGL 画面截取；来源及各文件哈希见 `opus-5-5-bottled-ocean-import.json`。
+- Chrome 实测原件与站内卡片：标题、瓶体海面及小岛正常显示，11 个 Three.js r160 CDN 模块均返回 200，未捕获失败请求或脚本异常。×12 倍速推动时钟，暂停后实际模拟时间保持不变；按下及松开风暴按钮时状态正确切换。作品依赖在线 CDN，未验证全部场景细节或 60 FPS 目标。
+- 发布结果的原件副本命名为 `original.html`，中文原文件名仍保留在完整工程中，避免 macOS ZIP 对中文文件名编码导致的跨平台路径差异。全站现在有五个项目、二十二份归档结果，其中十八份可见；Doubao 继续隐藏。`npm run test:site` 的 19 项检查通过，部署包中的 96 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。
+
+## GPT6-Astra-xhigh 瓶中沧海收录（2026-09-24）
+
+- 用户明确确认本次 `测试环境 2/bottle-ocean.html` 由 GPT6-Astra / xhigh 实现；独立收录到 `results/bottled-ocean/gpt6-astra-xhigh/import-01/`，关联原提示词 `bottled-ocean-v1`。来源原件、保留原文件名的副本、网站入口和发布副本 SHA-256 均为 `25d2aee2d1718215c4702e489035c4c791758eac9305a6d6aa3420a20fb0dc94`。源文件仍保留在测试环境。
+- 实景桌面截图作为封面，原测试的五张截图和检查 JSON 归档在 `source-projects/gpt6-astra-bottled-ocean/artifacts/`；来源文件和校验值见 `gpt6-astra-xhigh-bottled-ocean-import.json`。作品从在线 CDN 加载 Three.js r160，断网时三维场景无法启动。
+- 独立 Chrome 检查：从项目页第一张 Astra 卡片进入作品，1280 × 720 WebGL 画布载入，Three.js r160 CDN 返回 200，2514 个水面体素和 6 只海鸥已初始化。×12 推进模拟、暂停冻结模拟、风暴按钮按下与松开均正常；未捕获脚本异常或失败请求。此为入口和关键交互抽查，未对全部场景细节、长期帧率或所有浏览器做验收。
+- 全站五个项目、二十三份归档结果，其中十九份可见；Doubao 仍隐藏。`npm run test:site` 的 20 项检查通过，部署 ZIP 中 99 个文件与 `site/` 逐字节一致。本次未发布公网或推送 Git。

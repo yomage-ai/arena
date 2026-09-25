@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-09-23",
+  "source": "/Users/apm30/Documents/project/测试环境/pelican-bike.html",
+  "model": "Opus 5.5",
+  "thinkingStrength": "extra",
+  "promptVersionId": "bicycle-v1",
+  "archive": "results/bicycle/opus-5-5/import-01",
+  "original": {
+    "path": "pelican-bike.html",
+    "bytes": 33031,
+    "sha256": "b503c1db5a5f34e6dbfa7d7b7c5e0f49d7e7fa85622030f3e4e71e85739dbc9e",
+    "handling": "Moved without editing; source pathname no longer exists"
+  },
+  "entry": {
+    "path": "index.html",
+    "bytes": 33105,
+    "sha256": "8083628b6ee9a70c354a23c17d0daa3ef79dfe8f7537da6db33d923d5fdec4b2",
+    "change": "Added doctype, html, head and body tags around the original fragment; no animation code changed"
+  },
+  "cover": {
+    "path": "cover.jpg",
+    "bytes": 89802,
+    "sha256": "0c9294c8d939620253072d0321d9f5072e43148772a749d2e6bbaa2da627bf64",
+    "source": "1280x720 screenshot of running entry in headless Chrome"
+  },
+  "browserChecks": {
+    "documentLoaded": true,
+    "standardsMode": true,
+    "animationAndOdometerAdvance": true,
+    "pauseStopsAnimation": true,
+    "resumeRestartsAnimation": true,
+    "speedSliderChangesReadout": true,
+    "bellShowsBubble": true,
+    "scriptExceptions": [],
+    "failedRequests": [],
+    "galleryCardsForBicycle": 3,
+    "visibleWorks": 9,
+    "galleryCoverLoaded": true,
+    "doubaoStillHidden": true
+  },
+  "dependencies": [
+    "Optional Google Fonts CSS; animation uses inline SVG, CSS, and JavaScript"
+  ],
+  "deployment": "Local build and package only; not deployed to the public server"
+}

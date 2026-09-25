@@ -1,0 +1,14 @@
+{
+  "name": "pvz-html5",
+  "version": "1.0.0",
+  "description": "植物大战僵尸 HTML5 同人复刻（纯 Canvas 程序绘制 + WebAudio 合成音效）",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "build": "node tools/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

@@ -2,9 +2,9 @@
 
 正式网站：[https://arena.yomage.com/](https://arena.yomage.com/)。已部署到 `124.221.20.152` 的独立 Nginx 站点，启用 HTTPS；配置与后续发布、回退步骤见 [服务器部署说明](../deploy/README.md)。
 
-第一版已实现项目选择、作品卡片、原始 HTML 独立打开、提示词查看与复制、生成记录、多个 AI 与同一 AI 多次生成的展示、手机布局、地址恢复、空状态和 404 页面。纯静态实现，无运行时第三方依赖。
+第一版已实现项目选择、作品卡片、原始 HTML 独立打开、提示词查看与复制、生成记录、多个 AI 与同一 AI 多次生成的展示、手机布局、地址恢复、空状态和 404 页面。测评首页为纯静态实现；部分 AI 作品原件会从外部 CDN 加载依赖。
 
-当前共四个项目、八份作品。“候鸟迁徙”“植物大战僵尸”“鹈鹕骑自行车”“月球车”均包含 GPT6-Astra-xhigh 和 GPT5.6-sol-max 两份结果，同一项目下关联相同提示词版本。两组配置的推理强度分别记录为 xhigh 和 max，月球车沿用此前两组配置并注明依据。四个项目的提示词已按用户原文录入，版本分别为 migration-v1、pvz-v1、bicycle-v1 和 lunar-rover-v1，并关联到对应作品；可在页面查看并复制。生成日期、轮次及人工干预尚待补充，未知信息保留 null。候鸟提示词里的重复段落、反斜杠和换行均原样保留；以后精简或改写时另存新版本。
+当前共五个项目、二十三份归档作品。Doubao-Seed-2.1-pro 模型在 `site/catalog.json` 中设置 `hidden: true`，网页展示 GPT6-Astra-xhigh、GPT6-sol-max、GPT5.6-sol-max 和暂列 Opus 5.5 · extra 的十九份作品；豆包四份作品的记录与原件保留，恢复时把该字段改为 `false` 并重新打包。隐藏会同步影响项目卡片、模型组数、作品计数及无脚本链接；它仅控制页面展示，已知直接作品地址仍可访问。Doubao 旧版候鸟的运行异常详见 [检查报告](doubao-migration-review.md)。Doubao 月球车、测试环境月球车和三份瓶中沧海从在线 CDN 加载 Three.js；GPT6-sol 月球车使用本地 Three.js 和纹理，无需 CDN。同一项目下关联相同提示词版本。GPT6-Astra、GPT6-sol、GPT5.6-sol 和 Opus 5.5 的强度分别记录为 xhigh、max、max、extra；测试环境中的新候鸟、月球车、植物大战僵尸和瓶中沧海的 Opus 归属依据同目录先前结果，仍待确认。五个项目的提示词已按用户原文录入，版本分别为 migration-v1、pvz-v1、bicycle-v1、lunar-rover-v1 和 bottled-ocean-v1，并关联到对应作品；可在页面查看并复制。生成日期、轮次及人工干预尚待补充，未知信息保留 null。候鸟提示词里的重复段落、反斜杠和换行均原样保留；以后精简或改写时另存新版本。
 
 ## 本地查看
 
@@ -17,6 +17,8 @@ npm run serve:site
 
 浏览器访问 `http://127.0.0.1:8776/`。如端口已占用，可执行 `npm run serve:site -- 8777`。服务只监听本机并提供 `site/` 发布目录，不展示整个工作目录。
 
+作品卡片的封面和“打开作品”按钮会在当前标签页打开结果页面；浏览器后退可回到测评页。应用内浏览器不再依赖新标签页或弹窗。
+
 首页从 `catalog.json` 读取内容，需要通过 HTTP(S) 打开，不能直接双击 `site/index.html`。例如 `/?project=pvz` 可直达植物大战僵尸，刷新、浏览器前进／后退会恢复相应项目。无效 ID 有明确提示并回到已有作品的项目。
 
 原有游戏的 `npm run build`、`npm test` 和 `npm run serve` 仍然保留。
@@ -26,13 +28,28 @@ npm run serve:site
 ```text
 results/                      测评结果原件（收录入口）
   migration/gpt6-astra-xhigh/import-01/index.html
+  migration/gpt6-sol-max/import-01/index.html
   migration/gpt5-6-sol-max/import-01/index.html
+  migration/opus-5-5/import-01/index.html
+  migration/doubao-seed-2-1-pro/import-01/index.html
+  migration/doubao-seed-2-1-pro/import-02/index.html
   pvz/gpt6-astra-xhigh/import-01/index.html
+  pvz/gpt6-sol-max/import-01/index.html
   pvz/gpt5-6-sol-max/import-01/index.html
+  pvz/opus-5-5/import-01/index.html
   bicycle/gpt6-astra-xhigh/import-01/index.html
+  bicycle/gpt6-sol-max/import-01/index.html
   bicycle/gpt5-6-sol-max/import-01/index.html
+  bicycle/opus-5-5/import-01/index.html
+  bicycle/doubao-seed-2-1-pro/import-01/index.html
   lunar-rover/gpt5-6-sol-max/import-01/index.html
   lunar-rover/gpt6-astra-xhigh/import-01/index.html
+  lunar-rover/gpt6-sol-max/import-01/index.html
+  lunar-rover/opus-5-5/import-01/index.html
+  lunar-rover/doubao-seed-2-1-pro/import-01/index.html
+  bottled-ocean/gpt6-astra-xhigh/import-01/index.html
+  bottled-ocean/gpt6-sol-max/import-01/index.html
+  bottled-ocean/opus-5-5/import-01/index.html
   README.md                   结果目录说明
 site/                         可直接发布的完整网站
   index.html                  首页
@@ -44,6 +61,10 @@ src/                          植物大战僵尸制作源码
 migration-work/               候鸟制作源码与素材
 source-projects/              收录作品附带的完整工程（不进入网站发布目录）
   moon-garden-defense/        月光花园源码、素材、中间文件与原始构建产物
+  gpt6-sol-pvz/               草坪保卫战源码、构建与测试脚本、原始截图
+  opus-5-5-pvz/               HTML5 复刻版源码、构建中间产物、原始成品
+  opus-5-5-bottled-ocean/     瓶中沧海工程源码、构建脚本、原始成品
+  gpt6-astra-bottled-ocean/  Astra 瓶中沧海的原测试截图和检查记录
 scripts/
   build-site.mjs              从 results/ 导入，检查清单与文件
   serve-site.mjs              本地预览服务

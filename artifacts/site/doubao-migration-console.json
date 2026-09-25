@@ -1,0 +1,20 @@
+[
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'wall')\n    at palKey (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:565:31)\n    at addHouse (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:986:14)\n    at drawBackHouses (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:1152:5)\n    at frame (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:2267:3)",
+    "timestamp": "2026-09-20T07:02:01.756Z",
+    "url": "http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html"
+  },
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'wall')\n    at palKey (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:565:31)\n    at addHouse (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:986:14)\n    at drawBackHouses (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:1152:5)\n    at frame (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:2267:3)",
+    "timestamp": "2026-09-20T07:02:01.757Z",
+    "url": "http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html"
+  },
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'wall')\n    at palKey (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:565:31)\n    at addHouse (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:986:14)\n    at drawBackHouses (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:1152:5)\n    at frame (http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html:2267:3)",
+    "timestamp": "2026-09-20T07:02:01.759Z",
+    "url": "http://127.0.0.1:8776/works/migration/doubao-seed-2-1-pro/import-01/index.html"
+  }
+]

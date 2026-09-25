@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-09-23",
+  "source": "/Users/apm30/Documents/project/测试环境 2",
+  "model": "GPT6-sol",
+  "thinkingStrength": "max",
+  "promptVersionId": "lunar-rover-v1",
+  "archive": "results/lunar-rover/gpt6-sol-max/import-01",
+  "originalFilesMoved": 13,
+  "originalSha256": {
+    "index.html": "41c8766f1f20c7d90d5b2b2dfbbff77ca959bf22679f34f2df90dfa62344de0d",
+    "styles.css": "b7c2df94806a4236ff1d48b02de493cacd06df851573a4a36df37000cf8b38ae",
+    "main.js": "07d4f853c14e6d43fdc725c977a47db5f93571353e1bd8ec3b4d84ed9b82de90",
+    "README.md": "14ff974f6020b7e17d62109f3749ab49faba9f4141cd2838129ff2b410cb9404",
+    "assets/README.md": "d068132aea3595ff9cc9f7dc8f8478cf0f5d4a80bc5b4006824d6959f56d3fc8",
+    "assets/moon_04_diff_2k.jpg": "8d0021790b5ccbb7fce0ea09a59bd1b8579439ae1d05c4469a38eb783f3d262d",
+    "assets/moon_04_nor_gl_2k.jpg": "f73d40eee1c1353271ae3baa489a21fa418abdf974d9106de5c80ea5bdc0486b",
+    "assets/moon_04_rough_2k.jpg": "6afc5ef58329ec06d79b9e9224b8c0d5ebb07e2cdcbbc51925c567ae1c218230",
+    "vendor/three/LICENSE": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+    "vendor/three/three.core.js": "3718df126d69c125362a03340913204470d8c50238605150e57f808840fb7759",
+    "vendor/three/three.module.js": "bbf5ed13fe4373f5bd38b14ea8e62e9f157327da5638edc6d3863e08b167c9c7",
+    "vendor/three/addons/controls/OrbitControls.js": "faabb4e8dfd9235ee4a9fd7c9a3d75f90f1689dbd4944bd6fd32117dacec5f93",
+    "vendor/three/addons/geometries/RoundedBoxGeometry.js": "c1b7c9bd2cddff2e3f3a0723f618a3d364a47450e3d25771d21faed88410bec8"
+  },
+  "cover": {
+    "path": "cover.jpg",
+    "bytes": 129578,
+    "sha256": "8d3abecff33d6d95ccc6f9bb1ab388ad9fbfabf634abc879738b757badc0619e",
+    "source": "1280x720 screenshot of the running WebGL scene in headless Chrome"
+  },
+  "browserChecks": {
+    "sceneLoaded": true,
+    "webglCanvasSize": [1280, 720],
+    "distanceIncreases": true,
+    "pauseStopsMovement": true,
+    "resumeRestartsMovement": true,
+    "overviewDetailAndGroundViews": true,
+    "scriptExceptions": [],
+    "failedRequests": [],
+    "httpErrorResponses": [],
+    "galleryCardsForLunarRover": 3,
+    "galleryCoverLoaded": true,
+    "visibleWorks": 11,
+    "doubaoStillHidden": true
+  },
+  "dependencies": ["Local Three.js modules", "Local Moon 04 PBR textures; source README attributes Poly Haven and CC0"],
+  "siteTestsPassed": 13,
+  "packagedFiles": 71,
+  "packageMatchesSiteByteForByte": true,
+  "deployment": "Local build and package only; not deployed to the public server"
+}

@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-09-24",
+  "source": "/Users/apm30/Documents/project/测试环境 2",
+  "sourceFilesCopied": 13,
+  "model": "GPT6-sol",
+  "thinkingStrength": "max (based on earlier user statement for 测试环境 2)",
+  "promptVersionId": "pvz-v1",
+  "archiveResult": "results/pvz/gpt6-sol-max/import-01",
+  "archiveSource": "source-projects/gpt6-sol-pvz",
+  "sourceSha256": {
+    "index.html": "b761a39cacc42d774f216523708d6582181c7d94f05b46e20b452abec997a175",
+    "README.md": "9edbe5bf647fbdc745692398d090ec9f426c69f4778b8060ca05051f40c0ea4f",
+    "artifacts/desktop-playing.png": "0a3456e792cee78951ae7ec43b01a65bb3833bf165fe53bd4e1baf0effccac17",
+    "artifacts/mobile-playing.png": "07325e93cf9d704f17b708823a14634af41a3f78945847c178b7d9bb2949a54e",
+    "artifacts/desktop-intro.png": "086dea8f477042aa762bfb06aa6db8b150e15425b57e6746e691fbf38c39ba69",
+    "artifacts/mobile-intro.png": "81f5ae11dc483e382d6a516a772f9b77b443fa498b0c7cd4f39ca302ae399f4a",
+    "artifacts/desktop-wave2.png": "52034843f23d7a570b6678ad3acad9b781c533e40a4c1552f6b1dd2255c62ce3",
+    "artifacts/wave2-crop.png": "994b90c0fcd56d93e1e44b69c1feb601bc7265f67a1da4d2bdeb16c6e29ecc69",
+    "scripts/build.py": "92a434be454f033f0915df380821890a6f8c6e72955f03b217a754de87bb69f7",
+    "scripts/smoke-test.cjs": "dc42e0200e9835e3c23812588880c01d9bb38d14a9c0ee82c74106731cef6777",
+    "src/game.js": "6ef751a3cf3cb394dc809e4c9b905681d0be088d138309594ba86b280c28d3dc",
+    "src/styles.css": "3e155fc33aa1ea9cdb3bcfcdde5d0da81cd54ac869e02e831b2e71eb173870b1",
+    "src/index.template.html": "680e17be108a4b47ec77e42375f0b955020adaa854554a808f8b673c1693f8d7"
+  },
+  "singleHtmlBuildMatchesOriginal": true,
+  "browserChecks": {
+    "galleryCardVisible": true,
+    "galleryButtonNavigatesToResult": true,
+    "title": "植物大战僵尸 · 草坪保卫战",
+    "introVisible": true,
+    "startButtonEntersGame": true,
+    "canvasSize": [
+      1280,
+      620
+    ],
+    "firstWaveLabel": "第 1 / 5 波",
+    "scriptExceptions": []
+  },
+  "sourceDirectoryRetained": true
+}

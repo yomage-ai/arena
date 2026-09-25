@@ -1,0 +1,36 @@
+{
+  "importedAt": "2026-09-23T00:16:00Z",
+  "originalSource": "/Users/apm30/Documents/project/测试环境/月面探测车.html",
+  "archive": "results/lunar-rover/doubao-seed-2-1-pro/import-01/index.html",
+  "bytes": 60198,
+  "sha256": "6dd6a30e54b12a658f86fbcf1eef4029f6c9c0af4af9d61bd1f81b1072896763",
+  "method": "Moved original file unchanged and renamed entry to index.html.",
+  "model": "Doubao-Seed-2.1-pro (same model family as the earlier Doubao results)",
+  "generationParameters": null,
+  "runtimeDependencies": [
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js",
+    "https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+  ],
+  "cover": {
+    "path": "results/lunar-rover/doubao-seed-2-1-pro/import-01/cover.jpg",
+    "source": "Actual 1280 x 720 browser screenshot of the running 3D scene.",
+    "sha256": "c7c3b07cf5f558f377c08d1ee9f032ff2e873b71b82955ef4f29916a1ed5f8f6"
+  },
+  "browserCheck": {
+    "webglSceneReady": true,
+    "loaderDismissed": true,
+    "distanceIncreased": true,
+    "pauseResumeAndFreeBrowseButtonsWorked": true,
+    "resourceFailures": [],
+    "scriptExceptions": []
+  },
+  "verification": {
+    "originalMoved": true,
+    "archivedHtmlUnchanged": true,
+    "publishedCopyMatches": true,
+    "websiteTestsPassed": 9,
+    "zipFilesVerified": 52
+  },
+  "deployedPublicly": false
+}

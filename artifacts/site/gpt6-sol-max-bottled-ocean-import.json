@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-09-24",
+  "source": "/Users/apm30/Documents/project/测试环境 2/bottled-ocean.html",
+  "model": "GPT6-sol",
+  "thinkingStrength": "max (based on earlier user statement for 测试环境 2)",
+  "promptVersionId": "bottled-ocean-v1",
+  "promptSha256": "8c745d45262f88454183403a0be986879cea6c39dac90bf2950f945e6e908df7",
+  "archive": "results/bottled-ocean/gpt6-sol-max/import-01",
+  "originalBytes": 52121,
+  "originalSha256": "b63adca34a64b377a20fc9a324c10713348c1dde06ba5a2d2d9cecc20bb00e9f",
+  "indexAndNamedOriginalByteIdentical": true,
+  "cover": {
+    "path": "cover.jpg",
+    "source": "1280×720 screenshot of the actual running WebGL scene in Chrome",
+    "sha256": "72267924a4594029d68dbcf3c0b20d8d56a0ff098edfde7610b2ef7c9f029fdb"
+  },
+  "browserChecks": {
+    "galleryCardNavigatesToWork": true,
+    "webglCanvasSize": [
+      1280,
+      720
+    ],
+    "cdnStatusCodes": [
+      200,
+      200
+    ],
+    "speed12ChangesClock": true,
+    "pauseStopsClock": true,
+    "stormPressAndRelease": true,
+    "scriptExceptions": [],
+    "failedRequests": []
+  },
+  "sourceFileRetained": true,
+  "networkDependency": "Three.js r160 and OrbitControls from cdn.jsdelivr.net; an internet connection is required at runtime"
+}

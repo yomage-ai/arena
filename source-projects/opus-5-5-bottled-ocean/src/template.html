@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>瓶中沧海 · Ship in a Bottle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#f5ead8; --dim:rgba(245,234,216,.6); --faint:rgba(245,234,216,.38);
+  --gold:#e8c07a; --gold2:#b88a45; --panel:rgba(22,14,10,.42); --line:rgba(232,192,122,.26);
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+  --latin:"Cormorant Garamond","Iowan Old Style","Georgia",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0b0706;overflow:hidden;color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none;cursor:grab}
+canvas#c:active{cursor:grabbing}
+#hud{position:fixed;inset:0;pointer-events:none;transition:opacity .7s ease}
+#hud.hidden{opacity:0}
+#hud.hidden *{pointer-events:none!important}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(12px) saturate(1.25);-webkit-backdrop-filter:blur(12px) saturate(1.25);box-shadow:0 12px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,235,200,.06)}
+.brand{position:absolute;left:30px;top:26px}
+.brand h1{margin:0;font-size:30px;font-weight:700;letter-spacing:.34em;text-shadow:0 2px 22px rgba(0,0,0,.7)}
+.brand p{margin:8px 0 0;font:italic 500 15px var(--latin);letter-spacing:.3em;color:var(--gold);opacity:.9}
+.brand .rule{width:120px;height:1px;margin-top:12px;background:linear-gradient(90deg,var(--gold),transparent)}
+.hints{position:absolute;right:30px;top:30px;text-align:right;font-size:12px;line-height:2;letter-spacing:.14em;color:var(--dim)}
+.hints b{font-weight:500;color:var(--ink)}
+kbd{font-family:var(--latin);font-size:12px;font-weight:600;padding:1px 7px;margin:0 2px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:rgba(255,240,215,.06);color:var(--ink)}
+.clock{position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:14px;padding:10px 20px 10px 10px;pointer-events:auto}
+#dial{width:66px;height:66px;display:block}
+#time{font:600 28px var(--latin);letter-spacing:.06em;line-height:1}
+#phase{font-size:14px;letter-spacing:.5em;color:var(--gold);margin-top:6px}
+#phase small{font:italic 500 12px var(--latin);letter-spacing:.2em;color:var(--faint);margin-left:4px}
+.speed{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:7px;pointer-events:auto}
+.speed .lbl{font-size:12px;letter-spacing:.32em;color:var(--dim);padding:0 10px 0 12px;white-space:nowrap}
+.speed button{appearance:none;border:0;background:transparent;color:var(--ink);font:600 16px var(--latin);letter-spacing:.04em;min-width:54px;height:36px;padding:0 12px;border-radius:9px;cursor:pointer;transition:background .25s,color .25s,transform .15s}
+.speed button:hover{background:rgba(255,230,190,.09)}
+.speed button:active{transform:scale(.96)}
+.speed button.on{background:linear-gradient(180deg,#f0cf8d,#c9974f);color:#2b1a0b;box-shadow:0 4px 16px rgba(232,192,122,.28)}
+.speed button[data-s="0"]{font-family:var(--serif);font-size:13px;letter-spacing:.2em}
+.storm{position:absolute;right:24px;bottom:24px;padding:12px 18px 14px;min-width:230px;pointer-events:auto;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none;transition:border-color .3s,box-shadow .3s}
+.storm .t{font-size:13px;letter-spacing:.22em;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.storm .t span:last-child{font:italic 500 13px var(--latin);letter-spacing:.12em;color:var(--faint)}
+.storm .bar{height:3px;border-radius:2px;background:rgba(255,255,255,.1);margin-top:10px;overflow:hidden}
+.storm .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7f9cd8,#dfe9ff);box-shadow:0 0 12px #b9ccff}
+.storm.active{border-color:rgba(170,195,255,.55);box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 30px rgba(140,170,255,.18)}
+#fps{position:absolute;right:30px;top:118px;font:11px ui-monospace,Menlo,monospace;letter-spacing:.06em;color:var(--faint);text-align:right;white-space:pre}
+#loader{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(ellipse at 50% 55%,#2a1a12 0%,#0b0706 70%);transition:opacity 1.4s ease}
+#loader.gone{opacity:0;pointer-events:none}
+#loader .ttl{font-size:34px;font-weight:700;letter-spacing:.5em;margin-left:.5em}
+#loader .sub{font:italic 500 15px var(--latin);letter-spacing:.3em;color:var(--gold)}
+#loader .bottle{width:120px;height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+#loader .bottle i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:sweep 1.4s ease-in-out infinite}
+@keyframes sweep{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+#err{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);max-width:520px;padding:22px 26px;display:none;z-index:30;font-size:14px;line-height:1.8}
+@media (max-width:760px){
+  .brand{left:18px;top:16px}.brand h1{font-size:22px}.brand p{font-size:12px}
+  .hints{display:none}
+  .clock{left:12px;bottom:84px;padding:6px 14px 6px 6px}#dial{width:48px;height:48px}#time{font-size:22px}
+  .speed{bottom:16px}.speed .lbl{display:none}.speed button{min-width:44px;padding:0 8px}
+  .storm{right:12px;bottom:84px;min-width:0;padding:10px 14px}
+  #fps{top:70px;right:16px}
+}
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+
+<div id="hud">
+  <div class="brand">
+    <h1>瓶中沧海</h1>
+    <p>A Ship in a Bottle</p>
+    <div class="rule"></div>
+  </div>
+  <div class="hints">
+    <div><b>拖动</b> 环视 · <b>滚轮</b> 缩放</div>
+    <div>按住 <kbd>Space</kbd> 掀起风暴</div>
+    <div><kbd>T</kbd> 切换流速 · <kbd>H</kbd> 隐藏界面</div>
+  </div>
+  <div id="fps"></div>
+
+  <div class="clock panel">
+    <canvas id="dial" width="132" height="132"></canvas>
+    <div>
+      <div id="time">17:00</div>
+      <div id="phase">黄昏<small>Dusk</small></div>
+    </div>
+  </div>
+
+  <div class="speed panel" id="speed">
+    <span class="lbl">昼夜流速</span>
+    <button data-s="4">×4</button>
+    <button data-s="12">×12</button>
+    <button data-s="1">×1</button>
+    <button data-s="0">暂停</button>
+  </div>
+
+  <div class="storm panel" id="storm">
+    <div class="t"><span>按住 <kbd>Space</kbd> 掀起风暴</span><span id="stormTxt">calm</span></div>
+    <div class="bar"><i id="stormBar"></i></div>
+  </div>
+</div>
+
+<div id="loader">
+  <div class="ttl">瓶中沧海</div>
+  <div class="bottle"><i></i></div>
+  <div class="sub">sealing a small ocean…</div>
+</div>
+<div id="err" class="panel"></div>
+
+<script>
+(function(){
+  function show(msg){ var e=document.getElementById('err'); if(!e) return; e.style.display='block'; e.innerHTML=msg; }
+  window.addEventListener('error', function(ev){ if(!window.__bottleStarted) show('<b>瓶中沧海 未能启动</b><br>'+(ev.message||ev)+'<br><span style="opacity:.6">'+(ev.filename||'')+':'+(ev.lineno||'')+'</span>'); });
+  setTimeout(function(){ if(!window.__bottleStarted) show('<b>瓶中沧海 仍在加载…</b><br>需要联网从 cdn.jsdelivr.net 载入 three.js r160，并且浏览器需支持 WebGL2。'); }, 15000);
+})();
+</script>
+<script type="module">
+/*@@CODE@@*/
+</script>
+</body>
+</html>

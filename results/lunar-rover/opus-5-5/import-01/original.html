@@ -1,0 +1,193 @@
+<title>月面巡视器 LR-01</title>
+<meta name="description" content="可交互的写实月面巡视器三维场景">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #050608;
+    --panel: rgba(12, 13, 16, 0.58);
+    --panel-solid: #111216;
+    --line: rgba(236, 233, 226, 0.09);
+    --line-strong: rgba(236, 233, 226, 0.2);
+    --text: #ece9e2;
+    --muted: #8f9198;
+    --faint: #5d5f66;
+    --gold: #d9a845;
+    --gold-soft: rgba(217, 168, 69, 0.16);
+    --ok: #7fc59a;
+    --hold: #e0b25c;
+    --sans: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--ink); color: var(--text); font-family: var(--sans); font-size: 13px; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; outline: none; cursor: grab; }
+  #scene:active { cursor: grabbing; }
+
+  .hud { position: fixed; z-index: 5; pointer-events: none; }
+  .hud > * { pointer-events: auto; }
+  .glass { background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); border-radius: 10px; }
+
+  /* identity */
+  .brand { top: calc(18px + env(safe-area-inset-top, 0px)); left: 20px; display: grid; gap: 6px; }
+  .eyebrow { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
+  .brand h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.04em; line-height: 1.1; text-wrap: balance; }
+  .brand h1 span { font-family: var(--mono); font-weight: 500; font-size: 15px; color: var(--gold); margin-left: 8px; letter-spacing: 0.06em; }
+  .status { display: inline-flex; align-items: center; gap: 8px; width: max-content; padding: 5px 10px 5px 8px; border-radius: 999px; font-size: 12px; }
+  .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(127, 197, 154, 0.18); }
+  .status[data-state="hold"] i { background: var(--hold); box-shadow: 0 0 0 3px rgba(224, 178, 92, 0.2); }
+  .status[data-state="pause"] i { background: var(--muted); box-shadow: none; }
+
+  /* telemetry */
+  .telemetry { top: calc(18px + env(safe-area-inset-top, 0px)); right: 20px; padding: 12px 14px; min-width: 220px; }
+  .telemetry h2 { margin: 0 0 8px; font-size: 10.5px; font-weight: 500; font-family: var(--mono); letter-spacing: 0.16em; color: var(--muted); }
+  .telemetry dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 5px 18px; }
+  .telemetry dt { color: var(--muted); }
+  .telemetry dd { margin: 0; text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .telemetry dd small { color: var(--faint); margin-left: 3px; font-size: 10.5px; }
+
+  /* views */
+  .views { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); display: flex; gap: 2px; padding: 4px; }
+  .views button { font: inherit; color: var(--muted); background: transparent; border: 0; border-radius: 7px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+  .views button:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
+  .views button[aria-pressed="true"] { color: var(--ink); background: var(--gold); font-weight: 500; }
+
+  /* controls */
+  .controls { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); left: 20px; padding: 12px 14px; width: 250px; display: grid; gap: 11px; }
+  .row { display: grid; grid-template-columns: 58px 1fr 44px; align-items: center; gap: 10px; }
+  .row label { color: var(--muted); }
+  .row output { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--text); font-size: 12px; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 18px; background: transparent; margin: 0; }
+  input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: var(--line-strong); border-radius: 2px; }
+  input[type="range"]::-moz-range-track { height: 2px; background: var(--line-strong); border-radius: 2px; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; margin-top: -5px; border-radius: 50%; background: var(--text); border: 2px solid var(--ink); }
+  input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border-radius: 50%; background: var(--text); border: 2px solid var(--ink); }
+  .toggles { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font: inherit; font-size: 12px; color: var(--muted); background: transparent; border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+  .chip[aria-pressed="true"] { color: var(--text); border-color: var(--gold); background: var(--gold-soft); }
+  .primary { display: flex; gap: 8px; }
+  .btn { font: inherit; color: var(--text); background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line-strong); border-radius: 7px; padding: 6px 12px; cursor: pointer; }
+  .btn:hover { background: rgba(255, 255, 255, 0.1); }
+  select.btn { appearance: none; -webkit-appearance: none; padding-right: 26px; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 13px) 50%, calc(100% - 9px) 50%; background-size: 4px 4px; background-repeat: no-repeat; }
+  select.btn option { background: var(--panel-solid); }
+
+  .hint { bottom: calc(22px + env(safe-area-inset-bottom, 0px)); right: 20px; color: var(--muted); font-size: 11.5px; line-height: 1.75; text-align: right; }
+  .hint kbd { font-family: var(--mono); font-size: 10.5px; color: var(--text); border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 4px; }
+
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* loader */
+  #loader { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; background: var(--ink); transition: opacity 0.9s ease; }
+  #loader.done { opacity: 0; pointer-events: none; }
+  .load-card { width: min(340px, calc(100% - 32px)); display: grid; gap: 14px; }
+  .load-card h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 0.04em; }
+  .track { height: 2px; background: var(--line-strong); overflow: hidden; }
+  #bar { height: 100%; background: var(--gold); transform-origin: left; transform: scaleX(0.02); transition: transform 0.3s ease; }
+  #step { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  #err { color: #e58b7a; line-height: 1.6; }
+
+  .toggle-panel { display: none; }
+
+  @media (max-width: 1180px) {
+    .hint { display: none; }
+  }
+  @media (max-width: 1100px) {
+    .views { left: 20px; transform: none; }
+    .controls { bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (max-width: 900px) {
+    .telemetry { min-width: 0; padding: 10px 12px; }
+  }
+  @media (max-width: 640px) {
+    .brand { left: 16px; }
+    .brand h1 { font-size: 18px; }
+    .telemetry { right: 16px; top: auto; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); font-size: 12px; }
+    .telemetry .opt { display: none; }
+    .views { left: 16px; right: 16px; transform: none; overflow-x: auto; }
+    .views button { padding: 7px 10px; }
+    .controls { left: 16px; right: 16px; width: auto; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); display: none; }
+    .controls.open { display: grid; }
+    .toggle-panel { display: inline-flex; position: fixed; z-index: 6; top: calc(18px + env(safe-area-inset-top, 0px)); right: 16px; }
+    .controls.open ~ .telemetry { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { #loader, #bar { transition: none; } }
+</style>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<canvas id="scene" tabindex="0" aria-label="月面巡视器三维场景：拖动旋转，滚轮缩放，右键平移"></canvas>
+
+<header class="hud brand">
+  <div class="eyebrow">Lunar Surface · Live 3D</div>
+  <h1>月面巡视器<span>LR-01</span></h1>
+  <div class="status glass" id="status" data-state="drive"><i></i><span id="statusText">行驶中</span></div>
+</header>
+
+<button class="btn toggle-panel" id="panelToggle" aria-expanded="false" aria-controls="controls">控制</button>
+
+<section class="hud controls glass" id="controls" aria-label="场景控制">
+  <div class="primary">
+    <button class="btn" id="play" aria-pressed="false">暂停行驶</button>
+    <select class="btn" id="quality" aria-label="画质">
+      <option value="auto">画质 · 自动</option>
+      <option value="high">画质 · 高</option>
+      <option value="mid">画质 · 均衡</option>
+      <option value="low">画质 · 流畅</option>
+    </select>
+  </div>
+  <div class="row"><label for="speed">行驶倍速</label><input id="speed" type="range" min="0" max="12" step="0.5" value="1"><output id="speedOut">1×</output></div>
+  <div class="row"><label for="sunEl">太阳高度</label><input id="sunEl" type="range" min="2" max="60" step="0.5" value="11"><output id="sunElOut">11°</output></div>
+  <div class="row"><label for="sunAz">太阳方位</label><input id="sunAz" type="range" min="0" max="360" step="1" value="0"><output id="sunAzOut">0°</output></div>
+  <div class="toggles">
+    <button class="chip" id="tStars" aria-pressed="true">星空</button>
+    <button class="chip" id="tDust" aria-pressed="true">扬尘</button>
+    <button class="chip" id="tBloom" aria-pressed="true">辉光</button>
+    <button class="chip" id="tTracks" aria-pressed="true">车辙</button>
+  </div>
+</section>
+
+<section class="hud telemetry glass" aria-label="遥测">
+  <h2>TELEMETRY</h2>
+  <dl>
+    <dt>车速</dt><dd id="vSpd">0.0<small>cm/s</small></dd>
+    <dt>里程</dt><dd id="vOdo">0.0<small>m</small></dd>
+    <dt>航向</dt><dd id="vHdg">000°</dd>
+    <dt>俯仰 / 横滚</dt><dd id="vAtt">+0.0° / +0.0°</dd>
+    <dt class="opt">太阳高度角</dt><dd class="opt" id="vSun">11.0°</dd>
+    <dt class="opt">任务时间</dt><dd class="opt" id="vMet">00:00:00</dd>
+  </dl>
+</section>
+
+<nav class="hud views glass" aria-label="视角">
+  <button data-view="follow" aria-pressed="true">跟随</button>
+  <button data-view="chase" aria-pressed="false">尾随</button>
+  <button data-view="wheel" aria-pressed="false">车轮特写</button>
+  <button data-view="side" aria-pressed="false">侧视</button>
+  <button data-view="top" aria-pressed="false">俯视</button>
+  <button data-view="wide" aria-pressed="false">远景</button>
+  <button data-view="free" aria-pressed="false">自由</button>
+</nav>
+
+<aside class="hud hint">
+  左键拖动 旋转 · 右键拖动 平移 · 滚轮 缩放<br>
+  <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 漫游 · <kbd>Q</kbd><kbd>E</kbd> 升降 · 双击地面 聚焦 · <kbd>Space</kbd> 暂停
+</aside>
+
+<div id="loader" role="status" aria-live="polite">
+  <div class="load-card">
+    <div class="eyebrow">Lunar Surface · Live 3D</div>
+    <h2>正在着陆月面</h2>
+    <div class="track"><div id="bar"></div></div>
+    <div id="step">初始化</div>
+    <div id="err" hidden></div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>

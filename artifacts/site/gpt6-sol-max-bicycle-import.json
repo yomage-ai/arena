@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-09-23",
+  "source": "/Users/apm30/Documents/project/测试环境 2/pelican-bicycle.html",
+  "model": "GPT6-sol",
+  "thinkingStrength": "max",
+  "promptVersionId": "bicycle-v1",
+  "archive": "results/bicycle/gpt6-sol-max/import-01",
+  "original": {
+    "path": "index.html",
+    "bytes": 17421,
+    "sha256": "8f05c7b185c8299870812359a336458e12292896b47e54e5febad4c6e7e80796",
+    "handling": "Moved without editing; source pathname no longer exists"
+  },
+  "cover": {
+    "path": "cover.jpg",
+    "bytes": 97953,
+    "sha256": "2fbb58cb1f92c3ff0d208604aa723bf6733f86ebfec5d632d83ec8379146a246",
+    "source": "1280x720 screenshot of running entry in headless Chrome"
+  },
+  "browserChecks": {
+    "documentLoaded": true,
+    "standardsMode": true,
+    "sceneLoaded": true,
+    "wheelsMove": true,
+    "legMoves": true,
+    "scriptExceptions": [],
+    "failedRequests": [],
+    "galleryCardsForBicycle": 4,
+    "visibleWorks": 10,
+    "galleryCoverLoaded": true,
+    "doubaoStillHidden": true
+  },
+  "dependencies": [],
+  "siteTestsPassed": 12,
+  "packagedFiles": 57,
+  "packageMatchesSiteByteForByte": true,
+  "deployment": "Local build and package only; not deployed to the public server"
+}

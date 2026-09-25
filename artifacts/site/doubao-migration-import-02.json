@@ -1,0 +1,30 @@
+{
+  "importedAt": "2026-09-23T00:16:00Z",
+  "originalSource": "/Users/apm30/Documents/project/测试环境/候鸟-MIGRATION.html",
+  "archive": "results/migration/doubao-seed-2-1-pro/import-02/index.html",
+  "bytes": 2791880,
+  "sha256": "e5f1da15b5c280282ae5230d06a4f80932959f8600cf09413f7ade471b568e5f",
+  "method": "Copied source byte for byte into a separate run; the testing source remains in place.",
+  "model": "Doubao-Seed-2.1-pro (same model family as the earlier Doubao migration result)",
+  "generationParameters": null,
+  "cover": {
+    "path": "results/migration/doubao-seed-2-1-pro/import-02/cover.jpg",
+    "source": "Actual 1280 x 720 browser screenshot during the migration animation.",
+    "sha256": "f835925ac56c2fb97735ae0386718f918226e147644b0febd067ba5f792c4e32"
+  },
+  "browserCheck": {
+    "fiveStartScenesPresent": true,
+    "openingAndStartWorked": true,
+    "successiveFramesChanged": true,
+    "cameraMusicAndPoemButtonsChangedState": true,
+    "scriptExceptions": []
+  },
+  "verification": {
+    "sourceStillPresent": true,
+    "archiveMatchesSource": true,
+    "publishedCopyMatches": true,
+    "websiteTestsPassed": 9,
+    "zipFilesVerified": 52
+  },
+  "deployedPublicly": false
+}

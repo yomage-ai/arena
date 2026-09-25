@@ -36,6 +36,7 @@ export function validateCatalog(catalog) {
   }
   for (const model of catalog.models) {
     ensure(requiredText(model.label) && nullableText(model.product) && nullableText(model.version), `${model.id}: invalid model details`);
+    ensure(model.hidden === undefined || typeof model.hidden === 'boolean', `${model.id}: hidden must be a boolean`);
   }
   const entries = new Set();
   for (const result of catalog.results) {
@@ -77,12 +78,17 @@ export function validateCatalog(catalog) {
 
 export function selectProject(catalog, requested) {
   const matched = catalog.projects.find(project => project.id === requested);
-  const fallback = catalog.projects.find(project => catalog.results.some(result => result.projectId === project.id && result.availability === 'available')) || catalog.projects[0];
+  const fallback = catalog.projects.find(project => displayedResults(catalog).some(result => result.projectId === project.id && result.availability === 'available')) || catalog.projects[0];
   return { project: matched || fallback, invalid: requested !== null && !matched };
 }
 
+export function displayedResults(catalog) {
+  const visibleModels = new Set(catalog.models.filter(model => !model.hidden).map(model => model.id));
+  return catalog.results.filter(result => visibleModels.has(result.modelId));
+}
+
 export function resultGroups(catalog, projectId) {
-  return catalog.models.map(model => {
+  return catalog.models.filter(model => !model.hidden).map(model => {
     const runs = catalog.results.filter(result => result.projectId === projectId && result.modelId === model.id);
     const selected = runs.find(run => run.featured) || runs[0];
     return { model, runs, selected };

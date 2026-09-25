@@ -1,0 +1,31 @@
+{
+  "importedAt": "2026-09-21T15:39:33Z",
+  "originalSource": "/Users/apm30/Documents/project/测试环境/pelican-bike/pelican-bike.html",
+  "archive": "results/bicycle/doubao-seed-2-1-pro/import-01/index.html",
+  "originalFilename": "pelican-bike.html",
+  "bytes": 27526,
+  "sha256": "33602fad892c3ce921fb80492a9bd30506b9818aa5004996f3d1e109e0a28bd6",
+  "model": "Doubao-Seed-2.1-pro",
+  "parameters": "推理强度：高（用户确认）",
+  "method": "Move original file unchanged, rename entry to index.html.",
+  "cover": {
+    "path": "results/bicycle/doubao-seed-2-1-pro/import-01/cover.jpg",
+    "source": "Actual 1280 x 720 browser screenshot while the animation was running.",
+    "sha256": "cfcbde4fc14178753bbdb8870e889fe9492c181541ef351cd1ba01ff567b93eb"
+  },
+  "browserCheck": {
+    "pageLoaded": true,
+    "animationMoves": true,
+    "pauseStops": true,
+    "resumeMoves": true,
+    "fastSpeedSelected": true,
+    "scriptExceptions": []
+  },
+  "verification": {
+    "originalUnchanged": true,
+    "publishedCopyMatches": true,
+    "websiteTestsPassed": 9,
+    "zipFilesVerified": 48
+  },
+  "deployedPublicly": false
+}

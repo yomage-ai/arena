@@ -2,7 +2,7 @@
 
 正式网站：[arena.yomage.com](https://arena.yomage.com/)。已部署到指定 Ubuntu 服务器，配置和更新说明见 [服务器部署说明](deploy/README.md)。
 
-网站入口在 `site/`，已收录候鸟迁徙、植物大战僵尸、鹈鹕骑自行车、月球车四个项目，共八份作品：**GPT6-Astra-xhigh** 和 **GPT5.6-sol-max** 各四份。同一项目下的结果关联相同提示词版本。测评结果统一存放在 [`results/`](results/README.md)，按「项目 / 模型 / 记录」归档。两份月球车由各自原工程打包为静态网页，完整源码与打包说明见 [月球车收录说明](docs/lunar-rover-import.md)。执行 `npm run build:site`，再执行 `npm run serve:site`，访问 `http://127.0.0.1:8776/`。
+网站入口在 `site/`，已归档候鸟迁徙、植物大战僵尸、鹈鹕骑自行车、月球车、瓶中沧海五个项目，共二十三份作品：**GPT6-Astra-xhigh**、**GPT6-sol-max** 与暂列 **Opus 5.5 · extra** 各五份，**GPT5.6-sol-max** 和 **Doubao-Seed-2.1-pro** 各四份。测试环境中的候鸟、月球车、植物大战僵尸和瓶中沧海暂按该目录此前的 Opus 记录归类，模型归属仍待用户确认。豆包模型暂时隐藏，网页目前展示十九份作品；归档文件仍保留。豆包候鸟的两次独立收录和月球车、鹈鹕记录均可在需要时恢复展示。同一项目下的结果关联相同提示词版本。测评结果统一存放在 [`results/`](results/README.md)，按「项目 / 模型 / 记录」归档。GPT6-Astra 与 GPT5.6 的月球车由各自原工程打包为静态网页，完整源码与打包说明见 [月球车收录说明](docs/lunar-rover-import.md)。GPT6-sol 和暂列 Opus 5.5 的植物大战僵尸完整工程分别保留在 [`source-projects/gpt6-sol-pvz/`](source-projects/gpt6-sol-pvz/README.md) 和 [`source-projects/opus-5-5-pvz/`](source-projects/opus-5-5-pvz/README.md)；暂列 Opus 的瓶中沧海工程保留在 [`source-projects/opus-5-5-bottled-ocean/`](source-projects/opus-5-5-bottled-ocean/build.mjs)。三份瓶中沧海原件均通过 Three.js r160 CDN 加载三维场景，需联网。执行 `npm run build:site`，再执行 `npm run serve:site`，访问 `http://127.0.0.1:8776/`。
 
 网站的作品收录、提示词／模型记录、发布步骤见 [网站使用说明](docs/website.md)。`npm run package:site` 生成 `artifacts/ai-arena-deploy.zip`。原有游戏源码与命令继续保留。
 
@@ -16,7 +16,7 @@ npm test
 npm run serve:site
 ```
 
-测评站本身不需要安装 npm 依赖。`results/` 内的 8 份作品及资源纳入版本管理，`site/works/` 由构建恢复。完整制作源码、素材、提示词和部署配置也在仓库中；依赖、运行缓存、本机托管配置、重复构建输出及 ZIP 包保留在本地，不提交。两个静态打包脚本依赖的原编译 CSS 和字体单独保留为固定构建输入。
+测评站本身不需要安装 npm 依赖。`results/` 内的 23 份作品及资源纳入版本管理，`site/works/` 由构建恢复。完整制作源码、素材、提示词和部署配置也在仓库中；依赖、运行缓存、本机托管配置、重复构建输出及 ZIP 包保留在本地，不提交。两个静态打包脚本依赖的原编译 CSS 和字体单独保留为固定构建输入。
 
 ## 目录导航
 

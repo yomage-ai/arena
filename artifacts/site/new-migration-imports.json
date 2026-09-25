@@ -1,0 +1,52 @@
+{
+  "recordedAt": "2026-09-23",
+  "promptVersionId": "migration-v1",
+  "imports": [
+    {
+      "source": "/Users/apm30/Documents/project/测试环境/migration.html",
+      "modelRecordedAs": "Opus 5.5",
+      "thinkingStrengthRecordedAs": "extra",
+      "modelAttribution": "Inferred from the earlier Opus result in the same test environment; user confirmation pending",
+      "entry": "results/migration/opus-5-5/import-01/index.html",
+      "bytes": 1590435,
+      "sha256": "7d516efa50c393a1b1dd8c7c5d3e60b28cb45aebebe983e00a594a83c32a2ad7",
+      "cover": "results/migration/opus-5-5/import-01/cover.jpg",
+      "coverBytes": 163382,
+      "coverSha256": "51f6b671c5e43d9d421a9c4337b2bb4c2fd836556a8b190fcbfb4ca54a7a205a"
+    },
+    {
+      "source": "/Users/apm30/Documents/project/测试环境 2/index.html",
+      "modelRecordedAs": "GPT6-sol",
+      "thinkingStrengthRecordedAs": "max",
+      "modelAttribution": "Based on the user's earlier description of test environment 2",
+      "entry": "results/migration/gpt6-sol-max/import-01/index.html",
+      "bytes": 1458236,
+      "sha256": "f047d40fa7caecd207ff763003e2d90d85ebd3b3fcfb760d8a4c175d89b482ec",
+      "cover": "results/migration/gpt6-sol-max/import-01/cover.jpg",
+      "coverBytes": 114457,
+      "coverSha256": "b7e5462148b4d59bbe6180bc8b5bfe4e371a44e8623fe7a9aec066228f230089"
+    }
+  ],
+  "browserChecks": {
+    "viewport": [1280, 720],
+    "bothPagesLoad": true,
+    "bothStartMigration": true,
+    "bothFlightDistancesAdvance": true,
+    "bothCameraControlsRespond": true,
+    "scriptExceptions": [],
+    "failedRequests": [],
+    "coversAreScreenshotsOfRunningWorks": true
+  },
+  "openWorkFix": {
+    "previousBehavior": "Dynamic work links forced target=_blank; a programmatic browser click left the original tab unchanged and did not create a usable work tab",
+    "change": "Dynamic work links and no-script links now navigate the current tab",
+    "browserChecks": [
+      "Lunar rover Open Work button reached the correct page with its canvas",
+      "GPT6-sol migration cover reached the correct page with its canvas"
+    ]
+  },
+  "siteTestsPassed": 15,
+  "packagedFiles": 86,
+  "packageMatchesSiteByteForByte": true,
+  "deployment": "Local build and package only; not deployed to the public server"
+}

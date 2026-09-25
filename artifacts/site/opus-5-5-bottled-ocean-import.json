@@ -1,0 +1,58 @@
+{
+  "recordedAt": "2026-09-24",
+  "source": "/Users/apm30/Documents/project/测试环境/ship-in-bottle",
+  "model": "Opus 5.5 (provisional, inferred from prior results in 测试环境)",
+  "thinkingStrength": "extra (provisional)",
+  "promptVersionId": "bottled-ocean-v1",
+  "archiveResult": "results/bottled-ocean/opus-5-5/import-01",
+  "archiveSource": "source-projects/opus-5-5-bottled-ocean",
+  "sourceFilesCopied": 11,
+  "sourceSha256": {
+    "build.mjs": "0d4ed159e18f9fb92a13602a833ed69be428cc1e9e03a12aeaaab986a8e690e2",
+    "dist/瓶中沧海.html": "cb293f07716738dd968b65ef60cc615aa74a90ba969e9c03da9e976bc89255c2",
+    "src/01-core.js": "a8c37618b6a21293c07588744cfb24e413b7687a4a18d46b66338ab187bd45e9",
+    "src/05-sea.js": "e946b192e45626132b90b008e09713770afe3b1bd062fed03b5aebcec5ac37ad",
+    "src/06-ship.js": "54b42dd534b2363dfc7cbdd29ec2c68a4f1e068bd3fe88048bba97525b91442c",
+    "src/02-voxel.js": "5384ce4bd9656a000c004569a3ac0ba4f950a74c7e13df0c9991a9b8d1d09dd4",
+    "src/03-bottle.js": "a3ec25a64d098329d3ecbfcd74b9463192d4e8d00694f8729713d0475e71f416",
+    "src/07-life.js": "480ba4b205c9fc5cde0b762c38d092388a382f19f195409a0a4d1dd2d4405faf",
+    "src/04-room.js": "65fc617bbebc2bf32ffdf4bb648aafd03e36d26c385642841b374e2cc5934190",
+    "src/08-main.js": "8cd44df6a5399189ae75f76fe46e053ef24dd42aa579e6825f0fdc313b11c3df",
+    "src/template.html": "17f08718eb7fd77f95c4afe71cb315703c58d4b435f7c8abfe6a0cb56eec9111"
+  },
+  "rebuildMatchesOriginal": true,
+  "cover": {
+    "path": "cover.jpg",
+    "source": "1280×720 screenshot of the actual running WebGL scene in Chrome",
+    "sha256": "8179b68f791559a251926b9abf8a4a3b7358de20ec2b15c6218c8d91a1db61e5"
+  },
+  "browserChecks": {
+    "galleryCardNavigatesToWork": true,
+    "webglCanvasSize": [
+      1280,
+      720
+    ],
+    "cdnStatusCodes": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200
+    ],
+    "speed12ChangesClock": true,
+    "pauseStopsSimulationHour": true,
+    "stormPressAndRelease": true,
+    "scriptExceptions": [],
+    "failedRequests": []
+  },
+  "sourceDirectoryRetained": true,
+  "networkDependency": "Three.js r160 addons from cdn.jsdelivr.net, plus Google Fonts; an internet connection is required to load the scene",
+  "entryAndOriginalCopyByteIdentical": true,
+  "publishedOriginalName": "original.html (the original Chinese name remains in the archived source project)"
+}

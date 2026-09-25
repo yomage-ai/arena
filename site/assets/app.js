@@ -1,4 +1,4 @@
-import { validateCatalog, selectProject, resultGroups } from './catalog-core.mjs';
+import { validateCatalog, selectProject, displayedResults, resultGroups } from './catalog-core.mjs';
 
 const $ = id => document.getElementById(id);
 const dialog = $('details-dialog');
@@ -24,9 +24,7 @@ const notRecorded = value => value === null || value === undefined || value === 
 function workLink(result, className, label) {
   const link = element('a', className, label);
   link.href = result.entry;
-  link.target = '_blank';
-  link.rel = 'noopener';
-  link.setAttribute('aria-label', `${label}：${result.title}（新标签页）`);
+  link.setAttribute('aria-label', `${label}：${result.title}`);
   return link;
 }
 
@@ -173,7 +171,7 @@ function createCard(group) {
     coverSlot.replaceChildren(cover);
     const row = element('div', 'model-row');
     const model = element('span', 'model-label');
-    const modelName = group.model.version && group.model.version !== group.model.label ? `${group.model.label} · ${group.model.version}` : group.model.label;
+    const modelName = group.model.version && !group.model.label.startsWith(group.model.version) ? `${group.model.label} · ${group.model.version}` : group.model.label;
     model.append(element('span', 'model-mark', group.model.version ? 'AI' : '?'), document.createTextNode(modelName));
     row.append(model, element('span', `status-badge ${selected.availability === 'available' ? 'available' : 'problem'}`, availability[selected.availability]));
     const meta = element('div', 'card-meta');
@@ -195,9 +193,10 @@ function createCard(group) {
 }
 
 function renderNavigation() {
+  const results = displayedResults(catalog);
   $('project-total').textContent = `${catalog.projects.length}`.padStart(2, '0');
   $('project-nav').replaceChildren(...catalog.projects.map((project, index) => {
-    const count = catalog.results.filter(result => result.projectId === project.id && result.availability === 'available').length;
+    const count = results.filter(result => result.projectId === project.id && result.availability === 'available').length;
     const node = button('', 'project-button', () => navigateProject(project.id));
     node.dataset.project = project.id;
     node.setAttribute('aria-pressed', 'false');
@@ -206,7 +205,7 @@ function renderNavigation() {
     node.append(element('span', 'project-index', String(index + 1).padStart(2, '0')), name);
     return node;
   }));
-  $('collection-total').textContent = `${catalog.projects.length} 个项目 · ${catalog.results.filter(result => result.availability === 'available').length} 份可体验作品`;
+  $('collection-total').textContent = `${catalog.projects.length} 个项目 · ${results.filter(result => result.availability === 'available').length} 份可体验作品`;
 }
 
 function renderProjectFromUrl() {
@@ -230,11 +229,12 @@ function renderProjectFromUrl() {
   const prompt = project.promptVersions.find(version => version.id === project.defaultPromptVersionId) || project.promptVersions[0];
   $('prompt-summary').textContent = prompt ? `${prompt.label} · ${project.promptVersions.length} 个版本` : '原始提示词待补充';
   const groups = resultGroups(catalog, project.id);
-  const count = catalog.results.filter(result => result.projectId === project.id && result.availability === 'available').length;
+  const results = displayedResults(catalog);
+  const count = results.filter(result => result.projectId === project.id && result.availability === 'available').length;
   $('available-count').textContent = count;
   $('model-count').textContent = groups.length ? `${groups.length} 组` : '';
   $('empty-state').hidden = groups.length > 0;
-  $('browse-available').hidden = !catalog.results.some(result => result.availability === 'available');
+  $('browse-available').hidden = !results.some(result => result.availability === 'available');
   $('works-grid').hidden = groups.length === 0;
   $('works-grid').replaceChildren(...groups.map(createCard));
   if (groups.length === 1) {

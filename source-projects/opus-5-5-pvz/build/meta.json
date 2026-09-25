@@ -1,0 +1,1327 @@
+{
+  "inputs": {
+    "src/core/display.js": {
+      "bytes": 2295,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/core/input.js": {
+      "bytes": 1702,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "./display.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/save.js": {
+      "bytes": 1924,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/core/loop.js": {
+      "bytes": 1004,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/core/util.js": {
+      "bytes": 4170,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/core/audio.js": {
+      "bytes": 25177,
+      "imports": [
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "./save.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "./util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/music.js": {
+      "bytes": 23737,
+      "imports": [
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "./audio.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/director.js": {
+      "bytes": 2343,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/gfx/paint.js": {
+      "bytes": 7989,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/layout.js": {
+      "bytes": 1252,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/gfx/bgArt.js": {
+      "bytes": 20067,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "./paint.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/gfx/plantArt.js": {
+      "bytes": 60889,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "./paint.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/defs.js": {
+      "bytes": 22723,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/gfx/uiArt.js": {
+      "bytes": 21816,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "./paint.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "./plantArt.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/gfx/zombieArt.js": {
+      "bytes": 43592,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "./paint.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/title.js": {
+      "bytes": 5434,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/gfx/tint.js": {
+      "bytes": 1795,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/ui.js": {
+      "bytes": 3655,
+      "imports": [
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/levels.js": {
+      "bytes": 13008,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/scenes/menu.js": {
+      "bytes": 16210,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        },
+        {
+          "path": "src/gfx/tint.js",
+          "kind": "import-statement",
+          "original": "../gfx/tint.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/scenes/ui.js",
+          "kind": "import-statement",
+          "original": "./ui.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        },
+        {
+          "path": "src/game/levels.js",
+          "kind": "import-statement",
+          "original": "../game/levels.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/plant.js": {
+      "bytes": 24011,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "./defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "./layout.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/tint.js",
+          "kind": "import-statement",
+          "original": "../gfx/tint.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/zombie.js": {
+      "bytes": 33056,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "./defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "./layout.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        },
+        {
+          "path": "src/gfx/tint.js",
+          "kind": "import-statement",
+          "original": "../gfx/tint.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/items.js": {
+      "bytes": 15341,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "./layout.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/gfx/fog.js": {
+      "bytes": 2961,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/waves.js": {
+      "bytes": 7668,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "./defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "./layout.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/gfx/fx.js": {
+      "bytes": 8770,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "./paint.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/game/board.js": {
+      "bytes": 26536,
+      "imports": [
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "./defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "./layout.js"
+        },
+        {
+          "path": "src/game/plant.js",
+          "kind": "import-statement",
+          "original": "./plant.js"
+        },
+        {
+          "path": "src/game/zombie.js",
+          "kind": "import-statement",
+          "original": "./zombie.js"
+        },
+        {
+          "path": "src/game/items.js",
+          "kind": "import-statement",
+          "original": "./items.js"
+        },
+        {
+          "path": "src/gfx/fog.js",
+          "kind": "import-statement",
+          "original": "../gfx/fog.js"
+        },
+        {
+          "path": "src/game/waves.js",
+          "kind": "import-statement",
+          "original": "./waves.js"
+        },
+        {
+          "path": "src/gfx/fx.js",
+          "kind": "import-statement",
+          "original": "../gfx/fx.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/game/plant.js",
+          "kind": "import-statement",
+          "original": "./plant.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/gameScene.js": {
+      "bytes": 52776,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/game/board.js",
+          "kind": "import-statement",
+          "original": "../game/board.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        },
+        {
+          "path": "src/game/levels.js",
+          "kind": "import-statement",
+          "original": "../game/levels.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/scenes/ui.js",
+          "kind": "import-statement",
+          "original": "./ui.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        },
+        {
+          "path": "src/game/zombie.js",
+          "kind": "import-statement",
+          "original": "../game/zombie.js"
+        },
+        {
+          "path": "src/game/items.js",
+          "kind": "import-statement",
+          "original": "../game/items.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/levelSelect.js": {
+      "bytes": 6409,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/game/levels.js",
+          "kind": "import-statement",
+          "original": "../game/levels.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        },
+        {
+          "path": "src/scenes/ui.js",
+          "kind": "import-statement",
+          "original": "./ui.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/minigames.js": {
+      "bytes": 6004,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/game/levels.js",
+          "kind": "import-statement",
+          "original": "../game/levels.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        },
+        {
+          "path": "src/scenes/ui.js",
+          "kind": "import-statement",
+          "original": "./ui.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/almanac.js": {
+      "bytes": 9008,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        },
+        {
+          "path": "src/scenes/ui.js",
+          "kind": "import-statement",
+          "original": "./ui.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/award.js": {
+      "bytes": 7328,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "../core/audio.js"
+        },
+        {
+          "path": "src/core/music.js",
+          "kind": "import-statement",
+          "original": "../core/music.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "../core/save.js"
+        },
+        {
+          "path": "src/core/util.js",
+          "kind": "import-statement",
+          "original": "../core/util.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/gfx/uiArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/uiArt.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "../game/defs.js"
+        },
+        {
+          "path": "src/game/levels.js",
+          "kind": "import-statement",
+          "original": "../game/levels.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        },
+        {
+          "path": "src/scenes/ui.js",
+          "kind": "import-statement",
+          "original": "./ui.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./director.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/scenes/gallery.js": {
+      "bytes": 3996,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "../core/display.js"
+        },
+        {
+          "path": "src/gfx/plantArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/plantArt.js"
+        },
+        {
+          "path": "src/gfx/zombieArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/zombieArt.js"
+        },
+        {
+          "path": "src/gfx/paint.js",
+          "kind": "import-statement",
+          "original": "../gfx/paint.js"
+        },
+        {
+          "path": "src/gfx/bgArt.js",
+          "kind": "import-statement",
+          "original": "../gfx/bgArt.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "../game/layout.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/debug.js": {
+      "bytes": 1489,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "./core/display.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./scenes/director.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/bot.js": {
+      "bytes": 6128,
+      "imports": [
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "./game/defs.js"
+        },
+        {
+          "path": "src/game/layout.js",
+          "kind": "import-statement",
+          "original": "./game/layout.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/main.js": {
+      "bytes": 2951,
+      "imports": [
+        {
+          "path": "src/core/display.js",
+          "kind": "import-statement",
+          "original": "./core/display.js"
+        },
+        {
+          "path": "src/core/input.js",
+          "kind": "import-statement",
+          "original": "./core/input.js"
+        },
+        {
+          "path": "src/core/save.js",
+          "kind": "import-statement",
+          "original": "./core/save.js"
+        },
+        {
+          "path": "src/core/loop.js",
+          "kind": "import-statement",
+          "original": "./core/loop.js"
+        },
+        {
+          "path": "src/core/audio.js",
+          "kind": "import-statement",
+          "original": "./core/audio.js"
+        },
+        {
+          "path": "src/scenes/director.js",
+          "kind": "import-statement",
+          "original": "./scenes/director.js"
+        },
+        {
+          "path": "src/scenes/title.js",
+          "kind": "import-statement",
+          "original": "./scenes/title.js"
+        },
+        {
+          "path": "src/scenes/menu.js",
+          "kind": "import-statement",
+          "original": "./scenes/menu.js"
+        },
+        {
+          "path": "src/scenes/gameScene.js",
+          "kind": "import-statement",
+          "original": "./scenes/gameScene.js"
+        },
+        {
+          "path": "src/scenes/levelSelect.js",
+          "kind": "import-statement",
+          "original": "./scenes/levelSelect.js"
+        },
+        {
+          "path": "src/scenes/minigames.js",
+          "kind": "import-statement",
+          "original": "./scenes/minigames.js"
+        },
+        {
+          "path": "src/scenes/almanac.js",
+          "kind": "import-statement",
+          "original": "./scenes/almanac.js"
+        },
+        {
+          "path": "src/scenes/award.js",
+          "kind": "import-statement",
+          "original": "./scenes/award.js"
+        },
+        {
+          "path": "src/scenes/gallery.js",
+          "kind": "import-statement",
+          "original": "./scenes/gallery.js"
+        },
+        {
+          "path": "src/debug.js",
+          "kind": "import-statement",
+          "original": "./debug.js"
+        },
+        {
+          "path": "src/bot.js",
+          "kind": "import-statement",
+          "original": "./bot.js"
+        },
+        {
+          "path": "src/game/levels.js",
+          "kind": "import-statement",
+          "original": "./game/levels.js"
+        },
+        {
+          "path": "src/game/defs.js",
+          "kind": "import-statement",
+          "original": "./game/defs.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "build/bundle.js.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 959944
+    },
+    "build/bundle.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "src/main.js",
+      "inputs": {
+        "src/core/display.js": {
+          "bytesInOutput": 2280
+        },
+        "src/core/input.js": {
+          "bytesInOutput": 1737
+        },
+        "src/core/save.js": {
+          "bytesInOutput": 1997
+        },
+        "src/core/loop.js": {
+          "bytesInOutput": 1007
+        },
+        "src/core/util.js": {
+          "bytesInOutput": 2885
+        },
+        "src/core/audio.js": {
+          "bytesInOutput": 26302
+        },
+        "src/core/music.js": {
+          "bytesInOutput": 24217
+        },
+        "src/scenes/director.js": {
+          "bytesInOutput": 2312
+        },
+        "src/gfx/paint.js": {
+          "bytesInOutput": 7506
+        },
+        "src/game/layout.js": {
+          "bytesInOutput": 854
+        },
+        "src/gfx/bgArt.js": {
+          "bytesInOutput": 20178
+        },
+        "src/gfx/plantArt.js": {
+          "bytesInOutput": 62368
+        },
+        "src/game/defs.js": {
+          "bytesInOutput": 37247
+        },
+        "src/gfx/uiArt.js": {
+          "bytesInOutput": 21795
+        },
+        "src/gfx/zombieArt.js": {
+          "bytesInOutput": 45363
+        },
+        "src/scenes/title.js": {
+          "bytesInOutput": 5022
+        },
+        "src/gfx/tint.js": {
+          "bytesInOutput": 1277
+        },
+        "src/scenes/ui.js": {
+          "bytesInOutput": 3752
+        },
+        "src/game/levels.js": {
+          "bytesInOutput": 14341
+        },
+        "src/scenes/menu.js": {
+          "bytesInOutput": 17410
+        },
+        "src/game/plant.js": {
+          "bytesInOutput": 25547
+        },
+        "src/game/zombie.js": {
+          "bytesInOutput": 34369
+        },
+        "src/game/items.js": {
+          "bytesInOutput": 15216
+        },
+        "src/gfx/fog.js": {
+          "bytesInOutput": 2838
+        },
+        "src/game/waves.js": {
+          "bytesInOutput": 7441
+        },
+        "src/gfx/fx.js": {
+          "bytesInOutput": 9679
+        },
+        "src/game/board.js": {
+          "bytesInOutput": 26989
+        },
+        "src/scenes/gameScene.js": {
+          "bytesInOutput": 56490
+        },
+        "src/scenes/levelSelect.js": {
+          "bytesInOutput": 6303
+        },
+        "src/scenes/minigames.js": {
+          "bytesInOutput": 5764
+        },
+        "src/scenes/almanac.js": {
+          "bytesInOutput": 8920
+        },
+        "src/scenes/award.js": {
+          "bytesInOutput": 7274
+        },
+        "src/scenes/gallery.js": {
+          "bytesInOutput": 3885
+        },
+        "src/debug.js": {
+          "bytesInOutput": 1411
+        },
+        "src/bot.js": {
+          "bytesInOutput": 5855
+        },
+        "src/main.js": {
+          "bytesInOutput": 1927
+        }
+      },
+      "bytes": 520684
+    }
+  }
+}

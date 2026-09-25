@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-09-23",
+  "source": "/Users/apm30/Documents/project/测试环境/lunar-rover",
+  "modelRecordedAs": "Opus 5.5",
+  "thinkingStrengthRecordedAs": "extra",
+  "modelAttribution": "Inferred from the earlier Opus 5.5 / extra result in the same test environment; user confirmation pending",
+  "promptVersionId": "lunar-rover-v1",
+  "archive": "results/lunar-rover/opus-5-5/import-01",
+  "originalFilesMoved": 9,
+  "originalSha256": {
+    "original.html": "aa1f524aa6f81cb5c99d82792158e817da82b3edeb560807a6489a3dc0014a3a",
+    "js/terrain.js": "c8b1e114bd463778a4d5f7ed44b00a5c7a7fd12ba233a5e6525137d8ab605487",
+    "js/rover-model.js": "74f22f727ac3b4ac458abc165b3b103da3ba74d08b6e036627099e01cf7a8bcd",
+    "js/effects.js": "c426479a946f3c7967b947dc1f93487ff93161ea8287afcebb87d2a7b7cb44d7",
+    "js/main.js": "c5fe091a995a7c57d751f95a1f144395989dd8b9c32a557824d020f6fcd007e5",
+    "js/rover.js": "dcc84cc76dde5ff5baffb82cab2be6fdba7f4008e5d97f9903ff102efa9fd74d",
+    "js/textures.js": "4acd71575be7541f52c3f0746acc2541617c09aa57896ba2203a891fe3c1cf9b",
+    "js/sky.js": "a3e99103725aacd1c7357798a6c5f36184b3d58a3d250a410f2c5edc0fb3b0cf",
+    "js/noise.js": "994f4e72076ce965a31db946ac0e225e1d7004d4631c9fcaed6e2b416cfe64c1"
+  },
+  "entry": {
+    "path": "index.html",
+    "bytes": 12127,
+    "sha256": "060c95e9e63f78c81f184bc473ae17efd00ffad988d1a5d70aee881556b5453b",
+    "change": "Wrapped the original fragment in doctype/html/head/body and added a data-URI favicon; no scene script edited"
+  },
+  "cover": {
+    "path": "cover.jpg",
+    "bytes": 173337,
+    "sha256": "c54de9ae9965e01f6df5919044f1d26e133cef4e6f16958a5cefc28bfdfba190",
+    "source": "1280x720 screenshot of the running WebGL scene in headless Chrome"
+  },
+  "browserChecks": {
+    "sceneLoaded": true,
+    "standardsMode": true,
+    "distanceIncreases": true,
+    "pauseStopsMovement": true,
+    "resumeRestartsMovement": true,
+    "topAndWheelViews": true,
+    "speedSlider": true,
+    "scriptExceptions": [],
+    "failedRequests": [],
+    "httpErrorResponsesAfterEntryFix": [],
+    "galleryCardsForLunarRover": 4,
+    "galleryCoverLoaded": true,
+    "visibleWorks": 12,
+    "doubaoStillHidden": true
+  },
+  "dependencies": ["Three.js 0.160.0 from jsDelivr at runtime", "Google Fonts with local fallback"],
+  "siteTestsPassed": 14,
+  "packagedFiles": 82,
+  "packageMatchesSiteByteForByte": true,
+  "deployment": "Local build and package only; not deployed to the public server"
+}

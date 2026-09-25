@@ -1,0 +1,81 @@
+{
+  "checks": [
+    "r160 live CDN; six gulls; all interior materials use bottle mask",
+    "pause freezes day and simulation",
+    "speed ×4",
+    "speed ×12",
+    "speed ×1",
+    "phase 黎明",
+    "phase 正午",
+    "phase 黄昏",
+    "phase 子夜",
+    "Space storm, bottle rocks, world-space water remains level",
+    "Space release calms storm",
+    "pointer hold storm control",
+    "drag orbit and wheel zoom",
+    "reset camera",
+    "periodic whale breach",
+    "full orbit and interior containment audit",
+    "390px touch layout without overflow",
+    "idle auto orbit resumes after eight seconds",
+    "final night stars and full-bottle mobile framing",
+    "rear and overhead views visually reviewed; backdrop does not occlude orbit",
+    "rear and overhead views visually reviewed; backdrop does not occlude orbit"
+  ],
+  "errors": [],
+  "cdn": [
+    {
+      "url": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js",
+      "status": 200
+    }
+  ],
+  "state": {
+    "three": "160",
+    "hour": 17.299999999999997,
+    "speed": 1,
+    "paused": true,
+    "storm": 0.000006089793671677324,
+    "simTime": 19.7,
+    "fps": 58,
+    "drawCalls": 200,
+    "triangles": 91669,
+    "waterVoxels": 2514,
+    "gulls": 6,
+    "frames": 769,
+    "boatPosition": [
+      0.9947621642209474,
+      -0.6201608763858946,
+      0.9508800061629066
+    ],
+    "boatRotation": [
+      0.1937187429293308,
+      -2.6617350287672785,
+      0.02694723915446936,
+      "YXZ"
+    ],
+    "bottleRotation": [
+      -1.477774223726089e-7,
+      0,
+      -1.9883265864495228e-8,
+      "XYZ"
+    ],
+    "camera": [
+      7.210719676810745,
+      12.337162247769147,
+      21.781221095956493
+    ],
+    "waterWorldUp": [
+      0,
+      1,
+      0
+    ],
+    "whalePosition": [
+      2.359615384615385,
+      0.11740928699711062,
+      -1.3
+    ],
+    "unmaskedInterior": [],
+    "pixelRatio": 1.65
+  },
+  "finalErrors": []
+}

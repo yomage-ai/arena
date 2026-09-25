@@ -1,0 +1,26 @@
+{
+  "numericHashFinite": true,
+  "stringHashIsNaN": true,
+  "transitionIsNaN": true,
+  "beforeBoundary": {
+    "a": 0,
+    "b": 0,
+    "t": 0,
+    "raw": 0,
+    "boundary": 0
+  },
+  "afterBoundary": {
+    "a": 1,
+    "b": 1,
+    "t": 0,
+    "raw": 1,
+    "boundary": 8600
+  },
+  "invalidStyle": {
+    "a": null,
+    "b": null,
+    "t": 0,
+    "raw": null,
+    "boundary": null
+  }
+}

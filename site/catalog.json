@@ -80,6 +80,26 @@
           "text": "创建一个网页，中间是一辆高精度、充满细节、极度写实的月面探测车 3D 模型，并且探测车在同样精细真实的月球表面上缓慢行驶，背景为太空，环境并不是二维静态的，可以通过鼠标进行缩放、旋转和自由浏览。"
         }
       ]
+    },
+    {
+      "id": "bottled-ocean",
+      "title": "瓶中沧海",
+      "category": "三维微缩场景",
+      "description": "一艘帆船航行在横卧玻璃瓶里的海面上。观察体素微缩世界、昼夜变化与风暴交互。",
+      "focus": [
+        "瓶内场景",
+        "海面与航行",
+        "镜头及天气交互"
+      ],
+      "deviceNote": "建议使用支持 WebGL 的电脑端 Chrome；作品需联网加载 Three.js r160 CDN。",
+      "defaultPromptVersionId": "bottled-ocean-v1",
+      "promptVersions": [
+        {
+          "id": "bottled-ocean-v1",
+          "label": "原始提示词 v1",
+          "text": "用WebGL(Three.jsr160CDN)创作一个体素微缩场景一-瓶中沧海:一艘多桅帆船在封闭于横卧玻璃瓶内的海洋上航行，输出为可直接在Chrome打开的单个HTML文件。\n瓶与陈设:玻璃瓶身有菲涅尔边缘光与高光，软木塞+红蜡封+颈绳吊牌，搁在木托架上，置于木桌面(旁有旧书、黄铜望远镜)，黄昏房间光氛围。瓶内海洋:体素浪面在GPU上起伏、浪尖泛白沫;水面以下是整体铺满的渐变深水体(无海床)，半透明可透视--水底沉着宝箱(金光)、沉锚、双耳瓶、珊\n瑚，气泡上升。珊瑚岛上有红白灯塔(旋转光束)、棕榈、暖窗小屋、码头与小艇、宝藏。帆船:三桅方帆+红纹主帆+全套索具，绕岛航行;浮力物理:四点浪高采样驱动升沉/纵摇/横摇，带船艏飞沫与尾迹。空中:六只海鸥盘旋，积云在鸟与桅杆之上，鲸鱼周期性跃身出水，浮标、鱼群、螃蟹点缀\n一切元素严格封闭在瓶内，任何视角不得越出轮廓。交互:拖动环视(闲置自动恢复旋转)、滚轮缩放;按住Space掀起风暴--浪涌飞沫、瓶体在托架上摇晃而瓶内水面保持水平、闪电与乌云;延时摄影倍速(x4/x12/x1/暂停)驱动昼夜流转:太阳月亮移动、\n黎明正午黄昏子夜四段天色、子夜星空，夜晚灯火热光\n更浓。\n技术:InstancedMesh体素批渲染+自定义 shader玻璃、水面顶点位移)，目标60FPS。"
+        }
+      ]
     }
   ],
   "models": [
@@ -90,10 +110,29 @@
       "version": "GPT6-Astra-xhigh"
     },
     {
+      "id": "gpt6-sol-max",
+      "label": "GPT6-sol-max",
+      "product": null,
+      "version": "GPT6-sol"
+    },
+    {
       "id": "gpt5-6-sol-max",
       "label": "GPT5.6-sol-max",
       "product": null,
       "version": "GPT5.6-sol-max"
+    },
+    {
+      "id": "opus-5-5",
+      "label": "Opus 5.5 · extra",
+      "product": null,
+      "version": "Opus 5.5"
+    },
+    {
+      "id": "doubao-seed-2-1-pro",
+      "label": "Doubao-Seed-2.1-pro",
+      "product": null,
+      "version": "Doubao-Seed-2.1-pro",
+      "hidden": true
     }
   ],
   "results": [
@@ -295,6 +334,387 @@
         "intervention": null
       },
       "notes": "用户本次提供的模型名称为 gpt6，沿用此前 GPT6-Astra-xhigh 配置，关联同一份月球车原始提示词。原交付为 lunar-explorer React / Three.js 工程；收录时仅增加静态挂载入口和打包客户端依赖，原场景、模型、交互组件和编译全局样式未改写。完整工程与原构建产物保留在 source-projects/lunar-explorer/。生成日期、轮次与生成过程中的人工干预待补充。",
+      "knownIssues": []
+    },
+    {
+      "id": "migration-doubao-seed-2-1-pro-import-01",
+      "projectId": "migration",
+      "modelId": "doubao-seed-2-1-pro",
+      "title": "候鸟 · MIGRATION",
+      "description": "纸鸟迁徙的原始生成结果。开场可显示，开始迁徙后场景渲染报错；封面为实际开场截图。",
+      "promptVersionId": "migration-v1",
+      "runLabel": "2026-09-20 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": false,
+      "availability": "broken",
+      "validation": "issues",
+      "entry": "./works/migration/doubao-seed-2-1-pro/import-01/index.html",
+      "cover": "./works/migration/doubao-seed-2-1-pro/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": null,
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户提供的 Doubao-Seed-2.1-pro 候鸟测试结果，按同题候鸟项目收录。原文件候鸟.html 原样归档，仅重命名入口；生成日期、轮次与参数未知。 2026-09-20 在本地浏览器检查，发现启动渲染异常，按问题样本原样保留；没有修复作品代码。",
+      "knownIssues": [
+        "开始迁徙后只显示背景和按钮：绘制散屋时调色板读取报错，鸟群与地形未能呈现。",
+        "音乐开关点击后仍为“音乐开”，未切换到关闭状态。",
+        "源码中的气候过渡 smoothstep 调用缺少参数，过渡值为 NaN，会退回分段风格。",
+        "原文件混有 HTML 之外的说明与 Markdown 标记，浏览器以 BackCompat 模式解析。",
+        "配乐实现为程序化合成主题，并非提示词要求的两首内嵌 base64 配乐。"
+      ]
+    },
+    {
+      "id": "migration-doubao-seed-2-1-pro-import-02",
+      "projectId": "migration",
+      "modelId": "doubao-seed-2-1-pro",
+      "title": "候鸟 · MIGRATION",
+      "description": "纸鸟沿河流与城镇迁徙，可选择五种起飞场景，并控制镜头、音乐和诗句。",
+      "promptVersionId": "migration-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/migration/doubao-seed-2-1-pro/import-02/index.html",
+      "cover": "./works/migration/doubao-seed-2-1-pro/import-02/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": null,
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户提供的另一份豆包候鸟测试结果，沿用同题候鸟提示词 v1，按新收录记录保留；收录日期不代表生成日期。测试目录中的候鸟-MIGRATION.html 逐字节复制到归档，仅重命名入口。具体推理强度、生成轮次及人工干预未知。",
+      "knownIssues": []
+    },
+    {
+      "id": "bicycle-doubao-seed-2-1-pro-import-01",
+      "projectId": "bicycle",
+      "modelId": "doubao-seed-2-1-pro",
+      "title": "鹈鹕骑自行车 · SVG 动画",
+      "description": "纯 SVG 手绘的鹈鹕骑行动画，踏频联动车轮与沿途风景，支持暂停和三档速度切换。",
+      "promptVersionId": "bicycle-v1",
+      "runLabel": "现有作品",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bicycle/doubao-seed-2-1-pro/import-01/index.html",
+      "cover": "./works/bicycle/doubao-seed-2-1-pro/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：高（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户确认由 doubao-2.1-pro 使用高推理强度生成，按现有 Doubao-Seed-2.1-pro 模型收录并关联鹈鹕原始提示词 v1。原文件 pelican-bike.html 原样迁入，仅重命名入口；生成日期、轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "lunar-rover-doubao-seed-2-1-pro-import-01",
+      "projectId": "lunar-rover",
+      "modelId": "doubao-seed-2-1-pro",
+      "title": "月面巡视器 · 高精度三维交互场景",
+      "description": "六轮月面巡视器在地形上行驶，支持旋转、缩放、自由观察以及暂停和重置视角。",
+      "promptVersionId": "lunar-rover-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/lunar-rover/doubao-seed-2-1-pro/import-01/index.html",
+      "cover": "./works/lunar-rover/doubao-seed-2-1-pro/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": null,
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户提供的豆包月球车测试结果，沿用同题月球车提示词 v1 收录；收录日期不代表生成日期。原文件月面探测车.html 逐字节移入归档，仅重命名入口。具体推理强度、生成轮次及人工干预未知。原件通过在线资源加载 Three.js 与字体。",
+      "knownIssues": []
+    },
+    {
+      "id": "bicycle-opus-5-5-import-01",
+      "projectId": "bicycle",
+      "modelId": "opus-5-5",
+      "title": "鹈鹕兜风",
+      "description": "鹈鹕沿海骑行的 SVG 动画；可暂停、调节速度和按铃。",
+      "promptVersionId": "bicycle-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bicycle/opus-5-5/import-01/index.html",
+      "cover": "./works/bicycle/opus-5-5/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：extra（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户确认由 Opus 5.5 以 extra 思考强度生成，关联鹈鹕原始提示词 bicycle-v1。原文件 pelican-bike.html 逐字节保留；网页入口 index.html 只补齐标准 HTML 文档外壳，动画内容未改。生成日期、轮次与人工干预尚未记录。页面字体从 Google Fonts 加载，断网时使用回退字体。",
+      "knownIssues": []
+    },
+    {
+      "id": "bicycle-gpt6-sol-max-import-01",
+      "projectId": "bicycle",
+      "modelId": "gpt6-sol-max",
+      "title": "鹈鹕的海边骑行",
+      "description": "鹈鹕沿海边公路骑行，车轮、脚踏、围巾与海岸风景持续运动。",
+      "promptVersionId": "bicycle-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bicycle/gpt6-sol-max/import-01/index.html",
+      "cover": "./works/bicycle/gpt6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：max（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "用户确认由 GPT6-sol 以 max 思考强度生成，关联鹈鹕原始提示词 bicycle-v1。原文件 pelican-bicycle.html 逐字节移入归档，仅重命名入口；生成日期、轮次与人工干预尚未记录。作品使用内嵌 SVG、CSS 和 JavaScript，无外部资源。",
+      "knownIssues": []
+    },
+    {
+      "id": "lunar-rover-gpt6-sol-max-import-01",
+      "projectId": "lunar-rover",
+      "modelId": "gpt6-sol-max",
+      "title": "SELENE 07 · 月面探测任务",
+      "description": "月面探测车在三维地形中缓慢行驶，支持旋转、缩放、平移、切换视角与暂停。",
+      "promptVersionId": "lunar-rover-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/lunar-rover/gpt6-sol-max/import-01/index.html",
+      "cover": "./works/lunar-rover/gpt6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：max（沿用用户对测试环境 2 的说明）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "由测试环境 2 原样迁入完整多文件网页，沿用用户先前对该目录的 GPT6-sol / max 模型说明。HTML、CSS、JavaScript、Three.js 本地模块、月壤纹理和原 README 均保留；运行时无需 CDN。生成日期、轮次与人工干预尚未记录。",
+      "knownIssues": []
+    },
+    {
+      "id": "lunar-rover-opus-5-5-import-01",
+      "projectId": "lunar-rover",
+      "modelId": "opus-5-5",
+      "title": "月面巡视器 LR-01",
+      "description": "程序生成的三维月面巡视器，支持自由观察、多个镜位、行驶控制和光照调节。",
+      "promptVersionId": "lunar-rover-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/lunar-rover/opus-5-5/import-01/index.html",
+      "cover": "./works/lunar-rover/opus-5-5/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：extra（暂按同一测试环境记录，待确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境/lunar-rover 的九个原始文件已迁入。原始 HTML 不含标准文档外壳，保存在 original.html；入口 index.html 只补齐外壳，其余脚本未改。Three.js 和字体运行时从在线 CDN 加载。模型与思考强度暂沿用同一测试环境此前的 Opus 5.5 / extra 信息，待用户确认。",
+      "knownIssues": []
+    },
+    {
+      "id": "migration-opus-5-5-import-01",
+      "projectId": "migration",
+      "modelId": "opus-5-5",
+      "title": "候鸟 · MIGRATION",
+      "description": "纸鸟沿程序生成的迁徙航线飞行，支持起飞地点、风、镜头、诗句和音乐交互。",
+      "promptVersionId": "migration-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/migration/opus-5-5/import-01/index.html",
+      "cover": "./works/migration/opus-5-5/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：extra（暂按同一测试环境记录，待确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境/migration.html 原样迁入，关联候鸟原始提示词 migration-v1。模型与强度暂沿用该测试环境此前的 Opus 5.5 / extra 记录，待用户确认；生成日期、轮次与人工干预未知。配乐内嵌于 HTML。",
+      "knownIssues": []
+    },
+    {
+      "id": "migration-gpt6-sol-max-import-01",
+      "projectId": "migration",
+      "modelId": "gpt6-sol-max",
+      "title": "候鸟 · MIGRATION",
+      "description": "候鸟穿行于程序生成的河流、村镇和多种气候场景，支持风、镜头与音乐交互。",
+      "promptVersionId": "migration-v1",
+      "runLabel": "2026-09-23 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/migration/gpt6-sol-max/import-01/index.html",
+      "cover": "./works/migration/gpt6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：max（沿用用户对测试环境 2 的说明）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境 2/index.html 原样迁入，关联候鸟原始提示词 migration-v1。用户此前说明该目录为 GPT6-sol / max；生成日期、轮次与人工干预未知。配乐内嵌于 HTML。",
+      "knownIssues": []
+    },
+    {
+      "id": "pvz-gpt6-sol-max-import-01",
+      "projectId": "pvz",
+      "modelId": "gpt6-sol-max",
+      "title": "植物大战僵尸 · 草坪保卫战",
+      "description": "收集阳光、种植七种植物，守住五波僵尸进攻；支持暂停与倍速。",
+      "promptVersionId": "pvz-v1",
+      "runLabel": "2026-09-24 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/pvz/gpt6-sol-max/import-01/index.html",
+      "cover": "./works/pvz/gpt6-sol-max/import-01/cover.png",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：max（沿用用户对测试环境 2 的说明）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境 2/index.html 逐字节归档，关联植物大战僵尸原始提示词 pvz-v1。完整源码、构建脚本、测试脚本和截图保留在 source-projects/gpt6-sol-pvz；本地重新构建与原始 HTML 一致。模型与强度沿用用户对测试环境 2 的 GPT6-sol / max 说明；生成日期、轮次与人工干预未知。",
+      "knownIssues": []
+    },
+    {
+      "id": "pvz-opus-5-5-import-01",
+      "projectId": "pvz",
+      "modelId": "opus-5-5",
+      "title": "植物大战僵尸 · HTML5 复刻版",
+      "description": "程序绘制的塔防游戏，包含冒险关卡、小游戏、图鉴和生存模式。",
+      "promptVersionId": "pvz-v1",
+      "runLabel": "2026-09-24 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/pvz/opus-5-5/import-01/index.html",
+      "cover": "./works/pvz/opus-5-5/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：extra（暂按同一测试环境记录，待确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境/pvz/dist/植物大战僵尸.html 原样复制归档，关联植物大战僵尸原始提示词 pvz-v1。完整源码、构建脚本、构建中间产物及原始成品保留在 source-projects/opus-5-5-pvz；node_modules 未归档，可由 package-lock.json 重装。模型与强度暂沿用该测试环境此前的 Opus 5.5 / extra 记录，待确认。浏览器已验证标题、菜单与 1-1 关卡可显示；未完整通关。生成日期、轮次与人工干预未知。",
+      "knownIssues": []
+    },
+    {
+      "id": "bottled-ocean-gpt6-astra-xhigh-import-01",
+      "projectId": "bottled-ocean",
+      "modelId": "gpt6-astra-xhigh",
+      "title": "瓶中沧海 · A Sea of One's Own",
+      "description": "玻璃瓶内的体素海洋与三桅帆船，支持环视、缩放、风暴和昼夜延时摄影。",
+      "promptVersionId": "bottled-ocean-v1",
+      "runLabel": "2026-09-24 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bottled-ocean/gpt6-astra-xhigh/import-01/index.html",
+      "cover": "./works/bottled-ocean/gpt6-astra-xhigh/import-01/cover.png",
+      "conditions": {
+        "tools": null,
+        "parameters": "推理强度：xhigh（用户确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境 2/bottle-ocean.html 逐字节复制归档，模型与推理强度由用户明确确认为 GPT6-Astra / xhigh；关联原始提示词 bottled-ocean-v1。原文件名另行保留，网站入口 index.html 与原件内容相同。制作时的检查记录与五张截图保留在 source-projects/gpt6-astra-bottled-ocean/artifacts；封面使用实际桌面画面。作品从 jsDelivr 加载 Three.js r160，需联网。生成日期、轮次与人工干预未知。",
+      "knownIssues": []
+    },
+    {
+      "id": "bottled-ocean-gpt6-sol-max-import-01",
+      "projectId": "bottled-ocean",
+      "modelId": "gpt6-sol-max",
+      "title": "瓶中沧海 · Bottled Ocean",
+      "description": "玻璃瓶内的三维海洋与多桅帆船，支持环视、缩放、风暴和延时摄影。",
+      "promptVersionId": "bottled-ocean-v1",
+      "runLabel": "2026-09-24 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bottled-ocean/gpt6-sol-max/import-01/index.html",
+      "cover": "./works/bottled-ocean/gpt6-sol-max/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：max（沿用用户对测试环境 2 的说明）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境 2/bottled-ocean.html 逐字节归档，关联用户提供的原始提示词 bottled-ocean-v1。原文件名另行保留，网站入口 index.html 与原件内容相同。作品从 jsDelivr 加载 Three.js r160 和 OrbitControls，需要联网；本地 Chrome 已验证 WebGL 画面及 CDN 响应。模型与强度沿用用户此前对测试环境 2 的 GPT6-sol / max 说明；生成日期、轮次与人工干预未知。",
+      "knownIssues": []
+    },
+    {
+      "id": "bottled-ocean-opus-5-5-import-01",
+      "projectId": "bottled-ocean",
+      "modelId": "opus-5-5",
+      "title": "瓶中沧海 · Ship in a Bottle",
+      "description": "横卧玻璃瓶中的帆船与海岛，支持环视、缩放、昼夜倍速和按住掀起风暴。",
+      "promptVersionId": "bottled-ocean-v1",
+      "runLabel": "2026-09-24 收录",
+      "variant": null,
+      "parentRunId": null,
+      "generatedAt": null,
+      "featured": true,
+      "availability": "available",
+      "validation": "untested",
+      "entry": "./works/bottled-ocean/opus-5-5/import-01/index.html",
+      "cover": "./works/bottled-ocean/opus-5-5/import-01/cover.jpg",
+      "conditions": {
+        "tools": null,
+        "parameters": "思考强度：extra（暂按同一测试环境记录，待确认）",
+        "budget": null,
+        "intervention": null
+      },
+      "notes": "测试环境/ship-in-bottle/dist/瓶中沧海.html 原样归档，关联瓶中沧海原始提示词 bottled-ocean-v1。原始中文文件名保留在完整工程，发布目录中的 original.html 与标准入口逐字节相同；全部 11 个源码、构建脚本和成品保留在 source-projects/opus-5-5-bottled-ocean，重新构建的成品哈希相同。作品需联网加载 Three.js r160 模块和 Google Fonts，断网时三维场景无法启动。模型与强度暂沿用该测试环境此前的 Opus 5.5 / extra 记录，待用户确认；生成日期、轮次与人工干预未知。",
       "knownIssues": []
     }
   ]
